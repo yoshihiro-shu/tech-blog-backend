@@ -1,0 +1,19 @@
+user:
+  host: "0.0.0.0"
+  port: 8000
+
+db:
+  driver: "postgres"
+  # host: "127.0.0.1"
+  host: "test-postgres"
+  port: "5432"
+  user: "postgres"
+  name: "postgres"
+  password: "password"
+  sslMode: "disable"
+
+cacheRedis:
+  host: "test-redis"
+  port: "6379"
+  password: ""
+  dbNumber: 0

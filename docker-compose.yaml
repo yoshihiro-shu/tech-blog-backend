@@ -1,0 +1,53 @@
+version: '3.9'
+services:
+  test-nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - test-backend
+    networks:
+      - draft-backend-network
+
+  test-backend:
+    build: ./backend
+    volumes:
+      - ./backend:/usr/src/app
+    ports:
+      - "8000:8000"
+    tty: true
+    depends_on:
+      # TODO conditionをつける
+      - test-postgres
+      - test-redis
+    networks:
+      - draft-backend-network
+
+  test-postgres:
+    restart: always
+    image: postgres:latest
+    environment:
+    # if not POSTGRES_USER and POSTGRES_DB, it will be "postgres".
+      POSTGRES_PASSWORD: password
+      TZ: "Asia/Tokyo"
+    ports:
+      - 5432:5432
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    networks:
+      - draft-backend-network
+
+  test-redis:
+    restart: always
+    image: "redis:latest"
+    ports:
+      - 6379:6379
+    volumes:
+      - ./tmp/cache:/var/lib/redis/data
+    networks:
+      - draft-backend-network
+
+networks:
+  draft-backend-network:
+    driver: bridge
+    external: true

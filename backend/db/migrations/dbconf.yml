@@ -1,0 +1,23 @@
+test:
+    driver: postgres
+    open: host=localhost port=5432 user=postgres dbname=postgres password=password sslmode=disable
+
+development:
+  driver: postgres
+  open: host=localhost port=5432 user=postgres dbname=postgres password=password sslmode=disable
+
+# GOOSE_DRIVER=postgres GOOSE_DBSTRING="host=localhost port=5432 user=postgres dbname=postgres password=password sslmode=disable" goose status
+
+production:
+    driver: postgres
+    open: host=localhost port=5432 user=postgres dbname=postgres password=password sslmode=disable
+
+customimport:
+    driver: customdriver
+    open: customdriver open
+    import: github.com/custom/driver
+    dialect: mysql
+
+environment_variable_config:
+    driver: $DB_DRIVER
+    open: $DATABASE_URL
