@@ -6,16 +6,23 @@
 go mod download
 ```
 
+docker-networkの作成
+
+```
+docker network create draft-backend-network
+```
+
+volumeの永続化
+
+```
+docker volume create --name=draft-postgres-db
+docker volume create --name=draft-cache-redis
+```
+
 imageをビルドする
 
 ```
 docker-compose up --build
-```
-
-docker-networkの作成
-
-```
-docker network create test-backend-network
 ```
 
 バックグラウンドで立ち上げる

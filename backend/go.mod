@@ -1,4 +1,4 @@
-module github.com/yoshi429/test
+module github.com/yoshi429/draft-backend
 
 go 1.18
 

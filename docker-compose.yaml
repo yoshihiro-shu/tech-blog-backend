@@ -1,15 +1,15 @@
 version: '3.9'
 services:
-  test-nginx:
+  draft-nginx:
     build: ./nginx
     ports:
       - "80:80"
     depends_on:
-      - test-backend
+      - draft-backend
     networks:
       - draft-backend-network
 
-  test-backend:
+  draft-backend:
     build: ./backend
     volumes:
       - ./backend:/usr/src/app
@@ -18,12 +18,12 @@ services:
     tty: true
     depends_on:
       # TODO conditionをつける
-      - test-postgres
-      - test-redis
+      - draft-postgres
+      - draft-redis
     networks:
       - draft-backend-network
 
-  test-postgres:
+  draft-postgres:
     restart: always
     image: postgres:latest
     environment:
@@ -33,19 +33,27 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - ./tmp/db:/var/lib/postgresql/data
+      - draft-postgres-db:/var/lib/postgresql/data
     networks:
       - draft-backend-network
 
-  test-redis:
+  draft-redis:
     restart: always
     image: "redis:latest"
     ports:
       - 6379:6379
     volumes:
-      - ./tmp/cache:/var/lib/redis/data
+      - draft-cache-redis:/var/lib/redis/data
     networks:
       - draft-backend-network
+
+# docker volume create --name=draft-postgres-db
+# docker volume create --name=draft-cache-redis
+volumes:
+  draft-postgres-db:
+    external: true
+  draft-cache-redis:
+    external: true
 
 networks:
   draft-backend-network:

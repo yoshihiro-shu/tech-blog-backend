@@ -8,10 +8,10 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/yoshi429/test/auth"
-	"github.com/yoshi429/test/cache"
-	"github.com/yoshi429/test/config"
-	"github.com/yoshi429/test/model"
+	"github.com/yoshi429/draft-backend/auth"
+	"github.com/yoshi429/draft-backend/cache"
+	"github.com/yoshi429/draft-backend/config"
+	"github.com/yoshi429/draft-backend/model"
 )
 
 type Context struct {

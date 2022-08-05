@@ -2,8 +2,8 @@ package main
 
 import (
 	_ "github.com/lib/pq"
-	"github.com/yoshi429/test/config"
-	"github.com/yoshi429/test/server"
+	"github.com/yoshi429/draft-backend/config"
+	"github.com/yoshi429/draft-backend/server"
 )
 
 func main() {

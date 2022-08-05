@@ -6,7 +6,7 @@ import (
 	"log"
 
 	_ "github.com/lib/pq"
-	"github.com/yoshi429/test/config"
+	"github.com/yoshi429/draft-backend/config"
 )
 
 type DBContext struct {

@@ -3,8 +3,8 @@ package router
 import (
 	"net/http"
 
-	"github.com/yoshi429/test/auth"
-	"github.com/yoshi429/test/handler"
+	"github.com/yoshi429/draft-backend/auth"
+	"github.com/yoshi429/draft-backend/handler"
 )
 
 func (r Router) ApplyRouters() {

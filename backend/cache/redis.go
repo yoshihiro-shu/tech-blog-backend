@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 
 	"github.com/go-redis/redis/v9"
-	"github.com/yoshi429/test/config"
+	"github.com/yoshi429/draft-backend/config"
 )
 
 type RedisContext struct {
