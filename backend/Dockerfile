@@ -1,4 +1,5 @@
 FROM golang:1.19
+LABEL maintainer "draft-backend"
 
 WORKDIR /usr/src/app
 

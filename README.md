@@ -104,3 +104,19 @@ GOOSE_DRIVER=postgres GOOSE_DBSTRING="host=localhost port=5432 user=postgres dbn
 ```
 
 実行後自動的にgoose-veserion更新される
+
+## docker push
+
+bacnkendの場合
+
+```
+cd backend
+```
+
+```
+docker build --tag=yoshi429/draft-backend:v-0.0.1 .
+```
+
+```
+docker push yoshi429/draft-backend:v-0.0.1
+```
