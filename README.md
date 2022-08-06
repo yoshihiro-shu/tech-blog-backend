@@ -37,7 +37,27 @@ docker-compose up -d
 curl localhost:80/
 ```
 
-## gooose
+## gooooooooooooooooooooooose
+
+```
+# wslの場合
+cd /backend/db/migrations
+git clone https://github.com/pressly/goose
+cd goose
+go mod tidy
+go build -o goose ./cmd/goose
+
+./goose --version
+# コマンド実行するときはここのpathでcd /backend/db/migrations
+cd /backend/db/migrations;
+GOOSE_DRIVER=postgres GOOSE_DBSTRING="host=localhost port=5432 user=postgres dbname=postgres password=password sslmode=disable" ./goose/goose up;
+```
+
+goose_db_versionの追加
+
+```
+goose status
+```
 
 ファイルのフォーマットを作成、編集
 
