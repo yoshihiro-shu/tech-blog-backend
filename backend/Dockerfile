@@ -7,4 +7,6 @@ WORKDIR /usr/src/app
 COPY . ./
 RUN go mod download && go mod verify
 
+EXPOSE 8000
+
 CMD ["go", "run", "main.go"]

@@ -24,8 +24,8 @@ services:
       - draft-backend-network
 
   draft-postgres:
+    build: ./tmp/db
     restart: always
-    image: postgres:latest
     environment:
     # if not POSTGRES_USER and POSTGRES_DB, it will be "postgres".
       POSTGRES_PASSWORD: password
@@ -38,8 +38,8 @@ services:
       - draft-backend-network
 
   draft-redis:
+    build: ./tmp/cache
     restart: always
-    image: "redis:latest"
     ports:
       - 6379:6379
     volumes:
@@ -47,8 +47,6 @@ services:
     networks:
       - draft-backend-network
 
-# docker volume create --name=draft-postgres-db
-# docker volume create --name=draft-cache-redis
 volumes:
   draft-postgres-db:
     external: true
