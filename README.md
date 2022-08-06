@@ -37,6 +37,12 @@ docker-compose up -d
 curl localhost:80/
 ```
 
+## Connect to psql
+
+```
+psql -h localhost -p 5432 -U postgres -d postgres
+```
+
 ## gooooooooooooooooooooooose
 
 ### goose install
