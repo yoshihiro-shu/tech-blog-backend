@@ -71,7 +71,7 @@ GOOSE_DRIVER=postgres GOOSE_DBSTRING="host=localhost port=5432 user=postgres dbn
 goose_db_versionの追加
 
 ```
-goose status
+GOOSE_DRIVER=postgres GOOSE_DBSTRING="host=localhost port=5432 user=postgres dbname=postgres password=password sslmode=disable" goose status
 ```
 
 ファイルのフォーマットを作成、編集
