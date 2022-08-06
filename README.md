@@ -39,6 +39,13 @@ curl localhost:80/
 
 ## gooooooooooooooooooooooose
 
+### goose install
+
+```
+# mac go install github.com/pressly/goose/v3/cmd/goose@latest
+
+```
+
 ```
 # wslの場合
 cd /backend/db/migrations
@@ -53,6 +60,8 @@ cd /backend/db/migrations;
 GOOSE_DRIVER=postgres GOOSE_DBSTRING="host=localhost port=5432 user=postgres dbname=postgres password=password sslmode=disable" ./goose/goose up;
 ```
 
+### ready for use goose
+
 goose_db_versionの追加
 
 ```
@@ -66,10 +75,26 @@ cd backend/db/migrations
 goose create create_user sql
 ```
 
+### how to execute
+
 実行
 
 ```
+# Macの場合
+# move to directory which is exist sql files
+cd backend/db/migrations
+
+# migration
 GOOSE_DRIVER=postgres GOOSE_DBSTRING="host=localhost port=5432 user=postgres dbname=postgres password=password sslmode=disable" goose up
+```
+
+```
+# WSLの場合
+# move to directory which is exist sql files
+cd backend/db/migrations
+
+# migration
+GOOSE_DRIVER=postgres GOOSE_DBSTRING="host=localhost port=5432 user=postgres dbname=postgres password=password sslmode=disable" ./goose/goose up
 ```
 
 実行後自動的にgoose-veserion更新される
