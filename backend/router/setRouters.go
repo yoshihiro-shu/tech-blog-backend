@@ -19,6 +19,8 @@ func (r Router) ApplyRouters() {
 	// Grouping
 	t := r.Group("/test")
 	t.AppHandle("", h.TestHandler).Methods(http.MethodGet)
+	t.AppHandle("redis", h.TestSetRedis).Methods(http.MethodPost)
+	t.AppHandle("redis/{key}", h.TestGetRedis).Methods(http.MethodGet)
 	t.AppHandle("/v2", h.Index).Methods(http.MethodGet)
 
 	c := r.Group("/cmd")
