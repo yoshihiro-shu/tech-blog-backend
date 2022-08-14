@@ -5,8 +5,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
-	"github.com/yoshi429/draft-backend/auth"
-	"github.com/yoshi429/draft-backend/model"
+	"github.com/yoshihiro-shu/draft-backend/auth"
+	"github.com/yoshihiro-shu/draft-backend/model"
 )
 
 type LoginResponse struct {
