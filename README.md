@@ -43,7 +43,7 @@ curl localhost:80/
 psql -h localhost -p 5432 -U postgres -d postgres
 ```
 
-## gooooooooooooooooooooooose
+## [gooooooooooooooooooooooose](https://github.com/yoshihiro-shu/draft-backend/tree/main/migrations)
 
 ## docker push
 
