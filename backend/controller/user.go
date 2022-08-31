@@ -2,6 +2,7 @@ package controller
 
 import (
 	"database/sql"
+	"fmt"
 
 	"github.com/yoshihiro-shu/draft-backend/model"
 )
@@ -21,13 +22,13 @@ func (u *User) Login(db *sql.DB) error {
 	// get password by user.email
 	err := u.GetByEmail(db)
 	if err != nil {
-		return err
+		return fmt.Errorf("Email is mistaken")
 	}
 
 	// compare password and crypt password
 	err = u.VerifyPassword(u.Password)
 	if err != nil {
-		return err
+		return fmt.Errorf("password is mistaken")
 	}
 	return nil
 }
