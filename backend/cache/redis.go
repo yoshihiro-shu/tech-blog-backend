@@ -9,7 +9,7 @@ import (
 )
 
 type RedisContext struct {
-	RedisClient *redis.Client
+	redisClient *redis.Client
 	ctx         context.Context
 }
 
@@ -21,19 +21,19 @@ func New(c config.Configs) *RedisContext {
 	})
 
 	return &RedisContext{
-		RedisClient: rds,
+		redisClient: rds,
 		ctx:         context.Background(),
 	}
 }
 
 func (r RedisContext) SET(key string, i interface{}) error {
 	b, err := json.Marshal(i)
-	err = r.RedisClient.Set(r.ctx, key, b, 0).Err()
+	err = r.redisClient.Set(r.ctx, key, b, 0).Err()
 	return err
 }
 
 func (r RedisContext) GET(key string, i interface{}) error {
-	str, err := r.RedisClient.Get(r.ctx, key).Result()
+	str, err := r.redisClient.Get(r.ctx, key).Result()
 	if err != nil {
 		return err
 	}
