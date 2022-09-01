@@ -6,6 +6,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	"github.com/yoshihiro-shu/draft-backend/auth"
+	"github.com/yoshihiro-shu/draft-backend/controller"
 	"github.com/yoshihiro-shu/draft-backend/model"
 )
 
@@ -37,17 +38,11 @@ func (h Handler) Login(w http.ResponseWriter, r *http.Request) error {
 	email := r.FormValue("email")
 	password := r.FormValue("password")
 
-	// get password by user.email
-	user := &model.User{Email: email}
-	err := user.GetByEmail(h.Context.Db.PSQLDB)
-	if err != nil {
-		return h.Context.JSON(w, http.StatusBadRequest, err.Error())
-	}
+	user := controller.NewUser(email, password)
 
-	// compare password and crypt password
-	err = user.VerifyPassword(password)
+	err := user.Login(h.Context.Db.PSQLDB)
 	if err != nil {
-		return h.Context.JSON(w, http.StatusUnauthorized, "password is mistaken")
+		return h.Context.JSON(w, http.StatusUnauthorized, err.Error())
 	}
 
 	// create TOKEN
