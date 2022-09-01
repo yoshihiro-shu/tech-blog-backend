@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"strings"
 
 	"github.com/dgrijalva/jwt-go"
 )
@@ -12,10 +11,7 @@ import (
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Get Token from Header
-		tokenString := r.Header.Get("Authorization")
-		tokenString = strings.TrimPrefix(tokenString, "Bearer ")
-
-		token, err := VerifyToken(tokenString)
+		token, err := getTokenFromHeader(r)
 		if err != nil {
 			fmt.Fprintf(w, "Something went wrong : %s\n", err.Error())
 			return

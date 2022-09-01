@@ -2,6 +2,8 @@ package auth
 
 import (
 	"fmt"
+	"net/http"
+	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -25,7 +27,7 @@ func CreateToken(id string) string {
 	return tokenString
 }
 
-func VerifyToken(tokenString string) (*jwt.Token, error) {
+func verifyToken(tokenString string) (*jwt.Token, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
@@ -37,4 +39,15 @@ func VerifyToken(tokenString string) (*jwt.Token, error) {
 	}
 
 	return token, nil
+}
+
+func getTokenFromHeader(r *http.Request) (*jwt.Token, error) {
+	token := r.Header.Get("Authorization")
+	token = strings.TrimPrefix(token, "Bearer ")
+
+	jwtToken, err := verifyToken(token)
+	if err != nil {
+		return nil, err
+	}
+	return jwtToken, nil
 }
