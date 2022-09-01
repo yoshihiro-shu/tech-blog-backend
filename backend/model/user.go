@@ -15,7 +15,7 @@ type User struct {
 	Name      string    `json:"name"`
 	Password  string    `json:"password"` // TODO fix to `json:"-"`
 	Email     string    `json:"email"`
-	CreatedAt time.Time `json:"createAt"`
+	CreatedAt time.Time `json:"createdAt"`
 }
 
 func (u *User) SetUUID(id string) {
