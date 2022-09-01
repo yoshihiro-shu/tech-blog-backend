@@ -1,0 +1,53 @@
+version: '3.9'
+services:
+  draft-nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - draft-backend
+    networks:
+      - draft-backend-network
+
+  draft-backend:
+    build: ./backend
+    volumes:
+      - ./backend:/usr/src/app
+    ports:
+      - "8000:8000"
+    tty: true
+    depends_on:
+      # TODO conditionをつける
+      - draft-postgres
+      - draft-redis
+    networks:
+      - draft-backend-network
+
+  draft-postgres:
+    build: ./tmp/db
+    restart: always
+    environment:
+    # if not POSTGRES_USER and POSTGRES_DB, it will be "postgres".
+      POSTGRES_PASSWORD: password
+      TZ: "Asia/Tokyo"
+    ports:
+      - 5432:5432
+    volumes:
+      - ./tmp/db/data:/var/lib/postgresql/data
+    networks:
+      - draft-backend-network
+
+  draft-redis:
+    build: ./tmp/cache
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - ./tmp/cache/data:/var/lib/redis/data
+    networks:
+      - draft-backend-network
+
+networks:
+  draft-backend-network:
+    driver: bridge
+    external: true
