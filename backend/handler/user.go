@@ -2,8 +2,8 @@ package handler
 
 import (
 	"net/http"
+	"strconv"
 
-	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	"github.com/yoshihiro-shu/draft-backend/auth"
 	"github.com/yoshihiro-shu/draft-backend/controller"
@@ -26,7 +26,7 @@ func (h Handler) SignUp(w http.ResponseWriter, r *http.Request) error {
 	}
 	user.SetBcryptPassword()
 
-	err := user.Insert(h.Context.Db.PSQLDB)
+	err := user.Insert(h.Context.Db.PsqlDB)
 	if err != nil {
 		return h.Context.JSON(w, http.StatusInternalServerError, err.Error())
 	}
@@ -40,13 +40,13 @@ func (h Handler) Login(w http.ResponseWriter, r *http.Request) error {
 
 	user := controller.NewUser(email, password)
 
-	err := user.Login(h.Context.Db.PSQLDB)
+	err := user.Login(h.Context.Db.PsqlDB)
 	if err != nil {
 		return h.Context.JSON(w, http.StatusUnauthorized, err.Error())
 	}
 
 	// create TOKEN
-	token := auth.CreateToken(string(user.ID.String()))
+	token := auth.CreateToken(strconv.Itoa(user.ID))
 
 	res := LoginResponse{Token: token}
 	return h.Context.JSON(w, http.StatusOK, res)
@@ -55,7 +55,7 @@ func (h Handler) Login(w http.ResponseWriter, r *http.Request) error {
 func (h Handler) GetUsers(w http.ResponseWriter, r *http.Request) error {
 
 	var u model.User
-	users, err := u.GetAll(h.Context.Db.PSQLDB)
+	users, err := u.GetAll(h.Context.Db.PsqlDB)
 	if err != nil {
 		return h.Context.JSON(w, http.StatusBadRequest, err.Error())
 	}
@@ -71,7 +71,7 @@ func (h Handler) GetUserBYEmail(w http.ResponseWriter, r *http.Request) error {
 		Email: email,
 	}
 
-	err := user.GetByEmail(h.Context.Db.PSQLDB)
+	err := user.GetByEmail(h.Context.Db.PsqlDB)
 	if err != nil {
 		return h.Context.JSON(w, http.StatusBadRequest, err.Error())
 	}
@@ -81,13 +81,14 @@ func (h Handler) GetUserBYEmail(w http.ResponseWriter, r *http.Request) error {
 
 func (h Handler) GetUserBYID(w http.ResponseWriter, r *http.Request) error {
 	vars := mux.Vars(r)
-	id := vars["id"]
+	strId := vars["id"]
+	id, _ := strconv.Atoi(strId)
 
 	user := &model.User{
-		ID: uuid.MustParse(id),
+		ID: id,
 	}
 
-	err := user.GetByUUID(h.Context.Db.PSQLDB)
+	err := user.GetByID(h.Context.Db.PsqlDB)
 	if err != nil {
 		return h.Context.JSON(w, http.StatusBadRequest, err.Error())
 	}
