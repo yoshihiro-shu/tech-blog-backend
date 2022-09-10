@@ -1,7 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE TABLE users (
-    id uuid DEFAULT gen_random_uuid(),
+    id SERIAL,
     name varchar(256) NOT NULL,
     password varchar(256) NOT NULL,
     email varchar(256) NOT NULL UNIQUE,
