@@ -1,7 +1,6 @@
 package model
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/go-pg/pg"
@@ -14,15 +13,6 @@ type User struct {
 	Password  string    `json:"password"` // TODO fix to `json:"-"`
 	Email     string    `json:"email"`
 	CreatedAt time.Time `json:"createdAt"`
-}
-
-func (u *User) SetCreateAt(date string) {
-	createdAt, err := time.Parse(time.RFC3339, date)
-	if err != nil {
-		fmt.Println("err: ", err.Error())
-	}
-	fmt.Println("setCreatedAt: ", createdAt)
-	u.CreatedAt = createdAt
 }
 
 func (u *User) SetBcryptPassword() error {
