@@ -33,6 +33,11 @@ func (r Router) ApplyRouters() {
 	user.AppHandle("/signup", h.SignUp).Methods(http.MethodPost)
 	// user.HandleFunc("/register", h.RegisterAccount).Methods(http.MethodPost)
 
+	article := r.Group("/articles")
+	article.Use(auth.AuthMiddleware)
+	article.AppHandle("", h.PostArticle).Methods(http.MethodPost)
+	article.AppHandle("", h.GetArticles).Methods(http.MethodGet)
+
 	a := r.Group("/auth")
 	a.Use(auth.AuthMiddleware)
 	a.AppHandle("/index", h.AuthIndex).Methods(http.MethodGet)
