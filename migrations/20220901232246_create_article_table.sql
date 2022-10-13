@@ -12,7 +12,8 @@ CREATE TABLE articles (
 
 ALTER TABLE articles
     ADD FOREIGN KEY (user_id)
-    REFERENCES users (id);
+    REFERENCES users (id)
+    ON DELETE SET NULL;
 -- +goose StatementEnd
 
 -- +goose Down
