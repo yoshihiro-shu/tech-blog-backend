@@ -7,13 +7,14 @@ import (
 )
 
 type Article struct {
-	Id        int       `json:"id"`
-	UserId    int       `json:"userId"`
-	Title     string    `json:"title"`
-	Content   string    `json:"content"`
-	Status    int       `json:"status"`
-	CreatedAt time.Time `json:"createdAt"`
-	UpdatedAt time.Time `json:"updatedAt"`
+	Id         int       `json:"id"`
+	UserId     int       `json:"userId"`
+	Title      string    `json:"title"`
+	Content    string    `json:"content"`
+	Status     int       `json:"status"`
+	CreatedAt  time.Time `json:"createdAt"`
+	UpdatedAt  time.Time `json:"updatedAt"`
+	CategoryId int       `json:"categoryId"`
 }
 
 func (a *Article) Insert(db *pg.DB) error {
@@ -31,4 +32,15 @@ func (a Article) GetAll(db *pg.DB) ([]Article, error) {
 		return nil, err
 	}
 	return articles, nil
+}
+
+func (a *Article) GetByID(db *pg.DB) error {
+
+	// Select user by primary key.
+	err := db.Select(a)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

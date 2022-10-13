@@ -15,6 +15,7 @@ func (r Router) ApplyRouters() {
 	}
 
 	r.AppHandle("/", h.Index).Methods(http.MethodGet)
+	r.AppHandle("/article/{id}", h.GetArticleByID).Methods(http.MethodGet)
 
 	// Grouping
 	t := r.Group("/test")

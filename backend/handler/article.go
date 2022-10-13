@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/gorilla/mux"
 	"github.com/yoshihiro-shu/draft-backend/auth"
 	"github.com/yoshihiro-shu/draft-backend/model"
 )
@@ -38,4 +39,21 @@ func (h Handler) GetArticles(w http.ResponseWriter, r *http.Request) error {
 		return h.Context.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 	return h.Context.JSON(w, http.StatusOK, articles)
+}
+
+func (h Handler) GetArticleByID(w http.ResponseWriter, r *http.Request) error {
+	vars := mux.Vars(r)
+	strId := vars["id"]
+	id, _ := strconv.Atoi(strId)
+
+	article := &model.Article{
+		Id: id,
+	}
+
+	err := article.GetByID(h.Context.Db.PsqlDB)
+	if err != nil {
+		return h.Context.JSON(w, http.StatusBadRequest, err.Error())
+	}
+
+	return h.Context.JSON(w, http.StatusOK, article)
 }
