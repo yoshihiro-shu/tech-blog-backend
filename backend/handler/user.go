@@ -46,7 +46,7 @@ func (h Handler) Login(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	// create TOKEN
-	token := auth.CreateToken(strconv.Itoa(user.ID))
+	token := auth.CreateToken(strconv.Itoa(user.Id))
 
 	res := LoginResponse{Token: token}
 	return h.Context.JSON(w, http.StatusOK, res)
@@ -85,7 +85,7 @@ func (h Handler) GetUserBYID(w http.ResponseWriter, r *http.Request) error {
 	id, _ := strconv.Atoi(strId)
 
 	user := &model.User{
-		ID: id,
+		Id: id,
 	}
 
 	err := user.GetByID(h.Context.Db.PsqlDB)
