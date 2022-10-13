@@ -7,7 +7,7 @@ INSERT INTO articles (user_id, title, content, status) VALUES(1, 'test3', 'test-
 
 -- +goose Down
 -- +goose StatementBegin
-DELETE FROM articles WHERE title ='test1';
-DELETE FROM articles WHERE title ='test2';
-DELETE FROM articles WHERE title ='test3';
+DELETE FROM articles WHERE title = 'test1';
+DELETE FROM articles WHERE title = 'test2';
+DELETE FROM articles WHERE title = 'test3';
 -- +goose StatementEnd
