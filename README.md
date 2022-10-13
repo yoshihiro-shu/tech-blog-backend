@@ -3,7 +3,7 @@
 依存モジュールのインストール
 
 ```
-go mod download
+cd backend & go mod download
 ```
 
 docker-networkの作成

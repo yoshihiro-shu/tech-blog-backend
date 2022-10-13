@@ -15,6 +15,7 @@ func (r Router) ApplyRouters() {
 	}
 
 	r.AppHandle("/", h.Index).Methods(http.MethodGet)
+	r.AppHandle("/article/{id}", h.GetArticleByID).Methods(http.MethodGet)
 
 	// Grouping
 	t := r.Group("/test")
@@ -32,6 +33,11 @@ func (r Router) ApplyRouters() {
 	user.AppHandle("/login", h.Login).Methods(http.MethodPost)
 	user.AppHandle("/signup", h.SignUp).Methods(http.MethodPost)
 	// user.HandleFunc("/register", h.RegisterAccount).Methods(http.MethodPost)
+
+	article := r.Group("/articles")
+	article.Use(auth.AuthMiddleware)
+	article.AppHandle("", h.PostArticle).Methods(http.MethodPost)
+	article.AppHandle("", h.GetArticles).Methods(http.MethodGet)
 
 	a := r.Group("/auth")
 	a.Use(auth.AuthMiddleware)
