@@ -23,7 +23,7 @@ ALTER TABLE articles
 -- +goose Down
 -- +goose StatementBegin
 SELECT 'down SQL query';
-ALTER TABLE articles DROP FOREIGN KEY category_id;
+ALTER TABLE articles DROP CONSTRAINT articles_category_id_fkey;
 ALTER TABLE articles DROP COLUMN category_id;
 
 DROP TABLE categories;

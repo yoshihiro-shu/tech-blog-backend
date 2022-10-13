@@ -11,7 +11,7 @@ INSERT INTO tags (name, description) VALUES ('tag-3', 'it is test tag-3');
 -- +goose StatementBegin
 SELECT 'down SQL query';
 
-DELETE FROM articles WHERE name = 'tag-1';
-DELETE FROM articles WHERE name = 'tag-2';
-DELETE FROM articles WHERE name = 'tag-3';
+DELETE FROM articles WHERE 'name' = 'tag-1';
+DELETE FROM articles WHERE 'name' = 'tag-2';
+DELETE FROM articles WHERE 'name' = 'tag-3';
 -- +goose StatementEnd
