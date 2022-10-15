@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/yoshihiro-shu/draft-backend/auth"
 	"github.com/yoshihiro-shu/draft-backend/model"
+	article_linkages_to_category "github.com/yoshihiro-shu/draft-backend/model/article/linkages/to/category"
 )
 
 func (h Handler) PostArticle(w http.ResponseWriter, r *http.Request) error {
@@ -33,11 +34,13 @@ func (h Handler) PostArticle(w http.ResponseWriter, r *http.Request) error {
 }
 
 func (h Handler) GetArticles(w http.ResponseWriter, r *http.Request) error {
-	var a model.Article
-	articles, err := a.GetAll(h.Context.Db.PsqlDB)
+	a := new(article_linkages_to_category.Article)
+	articles, err := a.GetArticlesWithCategory(h.Context.Db.PsqlDB)
+
 	if err != nil {
 		return h.Context.JSON(w, http.StatusInternalServerError, err.Error())
 	}
+
 	return h.Context.JSON(w, http.StatusOK, articles)
 }
 
