@@ -5,18 +5,17 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/yoshihiro-shu/draft-backend/config"
-	"github.com/yoshihiro-shu/draft-backend/request"
 )
 
 type Router struct {
 	*mux.Router
-	Context *request.Context
+	Config config.Configs
 }
 
 func New(conf config.Configs) *Router {
 	return &Router{
-		Router:  mux.NewRouter(),
-		Context: request.NewContext(conf),
+		Router: mux.NewRouter(),
+		Config: conf,
 	}
 }
 

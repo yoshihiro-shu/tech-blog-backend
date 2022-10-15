@@ -11,5 +11,7 @@ func main() {
 
 	s := server.New(conf)
 
+	s.SetRouters()
+
 	s.Start()
 }
