@@ -13,7 +13,7 @@ type Article struct {
 
 type Category struct {
 	Id   int    `json:"id"`
-	Name string `pg:"-" json:"name"`
+	Name string `json:"name"`
 }
 
 func (a *Article) GetArticlesWithCategory(db *pg.DB) ([]Article, error) {
