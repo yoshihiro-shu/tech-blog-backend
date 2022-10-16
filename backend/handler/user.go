@@ -6,7 +6,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/yoshihiro-shu/draft-backend/auth"
-	"github.com/yoshihiro-shu/draft-backend/controller"
+	"github.com/yoshihiro-shu/draft-backend/controllers"
 	"github.com/yoshihiro-shu/draft-backend/model"
 )
 
@@ -38,7 +38,7 @@ func (h Handler) Login(w http.ResponseWriter, r *http.Request) error {
 	email := r.FormValue("email")
 	password := r.FormValue("password")
 
-	user := controller.NewUser(email, password)
+	user := controllers.NewUser(email, password)
 
 	err := user.Login(h.Context.Db.PsqlDB)
 	if err != nil {
