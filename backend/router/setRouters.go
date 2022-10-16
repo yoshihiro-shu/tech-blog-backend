@@ -38,6 +38,7 @@ func (r Router) ApplyRouters() {
 
 	article := r.Group("/articles")
 	article.AppHandle("", h.GetArticles).Methods(http.MethodGet)
+	article.AppHandle("/{id}", h.GetArticleByID).Methods(http.MethodGet)
 
 	a := r.Group("/auth")
 	a.Use(auth.AuthMiddleware)
