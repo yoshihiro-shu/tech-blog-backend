@@ -18,3 +18,9 @@ const (
 	StatusPublished
 	StatusClosed
 )
+
+func NewArticle(id int) *Article {
+	return &Article{
+		Id: id,
+	}
+}

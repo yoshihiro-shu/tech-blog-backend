@@ -8,8 +8,7 @@ import (
 	"github.com/yoshihiro-shu/draft-backend/auth"
 	"github.com/yoshihiro-shu/draft-backend/model"
 	article_linkages_to_category "github.com/yoshihiro-shu/draft-backend/model/article/linkages/to/category"
-	article_linkages_to_tag "github.com/yoshihiro-shu/draft-backend/model/article/linkages/to/tag"
-	"github.com/yoshihiro-shu/draft-backend/model/article/table"
+	article_linkages_to_many "github.com/yoshihiro-shu/draft-backend/model/article/linkages/to/many"
 )
 
 func (h Handler) PostArticle(w http.ResponseWriter, r *http.Request) error {
@@ -51,11 +50,7 @@ func (h Handler) GetArticleByID(w http.ResponseWriter, r *http.Request) error {
 	strId := vars["id"]
 	id, _ := strconv.Atoi(strId)
 
-	article := &article_linkages_to_tag.Article{
-		Article: table.Article{
-			Id: id,
-		},
-	}
+	article := article_linkages_to_many.New(id)
 
 	err := article.GetArticle(h.Context.Db.PsqlDB)
 	if err != nil {
