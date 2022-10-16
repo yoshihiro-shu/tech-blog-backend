@@ -10,7 +10,7 @@ CREATE TABLE tags (
   created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE article_tag(
+CREATE TABLE article_tags (
   article_id INTEGER NOT NULL,
   tag_id INTEGER NOT NULL,
   FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE,
@@ -20,6 +20,6 @@ CREATE TABLE article_tag(
 -- +goose Down
 -- +goose StatementBegin
 SELECT 'down SQL query';
-DROP TABLE article_tag;
+DROP TABLE article_tags;
 DROP TABLE tags;
 -- +goose StatementEnd
