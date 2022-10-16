@@ -16,10 +16,15 @@ type Category struct {
 	Name string `json:"name"`
 }
 
-func (a *Article) GetArticlesWithCategory(db *pg.DB) ([]Article, error) {
+func (a *Article) GetList(db *pg.DB) ([]Article, error) {
 	articles := make([]Article, 10)
 
-	query := db.Model(&articles).Relation("Category").Where("status = ?", config.StatusPublished).Order("created_at ASC").Limit(10)
+	query := db.Model(&articles).
+		Relation("Category").
+		Where("status = ?", config.StatusPublished).
+		Order("created_at ASC").
+		Limit(10)
+
 	err := query.Select()
 	if err != nil {
 		return nil, err
