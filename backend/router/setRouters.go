@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/yoshihiro-shu/draft-backend/auth"
+	"github.com/yoshihiro-shu/draft-backend/controllers/api"
 	"github.com/yoshihiro-shu/draft-backend/handler"
 	"github.com/yoshihiro-shu/draft-backend/request"
 )
@@ -16,8 +17,10 @@ func (r Router) ApplyRouters() {
 		Context: ctx,
 	}
 
+	ah := api.NewArticleHandler(ctx)
+
 	r.AppHandle("/", h.Index).Methods(http.MethodGet)
-	r.AppHandle("/article/{id}", h.GetArticleByID).Methods(http.MethodGet)
+	r.AppHandle("/top", ah.GetTopPage).Methods(http.MethodGet)
 
 	// Grouping
 	t := r.Group("/test")
