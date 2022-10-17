@@ -14,15 +14,13 @@ type articleHandler struct {
 
 func (a articleHandler) GetTopPage(w http.ResponseWriter, r *http.Request) error {
 
-	var acs []article_linkages_to_many.Article
-	err := a.C.Cache.GET(article_cache.TopPageAritcleListKey, &acs)
+	var articles []article_linkages_to_many.Article
+	err := a.C.Cache.GET(article_cache.TopPageAritcleListKey, &articles)
 	if err == nil {
-		return a.C.JSON(w, http.StatusOK, acs)
+		return a.C.JSON(w, http.StatusOK, articles)
 	}
 
-	ac := &article_linkages_to_many.Article{}
-
-	articles, err := ac.GetArticleList(a.C.DB())
+	err = article_linkages_to_many.GetArticleList(a.C.DB(), &articles)
 	if err != nil {
 		return a.C.JSON(w, http.StatusInternalServerError, err.Error())
 	}

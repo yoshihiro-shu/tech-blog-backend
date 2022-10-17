@@ -58,19 +58,17 @@ func (a *Article) GetArticle(db *pg.DB) error {
 	return nil
 }
 
-func (a *Article) GetArticleList(db *pg.DB) ([]Article, error) {
+func GetArticleList(db *pg.DB, articles *[]Article) error {
 
-	articles := make([]Article, 10)
-
-	query := db.Model(&articles).
+	query := db.Model(articles).
 		Relation("Tags").
 		Relation("Category").
 		Order("created_at ASC")
 
 	err := query.Select()
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return articles, nil
+	return nil
 }
