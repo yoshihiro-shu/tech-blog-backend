@@ -41,7 +41,7 @@ func (r RedisContext) GET(key string, i interface{}) error {
 	return err
 }
 
-func (r RedisContext) IsNotExistKey(err error) bool {
+func IsNotExistKey(err error) bool {
 	if err == redis.Nil {
 		return true
 	}
