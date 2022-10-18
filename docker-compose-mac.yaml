@@ -16,6 +16,7 @@ services:
     ports:
       - "8000:8000"
     tty: true
+    entrypoint: go run ./cmd/main.go
     depends_on:
       # TODO conditionをつける
       - draft-postgres

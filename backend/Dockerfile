@@ -10,4 +10,7 @@ RUN go mod download && go mod verify
 
 EXPOSE 8000
 
-CMD ["go", "run", "main.go"]
+# CMD ["go", "run", "./cmd/main.go"]
+
+RUN go build -o main ./cmd/main.go
+
