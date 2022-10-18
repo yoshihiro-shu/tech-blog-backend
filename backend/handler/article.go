@@ -7,6 +7,8 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/yoshihiro-shu/draft-backend/auth"
 	"github.com/yoshihiro-shu/draft-backend/model"
+	article_linkages_to_category "github.com/yoshihiro-shu/draft-backend/model/article/linkages/to/category"
+	article_linkages_to_many "github.com/yoshihiro-shu/draft-backend/model/article/linkages/to/many"
 )
 
 func (h Handler) PostArticle(w http.ResponseWriter, r *http.Request) error {
@@ -33,11 +35,13 @@ func (h Handler) PostArticle(w http.ResponseWriter, r *http.Request) error {
 }
 
 func (h Handler) GetArticles(w http.ResponseWriter, r *http.Request) error {
-	var a model.Article
-	articles, err := a.GetAll(h.Context.Db.PsqlDB)
+	a := new(article_linkages_to_category.Article)
+	articles, err := a.GetList(h.Context.Db.PsqlDB)
+
 	if err != nil {
 		return h.Context.JSON(w, http.StatusInternalServerError, err.Error())
 	}
+
 	return h.Context.JSON(w, http.StatusOK, articles)
 }
 
@@ -46,11 +50,9 @@ func (h Handler) GetArticleByID(w http.ResponseWriter, r *http.Request) error {
 	strId := vars["id"]
 	id, _ := strconv.Atoi(strId)
 
-	article := &model.Article{
-		Id: id,
-	}
+	article := article_linkages_to_many.New(id)
 
-	err := article.GetByID(h.Context.Db.PsqlDB)
+	err := article.GetArticle(h.Context.Db.PsqlDB)
 	if err != nil {
 		return h.Context.JSON(w, http.StatusBadRequest, err.Error())
 	}

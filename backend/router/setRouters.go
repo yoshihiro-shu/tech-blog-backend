@@ -4,18 +4,23 @@ import (
 	"net/http"
 
 	"github.com/yoshihiro-shu/draft-backend/auth"
+	"github.com/yoshihiro-shu/draft-backend/controllers/api"
 	"github.com/yoshihiro-shu/draft-backend/handler"
+	"github.com/yoshihiro-shu/draft-backend/request"
 )
 
 func (r Router) ApplyRouters() {
-	r.Use(r.Context.TestMiddleware)
+	ctx := request.NewContext(r.Config)
+	r.Use(ctx.TestMiddleware)
 
 	h := handler.Handler{
-		Context: r.Context,
+		Context: ctx,
 	}
 
+	ah := api.NewArticleHandler(ctx)
+
 	r.AppHandle("/", h.Index).Methods(http.MethodGet)
-	r.AppHandle("/article/{id}", h.GetArticleByID).Methods(http.MethodGet)
+	r.AppHandle("/top", ah.GetTopPage).Methods(http.MethodGet)
 
 	// Grouping
 	t := r.Group("/test")
@@ -35,9 +40,8 @@ func (r Router) ApplyRouters() {
 	// user.HandleFunc("/register", h.RegisterAccount).Methods(http.MethodPost)
 
 	article := r.Group("/articles")
-	article.Use(auth.AuthMiddleware)
-	article.AppHandle("", h.PostArticle).Methods(http.MethodPost)
 	article.AppHandle("", h.GetArticles).Methods(http.MethodGet)
+	article.AppHandle("/{id}", h.GetArticleByID).Methods(http.MethodGet)
 
 	a := r.Group("/auth")
 	a.Use(auth.AuthMiddleware)

@@ -14,19 +14,19 @@ type Server struct {
 }
 
 func New(conf config.Configs) *Server {
-	r := router.New(conf)
-
-	r.ApplyRouters()
-
 	return &Server{
 		Server: &http.Server{
 			Addr:           conf.GetUserAddr(),
-			Handler:        r,
+			Handler:        router.New(conf),
 			ReadTimeout:    10 * time.Second,
 			WriteTimeout:   10 * time.Second,
 			MaxHeaderBytes: 1 << 20,
 		},
 	}
+}
+
+func (s Server) SetRouters() {
+	s.Server.Handler.(*router.Router).ApplyRouters()
 }
 
 func (s Server) Start() {

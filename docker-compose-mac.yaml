@@ -16,6 +16,7 @@ services:
     ports:
       - "8000:8000"
     tty: true
+    entrypoint: go run ./cmd/main.go
     depends_on:
       # TODO conditionをつける
       - draft-postgres
@@ -34,6 +35,7 @@ services:
       - 5432:5432
     volumes:
       - ./tmp/db/data:/var/lib/postgresql/data
+    command: postgres -c log_destination=stderr -c log_statement=all -c log_connections=on -c log_disconnections=on
     networks:
       - draft-backend-network
 

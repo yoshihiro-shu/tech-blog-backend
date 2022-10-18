@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/go-pg/pg"
 	"github.com/yoshihiro-shu/draft-backend/auth"
 	"github.com/yoshihiro-shu/draft-backend/cache"
 	"github.com/yoshihiro-shu/draft-backend/config"
@@ -28,6 +29,10 @@ func NewContext(conf config.Configs) *Context {
 		Conf:   conf,
 		Logger: log.New(os.Stdout, "", log.LstdFlags),
 	}
+}
+
+func (c Context) DB() *pg.DB {
+	return c.Db.PsqlDB
 }
 
 func (c Context) UnmarshalFromRequest(r *http.Request, i interface{}) error {

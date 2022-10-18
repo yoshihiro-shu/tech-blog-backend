@@ -36,6 +36,12 @@ type RedisCache struct {
 	DbNumber int    `yaml:"dbNumber"`
 }
 
+const (
+	StatusUnpublished = iota + 1
+	StatusPublished
+	StatusClosed
+)
+
 func New() Configs {
 	conf := Configs{}
 
