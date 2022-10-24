@@ -3,6 +3,7 @@
 CREATE TABLE articles (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
+    thumbnail_url varchar(1024) NOT NULL,
     title varchar(255) NOT NULL,
     content text NOT NULL,
     status int,
