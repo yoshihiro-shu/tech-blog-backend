@@ -22,6 +22,7 @@ func (c Context) JSON(w http.ResponseWriter, status int, data interface{}) error
 		return nil
 	}
 
+	w.WriteHeader(status)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(b)
 

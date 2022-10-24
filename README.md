@@ -25,6 +25,12 @@ imageをビルドする
 docker-compose up --build
 ```
 
+macで立ち上げる
+
+```
+docker-compose -f docker-compose-mac.yaml up
+```
+
 バックグラウンドで立ち上げる
 
 ```
