@@ -17,10 +17,10 @@ func (r Router) ApplyRouters() {
 		Context: ctx,
 	}
 
-	ah := api.NewArticleHandler(ctx)
+	th := api.NewTopPageHandler(ctx)
 
 	r.AppHandle("/", h.Index).Methods(http.MethodGet)
-	r.AppHandle("/top", ah.GetTopPage).Methods(http.MethodGet)
+	r.AppHandle("/top", th.GetTopPage).Methods(http.MethodGet)
 
 	// Grouping
 	t := r.Group("/test")
