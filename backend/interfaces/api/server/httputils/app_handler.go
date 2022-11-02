@@ -1,4 +1,4 @@
-package router
+package httputils
 
 import (
 	"log"
@@ -23,13 +23,4 @@ func (a AppHandlerFunc) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				http.StatusInternalServerError)
 		}
 	}
-}
-
-type AppError struct {
-	Status int
-	Err    error
-}
-
-func (e AppError) Error() string {
-	return e.Err.Error()
 }

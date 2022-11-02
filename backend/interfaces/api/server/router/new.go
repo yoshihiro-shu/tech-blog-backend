@@ -5,6 +5,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/yoshihiro-shu/draft-backend/config"
+	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/httputils"
 )
 
 type Router struct {
@@ -25,5 +26,5 @@ func (r Router) Group(path string) Router {
 }
 
 func (r Router) AppHandle(path string, fn func(http.ResponseWriter, *http.Request) error) *mux.Route {
-	return r.Handle(path, AppHandlerFunc(fn))
+	return r.Handle(path, httputils.AppHandlerFunc(fn))
 }
