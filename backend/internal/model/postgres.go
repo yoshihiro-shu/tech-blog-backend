@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/go-pg/pg"
-	"github.com/yoshihiro-shu/draft-backend/config"
+	"github.com/yoshihiro-shu/draft-backend/internal/config"
 )
 
 type DBContext struct {

@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/yoshihiro-shu/draft-backend/config"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/router"
+	"github.com/yoshihiro-shu/draft-backend/internal/config"
 )
 
 type Server struct {

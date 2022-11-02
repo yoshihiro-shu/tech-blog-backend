@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/yoshihiro-shu/draft-backend/config"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/httputils"
+	"github.com/yoshihiro-shu/draft-backend/internal/config"
 )
 
 type Router struct {

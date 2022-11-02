@@ -2,7 +2,7 @@ package article_linkages_to_category
 
 import (
 	"github.com/go-pg/pg"
-	"github.com/yoshihiro-shu/draft-backend/config"
+	"github.com/yoshihiro-shu/draft-backend/internal/config"
 	"github.com/yoshihiro-shu/draft-backend/internal/model/article/table"
 )
 
