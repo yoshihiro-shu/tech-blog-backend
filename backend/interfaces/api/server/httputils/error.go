@@ -1,10 +1,10 @@
 package httputils
 
-type AppError struct {
+type Error struct {
 	Status int
 	Err    error
 }
 
-func (e AppError) Error() string {
+func (e Error) Error() string {
 	return e.Err.Error()
 }

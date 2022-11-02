@@ -5,13 +5,13 @@ import (
 	"net/http"
 )
 
-type AppHandlerFunc func(w http.ResponseWriter, r *http.Request) error
+type Handler func(w http.ResponseWriter, r *http.Request) error
 
-func (a AppHandlerFunc) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	err := a(w, r)
+func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	err := h(w, r)
 	if err != nil {
 		switch e := err.(type) {
-		case AppError:
+		case Error:
 			// We can retrieve the status here and write out a specific
 			// HTTP status code.
 			log.Printf("HTTP %d - %s", e.Status, e)
