@@ -9,9 +9,9 @@ import (
 	"os"
 
 	"github.com/go-pg/pg"
-	"github.com/yoshihiro-shu/draft-backend/cache"
 	"github.com/yoshihiro-shu/draft-backend/config"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/auth"
+	"github.com/yoshihiro-shu/draft-backend/internal/cache"
 	"github.com/yoshihiro-shu/draft-backend/internal/model"
 )
 
