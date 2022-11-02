@@ -3,7 +3,7 @@ package article_linkages_to_category
 import (
 	"github.com/go-pg/pg"
 	"github.com/yoshihiro-shu/draft-backend/config"
-	"github.com/yoshihiro-shu/draft-backend/model/article/table"
+	"github.com/yoshihiro-shu/draft-backend/internal/model/article/table"
 )
 
 type Article struct {

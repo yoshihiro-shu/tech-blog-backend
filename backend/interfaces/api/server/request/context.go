@@ -12,7 +12,7 @@ import (
 	"github.com/yoshihiro-shu/draft-backend/cache"
 	"github.com/yoshihiro-shu/draft-backend/config"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/auth"
-	"github.com/yoshihiro-shu/draft-backend/model"
+	"github.com/yoshihiro-shu/draft-backend/internal/model"
 )
 
 type Context struct {

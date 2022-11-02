@@ -7,7 +7,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/yoshihiro-shu/draft-backend/controllers"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/auth"
-	"github.com/yoshihiro-shu/draft-backend/model"
+	"github.com/yoshihiro-shu/draft-backend/internal/model"
 )
 
 type LoginResponse struct {

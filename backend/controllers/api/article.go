@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
-	article_cache "github.com/yoshihiro-shu/draft-backend/model/article/cache"
-	article_linkages_to_many "github.com/yoshihiro-shu/draft-backend/model/article/linkages/to/many"
+	article_cache "github.com/yoshihiro-shu/draft-backend/internal/model/article/cache"
+	article_linkages_to_many "github.com/yoshihiro-shu/draft-backend/internal/model/article/linkages/to/many"
 )
 
 type articleHandler struct {

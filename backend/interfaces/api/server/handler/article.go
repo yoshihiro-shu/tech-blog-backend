@@ -6,9 +6,9 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/auth"
-	"github.com/yoshihiro-shu/draft-backend/model"
-	article_linkages_to_category "github.com/yoshihiro-shu/draft-backend/model/article/linkages/to/category"
-	article_linkages_to_many "github.com/yoshihiro-shu/draft-backend/model/article/linkages/to/many"
+	"github.com/yoshihiro-shu/draft-backend/internal/model"
+	article_linkages_to_category "github.com/yoshihiro-shu/draft-backend/internal/model/article/linkages/to/category"
+	article_linkages_to_many "github.com/yoshihiro-shu/draft-backend/internal/model/article/linkages/to/many"
 )
 
 func (h Handler) PostArticle(w http.ResponseWriter, r *http.Request) error {
