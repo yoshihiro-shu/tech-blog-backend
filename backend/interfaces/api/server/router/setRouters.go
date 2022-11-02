@@ -6,7 +6,7 @@ import (
 	"github.com/yoshihiro-shu/draft-backend/controllers/api"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/auth"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/handler"
-	"github.com/yoshihiro-shu/draft-backend/request"
+	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
 )
 
 func (r Router) ApplyRouters() {

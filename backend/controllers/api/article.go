@@ -3,9 +3,9 @@ package api
 import (
 	"net/http"
 
+	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
 	article_cache "github.com/yoshihiro-shu/draft-backend/model/article/cache"
 	article_linkages_to_many "github.com/yoshihiro-shu/draft-backend/model/article/linkages/to/many"
-	"github.com/yoshihiro-shu/draft-backend/request"
 )
 
 type articleHandler struct {
