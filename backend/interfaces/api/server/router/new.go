@@ -25,5 +25,5 @@ func (r Router) Group(path string) Router {
 }
 
 func (r Router) AppHandle(path string, fn func(http.ResponseWriter, *http.Request) error) *mux.Route {
-	return r.Handle(path, AppHandler(fn))
+	return r.Handle(path, AppHandlerFunc(fn))
 }

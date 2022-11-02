@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/yoshihiro-shu/draft-backend/config"
-	"github.com/yoshihiro-shu/draft-backend/router"
+	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/router"
 )
 
 type Server struct {
