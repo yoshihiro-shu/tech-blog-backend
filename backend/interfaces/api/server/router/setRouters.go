@@ -39,10 +39,11 @@ func (r Router) ApplyRouters() {
 	}
 	{
 		user := r.Group("/users")
+		userHandler := registory.NewUserRegistory(ctx)
 		user.AppHandle("", h.GetUsers).Methods(http.MethodGet)
 		user.AppHandle("/{id}", h.GetUserBYID).Methods(http.MethodGet)
-		user.AppHandle("/login", h.Login).Methods(http.MethodPost)
-		user.AppHandle("/signup", h.SignUp).Methods(http.MethodPost)
+		user.AppHandle("/login", userHandler.Login).Methods(http.MethodPost)
+		user.AppHandle("/signup", userHandler.SignUp).Methods(http.MethodPost)
 		// user.HandleFunc("/register", h.RegisterAccount).Methods(http.MethodPost)
 	}
 	{
