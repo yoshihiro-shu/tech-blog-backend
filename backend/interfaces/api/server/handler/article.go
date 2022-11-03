@@ -102,6 +102,7 @@ func (ah articleHandler) Get(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	article, err := ah.articleUseCase.FindByID(id)
+	// TODO not no rows error
 	if err != nil {
 		return ah.C.JSON(w, http.StatusInternalServerError, err.Error())
 	}

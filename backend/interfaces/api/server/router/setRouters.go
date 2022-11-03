@@ -3,12 +3,11 @@ package router
 import (
 	"net/http"
 
-	"github.com/yoshihiro-shu/draft-backend/application/usecase"
 	"github.com/yoshihiro-shu/draft-backend/controllers/api"
-	"github.com/yoshihiro-shu/draft-backend/infrastructure/persistence"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/auth"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/handler"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
+	"github.com/yoshihiro-shu/draft-backend/registory"
 )
 
 func (r Router) ApplyRouters() {
@@ -47,9 +46,7 @@ func (r Router) ApplyRouters() {
 		// user.HandleFunc("/register", h.RegisterAccount).Methods(http.MethodPost)
 	}
 	{
-		articleRepository := persistence.NewArticlePersistence(ctx.DB())
-		articleUseCase := usecase.NewArticleUseCase(articleRepository)
-		articleHandler := handler.NewArticleHandler(articleUseCase, ctx)
+		articleHandler := registory.NewArticleRegistory(ctx)
 		article := r.Group("/articles")
 		// article.AppHandle("", h.GetArticles).Methods(http.MethodGet)
 		article.AppHandle("/{id}", articleHandler.Get).Methods(http.MethodGet)
