@@ -88,11 +88,11 @@ type requestArticle struct {
 type responseArticle struct {
 }
 
-func (ah articleHandler) Post(w http.ResponseWriter, r *http.Request) error {
+func (ah *articleHandler) Post(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
-func (ah articleHandler) Get(w http.ResponseWriter, r *http.Request) error {
+func (ah *articleHandler) Get(w http.ResponseWriter, r *http.Request) error {
 	vars := mux.Vars(r)
 	strId := vars["id"]
 	id, err := strconv.Atoi(strId)
@@ -110,10 +110,10 @@ func (ah articleHandler) Get(w http.ResponseWriter, r *http.Request) error {
 	return ah.C.JSON(w, http.StatusOK, article)
 }
 
-func (ah articleHandler) Put(w http.ResponseWriter, r *http.Request) error {
+func (ah *articleHandler) Put(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
-func (ah articleHandler) Delete(w http.ResponseWriter, r *http.Request) error {
+func (ah *articleHandler) Delete(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
