@@ -10,3 +10,11 @@ func GenerateBcryptPassword(password string) (string, error) {
 
 	return string(hash), nil
 }
+
+func IsVerifyPassword(password1, password2 string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(password1), []byte(password2))
+	if err != nil {
+		return false
+	}
+	return true
+}
