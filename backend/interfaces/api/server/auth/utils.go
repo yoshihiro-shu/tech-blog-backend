@@ -1,8 +1,6 @@
 package auth
 
 import (
-	"fmt"
-
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -15,11 +13,10 @@ func GenerateBcryptPassword(password string) (string, error) {
 	return string(hash), nil
 }
 
-func IsVerifyPassword(password1, password2 string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(password1), []byte(password2))
+func IsVerifyPassword(textConplainPassword, hashedPassword string) error {
+	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(textConplainPassword))
 	if err != nil {
-		fmt.Println(err.Error())
-		return false
+		return err
 	}
-	return true
+	return nil
 }

@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/go-pg/pg"
 	"github.com/gorilla/mux"
 	"github.com/yoshihiro-shu/draft-backend/application/usecase"
 	"github.com/yoshihiro-shu/draft-backend/controllers"
@@ -129,7 +130,7 @@ func (uh *userHandler) SignUp(w http.ResponseWriter, r *http.Request) error {
 
 	hash, _ := auth.GenerateBcryptPassword(password)
 
-	err := uh.userUseCase.Create(name, email, hash)
+	err := uh.userUseCase.Create(name, hash, email)
 	if err != nil {
 		return uh.C.JSON(w, http.StatusInternalServerError, err.Error())
 	}
@@ -141,13 +142,19 @@ func (uh *userHandler) Login(w http.ResponseWriter, r *http.Request) error {
 	email := r.FormValue("email")
 	password := r.FormValue("password")
 
-	user, _ := uh.userUseCase.FindByEmail(email)
+	user, err := uh.userUseCase.FindByEmail(email)
+	if err != nil {
+		if err == pg.ErrNoRows {
+			return uh.C.JSON(w, http.StatusNotFound, err.Error())
+		}
+		return uh.C.JSON(w, http.StatusInternalServerError, err.Error())
+	}
 
 	fmt.Println(*user)
 
 	// TODO fix here
-	ok := auth.IsVerifyPassword(password, user.Password)
-	if !ok {
+	err = auth.IsVerifyPassword(password, user.Password)
+	if err != nil {
 		return uh.C.JSON(w, http.StatusUnauthorized, "your password is invalid")
 	}
 
