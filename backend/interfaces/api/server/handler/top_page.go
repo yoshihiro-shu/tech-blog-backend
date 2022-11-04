@@ -25,7 +25,7 @@ func NewTopPageHandler(topPageUseCase usecase.TopPageUseCase, c *request.Context
 }
 
 type responseTopPage struct {
-	Articles []model.Article `json:"articles"`
+	Article []model.Article `json:"Article"`
 }
 
 func (tp topPageHandler) Get(w http.ResponseWriter, r *http.Request) error {
@@ -36,9 +36,9 @@ func (tp topPageHandler) Get(w http.ResponseWriter, r *http.Request) error {
 		return tp.C.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 
-	res := &responseTopPage{
-		Articles: articles,
-	}
+	// res := &responseTopPage{
+	// 	Article: articles,
+	// }
 
-	return tp.C.JSON(w, http.StatusOK, res)
+	return tp.C.JSON(w, http.StatusOK, articles)
 }
