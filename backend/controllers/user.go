@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/go-pg/pg"
-	"github.com/yoshihiro-shu/draft-backend/model"
+	"github.com/yoshihiro-shu/draft-backend/internal/model"
 )
 
 type User struct {
