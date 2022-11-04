@@ -6,13 +6,14 @@ import (
 	"github.com/yoshihiro-shu/draft-backend/controllers/api"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/auth"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/handler"
+	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/middleware"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
 	"github.com/yoshihiro-shu/draft-backend/registory"
 )
 
 func (r Router) ApplyRouters() {
 	ctx := request.NewContext(r.Config)
-	r.Use(ctx.TestMiddleware)
+	r.Use(middleware.CorsMiddleware)
 
 	h := handler.Handler{
 		Context: ctx,
