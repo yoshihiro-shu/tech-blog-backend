@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/yoshihiro-shu/draft-backend/application/usecase"
@@ -26,7 +25,7 @@ func NewTopPageHandler(topPageUseCase usecase.TopPageUseCase, c *request.Context
 }
 
 type responseTopPage struct {
-	articles *[]model.Article
+	Articles []model.Article `json:"articles"`
 }
 
 func (tp topPageHandler) Get(w http.ResponseWriter, r *http.Request) error {
@@ -37,10 +36,9 @@ func (tp topPageHandler) Get(w http.ResponseWriter, r *http.Request) error {
 		return tp.C.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 
-	fmt.Println(articles)
-	// res := &responseTopPage{
-	// 	articles: &articles,
-	// }
+	res := &responseTopPage{
+		Articles: articles,
+	}
 
-	return tp.C.JSON(w, http.StatusOK, articles)
+	return tp.C.JSON(w, http.StatusOK, res)
 }
