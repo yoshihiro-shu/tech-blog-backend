@@ -3,7 +3,6 @@ package router
 import (
 	"net/http"
 
-	"github.com/yoshihiro-shu/draft-backend/controllers/api"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/auth"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/handler"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/middleware"
@@ -23,8 +22,9 @@ func (r Router) ApplyRouters() {
 		r.AppHandle("/", h.Index).Methods(http.MethodGet)
 	}
 	{
-		th := api.NewTopPageHandler(ctx)
-		r.AppHandle("/top", th.GetTopPage).Methods(http.MethodGet)
+		// th := api.NewTopPageHandler(ctx)
+		topPageHandler := registory.NewTopPageRegistory(ctx)
+		r.AppHandle("/top", topPageHandler.Get).Methods(http.MethodGet)
 	}
 	{
 		// Grouping

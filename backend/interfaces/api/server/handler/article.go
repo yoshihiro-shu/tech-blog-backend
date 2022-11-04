@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -96,7 +95,6 @@ func (ah *articleHandler) Get(w http.ResponseWriter, r *http.Request) error {
 	vars := mux.Vars(r)
 	strId := vars["id"]
 	id, err := strconv.Atoi(strId)
-	fmt.Println("id", id)
 	if err != nil {
 		return ah.C.JSON(w, http.StatusInternalServerError, err.Error())
 	}
