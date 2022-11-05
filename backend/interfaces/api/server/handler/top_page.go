@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/yoshihiro-shu/draft-backend/application/usecase"
@@ -40,7 +41,9 @@ func (tp topPageHandler) Get(w http.ResponseWriter, r *http.Request) error {
 	currentPage := 1
 	var res responseTopPage
 
-	err := tp.C.Cache.GET(article_cache.TopPageAritcleListKey, &res)
+	resKey := fmt.Sprintf(article_cache.TopPageAritcleListKeyByPage, currentPage)
+
+	err := tp.C.Cache.GET(resKey, &res)
 	if err == nil {
 		return tp.C.JSON(w, http.StatusOK, res)
 	}
@@ -58,6 +61,6 @@ func (tp topPageHandler) Get(w http.ResponseWriter, r *http.Request) error {
 		return tp.C.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 
-	_ = tp.C.Cache.SET(article_cache.TopPageAritcleListKey, res)
+	_ = tp.C.Cache.SET(resKey, res)
 	return tp.C.JSON(w, http.StatusOK, res)
 }
