@@ -6,6 +6,7 @@ import (
 	"github.com/yoshihiro-shu/draft-backend/application/usecase"
 	"github.com/yoshihiro-shu/draft-backend/domain/model"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
+	article_cache "github.com/yoshihiro-shu/draft-backend/internal/model/article/cache"
 )
 
 type TopPageHandler interface {
@@ -31,7 +32,12 @@ type responseTopPage struct {
 func (tp topPageHandler) Get(w http.ResponseWriter, r *http.Request) error {
 	var articles []model.Article
 
-	err := tp.topPageUseCase.GetArticles(&articles)
+	err := tp.C.Cache.GET(article_cache.TopPageAritcleListKey, &articles)
+	if err == nil {
+		return tp.C.JSON(w, http.StatusOK, articles)
+	}
+
+	err = tp.topPageUseCase.GetArticles(&articles)
 	if err != nil {
 		return tp.C.JSON(w, http.StatusInternalServerError, err.Error())
 	}
@@ -40,5 +46,6 @@ func (tp topPageHandler) Get(w http.ResponseWriter, r *http.Request) error {
 	// 	Article: articles,
 	// }
 
+	_ = tp.C.Cache.SET(article_cache.TopPageAritcleListKey, articles)
 	return tp.C.JSON(w, http.StatusOK, articles)
 }
