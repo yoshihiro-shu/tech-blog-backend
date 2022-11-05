@@ -19,7 +19,10 @@ type topPageHandler struct {
 	C              *request.Context
 }
 
-const topPageOffset = 1
+const (
+	// 一ページあたりの記事数
+	numberOfArticlePer1Page = 1
+)
 
 func NewTopPageHandler(topPageUseCase usecase.TopPageUseCase, c *request.Context) *topPageHandler {
 	return &topPageHandler{
@@ -34,7 +37,7 @@ type responseTopPage struct {
 }
 
 func (tp topPageHandler) Get(w http.ResponseWriter, r *http.Request) error {
-	currentPager := 1
+	currentPage := 1
 	var res responseTopPage
 
 	err := tp.C.Cache.GET(article_cache.TopPageAritcleListKey, &res)
@@ -42,12 +45,15 @@ func (tp topPageHandler) Get(w http.ResponseWriter, r *http.Request) error {
 		return tp.C.JSON(w, http.StatusOK, res)
 	}
 
-	err = tp.topPageUseCase.GetArticles(&res.Article)
+	// Number Of Articles Per 1 page
+	limit := numberOfArticlePer1Page
+	offset := numberOfArticlePer1Page * (currentPage - 1)
+	err = tp.topPageUseCase.GetArticles(&res.Article, limit, offset)
 	if err != nil {
 		return tp.C.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 
-	res.Pager, err = tp.topPageUseCase.GetPager(currentPager, topPageOffset)
+	res.Pager, err = tp.topPageUseCase.GetPager(currentPage, numberOfArticlePer1Page)
 	if err != nil {
 		return tp.C.JSON(w, http.StatusInternalServerError, err.Error())
 	}

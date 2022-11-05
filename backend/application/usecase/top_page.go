@@ -7,7 +7,7 @@ import (
 )
 
 type TopPageUseCase interface {
-	GetArticles(*[]model.Article) error
+	GetArticles(*[]model.Article, int, int) error
 	GetPager(currentPage, offset int) (*pager.Pager, error)
 }
 
@@ -19,9 +19,9 @@ func NewTopPageUseCase(topPagerepo repository.TopPageRepository) TopPageUseCase 
 	return &topPageUseCase{topPageRepo: topPagerepo}
 }
 
-func (tp topPageUseCase) GetArticles(articles *[]model.Article) error {
+func (tp topPageUseCase) GetArticles(articles *[]model.Article, limit, offset int) error {
 
-	err := tp.topPageRepo.GetArticles(articles)
+	err := tp.topPageRepo.GetArticles(articles, limit, offset)
 	if err != nil {
 		return err
 	}
