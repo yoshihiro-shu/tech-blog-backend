@@ -3,10 +3,12 @@ package handler
 import (
 	"net/http"
 
+	"github.com/go-pg/pg"
 	"github.com/yoshihiro-shu/draft-backend/application/usecase"
 	"github.com/yoshihiro-shu/draft-backend/domain/model"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
 	article_cache "github.com/yoshihiro-shu/draft-backend/internal/model/article/cache"
+	"github.com/yoshihiro-shu/draft-backend/internal/pkg/pager"
 )
 
 type TopPageHandler interface {
@@ -18,6 +20,8 @@ type topPageHandler struct {
 	C              *request.Context
 }
 
+const topPageOffset = 1
+
 func NewTopPageHandler(topPageUseCase usecase.TopPageUseCase, c *request.Context) *topPageHandler {
 	return &topPageHandler{
 		topPageUseCase: topPageUseCase,
@@ -26,26 +30,43 @@ func NewTopPageHandler(topPageUseCase usecase.TopPageUseCase, c *request.Context
 }
 
 type responseTopPage struct {
-	Article []model.Article `json:"Article"`
+	Article []model.Article `json:"article"`
+	Pager   *pager.Pager    `json:"pager"`
 }
 
 func (tp topPageHandler) Get(w http.ResponseWriter, r *http.Request) error {
-	var articles []model.Article
+	currentPager := 1
+	var res responseTopPage
 
-	err := tp.C.Cache.GET(article_cache.TopPageAritcleListKey, &articles)
+	err := tp.C.Cache.GET(article_cache.TopPageAritcleListKey, &res)
 	if err == nil {
-		return tp.C.JSON(w, http.StatusOK, articles)
+		return tp.C.JSON(w, http.StatusOK, res)
 	}
 
-	err = tp.topPageUseCase.GetArticles(&articles)
+	err = tp.topPageUseCase.GetArticles(&res.Article)
 	if err != nil {
 		return tp.C.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 
-	// res := &responseTopPage{
-	// 	Article: articles,
-	// }
+	res.Pager, err = GetPager(currentPager, topPageOffset, tp.C.DB())
+	if err != nil {
+		return tp.C.JSON(w, http.StatusInternalServerError, err.Error())
+	}
 
-	_ = tp.C.Cache.SET(article_cache.TopPageAritcleListKey, articles)
-	return tp.C.JSON(w, http.StatusOK, articles)
+	_ = tp.C.Cache.SET(article_cache.TopPageAritcleListKey, res)
+	return tp.C.JSON(w, http.StatusOK, res)
+}
+
+func GetPager(currentPage, offset int, db *pg.DB) (*pager.Pager, error) {
+	var a model.Article
+	numOfArticles, err := db.Model(&a).Count()
+	if err != nil {
+		return nil, err
+	}
+
+	pager := pager.New(currentPage)
+
+	pager.SetLastPage(offset, numOfArticles)
+
+	return pager, nil
 }
