@@ -3,7 +3,6 @@ package handler
 import (
 	"net/http"
 
-	"github.com/go-pg/pg"
 	"github.com/yoshihiro-shu/draft-backend/application/usecase"
 	"github.com/yoshihiro-shu/draft-backend/domain/model"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
@@ -48,25 +47,11 @@ func (tp topPageHandler) Get(w http.ResponseWriter, r *http.Request) error {
 		return tp.C.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 
-	res.Pager, err = GetPager(currentPager, topPageOffset, tp.C.DB())
+	res.Pager, err = tp.topPageUseCase.GetPager(currentPager, topPageOffset)
 	if err != nil {
 		return tp.C.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 
 	_ = tp.C.Cache.SET(article_cache.TopPageAritcleListKey, res)
 	return tp.C.JSON(w, http.StatusOK, res)
-}
-
-func GetPager(currentPage, offset int, db *pg.DB) (*pager.Pager, error) {
-	var a model.Article
-	numOfArticles, err := db.Model(&a).Count()
-	if err != nil {
-		return nil, err
-	}
-
-	pager := pager.New(currentPage)
-
-	pager.SetLastPage(offset, numOfArticles)
-
-	return pager, nil
 }

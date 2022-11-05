@@ -28,3 +28,14 @@ func (tp topPagePersistence) GetArticles(articles *[]model.Article) error {
 
 	return nil
 }
+
+func (tp topPagePersistence) GetPager(a *model.Article) (int, error) {
+	query := tp.Conn.Model(a)
+
+	count, err := query.Count()
+	if err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}
