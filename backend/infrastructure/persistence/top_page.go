@@ -14,12 +14,14 @@ func NewTopPagePersistence(conn *pg.DB) repository.TopPageRepository {
 	return &topPagePersistence{Conn: conn}
 }
 
-func (tp topPagePersistence) GetArticles(articles *[]model.Article) error {
+func (tp topPagePersistence) GetArticles(articles *[]model.Article, limit, offset int) error {
 	query := tp.Conn.Model(articles).
 		Relation("Tags").
 		Relation("Category").
 		Relation("User").
-		Order("created_at ASC")
+		Order("created_at ASC").
+		Limit(limit).
+		Offset(offset)
 
 	err := query.Select()
 	if err != nil {
@@ -27,4 +29,15 @@ func (tp topPagePersistence) GetArticles(articles *[]model.Article) error {
 	}
 
 	return nil
+}
+
+func (tp topPagePersistence) GetPager(a *model.Article) (int, error) {
+	query := tp.Conn.Model(a)
+
+	count, err := query.Count()
+	if err != nil {
+		return 0, err
+	}
+
+	return count, nil
 }

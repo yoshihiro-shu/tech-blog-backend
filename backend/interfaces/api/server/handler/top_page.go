@@ -1,11 +1,14 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/yoshihiro-shu/draft-backend/application/usecase"
 	"github.com/yoshihiro-shu/draft-backend/domain/model"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
+	article_cache "github.com/yoshihiro-shu/draft-backend/internal/model/article/cache"
+	"github.com/yoshihiro-shu/draft-backend/internal/pkg/pager"
 )
 
 type TopPageHandler interface {
@@ -17,6 +20,11 @@ type topPageHandler struct {
 	C              *request.Context
 }
 
+const (
+	// 一ページあたりの記事数
+	numberOfArticlePer1Page = 1
+)
+
 func NewTopPageHandler(topPageUseCase usecase.TopPageUseCase, c *request.Context) *topPageHandler {
 	return &topPageHandler{
 		topPageUseCase: topPageUseCase,
@@ -25,20 +33,34 @@ func NewTopPageHandler(topPageUseCase usecase.TopPageUseCase, c *request.Context
 }
 
 type responseTopPage struct {
-	Article []model.Article `json:"Article"`
+	Article []model.Article `json:"article"`
+	Pager   *pager.Pager    `json:"pager"`
 }
 
 func (tp topPageHandler) Get(w http.ResponseWriter, r *http.Request) error {
-	var articles []model.Article
+	currentPage := 1
+	var res responseTopPage
 
-	err := tp.topPageUseCase.GetArticles(&articles)
+	resKey := fmt.Sprintf(article_cache.TopPageAritcleListKeyByPage, currentPage)
+
+	err := tp.C.Cache.GET(resKey, &res)
+	if err == nil {
+		return tp.C.JSON(w, http.StatusOK, res)
+	}
+
+	// Number Of Articles Per 1 page
+	limit := numberOfArticlePer1Page
+	offset := numberOfArticlePer1Page * (currentPage - 1)
+	err = tp.topPageUseCase.GetArticles(&res.Article, limit, offset)
 	if err != nil {
 		return tp.C.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 
-	// res := &responseTopPage{
-	// 	Article: articles,
-	// }
+	res.Pager, err = tp.topPageUseCase.GetPager(currentPage, numberOfArticlePer1Page)
+	if err != nil {
+		return tp.C.JSON(w, http.StatusInternalServerError, err.Error())
+	}
 
-	return tp.C.JSON(w, http.StatusOK, articles)
+	_ = tp.C.Cache.SET(resKey, res)
+	return tp.C.JSON(w, http.StatusOK, res)
 }
