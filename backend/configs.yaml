@@ -17,3 +17,9 @@ cacheRedis:
   port: "6379"
   password: ""
   dbNumber: 0
+
+twitter:
+  api_key: XXXXXXXXXX
+  api_key_secret: XXXXXXXXXX
+  bearer_token: XXXXXXXXXX
+  user_id: XXXXXXXXXX

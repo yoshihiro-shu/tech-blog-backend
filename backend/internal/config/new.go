@@ -12,6 +12,7 @@ type Configs struct {
 	User       User       `yaml:"user"`
 	Db         DB         `yaml:"db"`
 	CacheRedis RedisCache `yaml:"cacheRedis"`
+	Twitter    Twitter    `yaml:"twitter"`
 }
 
 type User struct {
@@ -34,6 +35,13 @@ type RedisCache struct {
 	Port     string `yaml:"port"`
 	Password string `yaml:"password"`
 	DbNumber int    `yaml:"dbNumber"`
+}
+
+type Twitter struct {
+	Apikey       string `yaml:"api_key"`
+	ApiKeySecret string `yaml:"api_key_secret"`
+	BearerToken  string `yaml:"bearer_token"`
+	UserId       string `yaml:"user_id"`
 }
 
 const (
