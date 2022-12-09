@@ -27,6 +27,11 @@ func (r Router) ApplyRouters() {
 		r.AppHandle("/top", topPageHandler.Get).Methods(http.MethodGet)
 	}
 	{
+		twitterHandler := registory.NewTwitterRegistory(ctx)
+		twitter := r.Group("/twitter")
+		twitter.AppHandle("/timeline", twitterHandler.GetTimeLine).Methods(http.MethodGet)
+	}
+	{
 		// Grouping
 		t := r.Group("/test")
 		t.AppHandle("", h.TestHandler).Methods(http.MethodGet)
