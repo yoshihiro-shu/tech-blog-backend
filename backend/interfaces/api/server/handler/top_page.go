@@ -25,7 +25,7 @@ const (
 	numberOfArticlePer1Page = 1
 )
 
-func NewTopPageHandler(topPageUseCase usecase.TopPageUseCase, c *request.Context) *topPageHandler {
+func NewTopPageHandler(topPageUseCase usecase.TopPageUseCase, c *request.Context) TopPageHandler {
 	return &topPageHandler{
 		topPageUseCase: topPageUseCase,
 		C:              c,
