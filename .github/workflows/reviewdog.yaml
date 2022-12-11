@@ -1,5 +1,11 @@
 name: reviewdog
-on: [pull_request]
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+permissions: read-all
+
 jobs:
   staticcheck:
     name: runner / staticcheck
@@ -17,7 +23,7 @@ jobs:
       # run staticcheck
       - uses: reviewdog/action-staticcheck@v1
         with:
-          # github_token: ${{ secrets.github_token }}
+          github_token: ${{ secrets.github_token }}
           # Change reviewdog reporter if you need [github-pr-check,github-check,github-pr-review].
           reporter: github-pr-review
           # Report all results.
