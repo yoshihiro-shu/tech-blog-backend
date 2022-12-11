@@ -81,12 +81,6 @@ func NewArticleHandler(articleUseCase usecase.ArticleUseCase, c *request.Context
 	}
 }
 
-type requestArticle struct {
-}
-
-type responseArticle struct {
-}
-
 func (ah *articleHandler) Post(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }

@@ -22,16 +22,3 @@ jobs:
         run: |
           cd ./backend
           go build -v ./cmd/main.go
-
-  # check-bats-version:
-  # hogehoge:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - run: echo "this is pen"
-  #     - uses: actions/checkout@v3
-  #     - run: |
-  #         ls -al
-  #         echo "hogehoge"
-  #     - run: echo "This job's status is ${{ job.status }}."
-  #     - run: echo "This workflow is ${{ github.workflow }}."
-  #     - run: echo "This repository status is ${{ github.repository }}."

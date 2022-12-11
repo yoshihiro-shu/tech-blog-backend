@@ -4,6 +4,7 @@ import (
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
 )
 
+// TODO configで設定できるようにする
 const (
 	UserKey = "userID"
 )

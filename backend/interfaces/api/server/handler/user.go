@@ -27,10 +27,15 @@ func NewUserHandler(userUseCase usecase.UserUseCase, c *request.Context) *userHa
 	}
 }
 
+<<<<<<< HEAD
 type requestUser struct {
 }
 
 type responseUser struct {
+=======
+type loginResponse struct {
+	Token string `json:"token"`
+>>>>>>> a616013 (FIX remarked by review dog)
 }
 
 func (uh *userHandler) SignUp(w http.ResponseWriter, r *http.Request) error {
