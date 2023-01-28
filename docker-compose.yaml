@@ -20,7 +20,6 @@ services:
       - "8000:8000"
     tty: true
     depends_on:
-      # TODO conditionをつける
       draft-postgres:
         condition: service_healthy
       draft-redis:
