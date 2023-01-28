@@ -1,5 +1,11 @@
 # 環境構築
 
+direnvのinstall
+
+```
+brew install direnv
+```
+
 依存モジュールのインストール
 
 ```
