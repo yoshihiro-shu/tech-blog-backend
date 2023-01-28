@@ -66,6 +66,10 @@ cd backend
 ```
 
 ```
+docker login -u ${username} -p ${password}
+```
+
+```
 docker build --tag=yoshi429/draft-backend:v-0.0.1 .
 ```
 
