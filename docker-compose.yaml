@@ -63,7 +63,7 @@ services:
       - draft-backend-network
 
   draft-migration:
-    image: yoshi429/goose-migration:0.0.1
+    image: yoshi429/goose-migration:0.0.3
     depends_on:
       draft-postgres :
         condition: service_healthy
