@@ -63,12 +63,10 @@ services:
       - draft-backend-network
 
   draft-migration:
-    image: yoshi429/goose-migration:0.0.3
+    build: ./migrations
     depends_on:
       draft-postgres :
         condition: service_healthy
-    volumes:
-      - ./migrations/db:/go/src/db
     env_file:
       - .env
     networks:
