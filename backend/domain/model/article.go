@@ -12,9 +12,9 @@ type Article struct {
 	CreatedAt    time.Time `json:"createdAt"`
 	UpdatedAt    time.Time `json:"updatedAt"`
 	CategoryId   int       `json:"categoryId"`
-	User         *User     `pg:"fk:user_id"`
-	Category     *Category `pg:"fk:category_id"`
-	Tags         []Tag     `pg:"many2many:article_tags"`
+	User         *User     `pg:"fk:user_id" json:"user"`
+	Category     *Category `pg:"fk:category_id" json:"category"`
+	Tags         []Tag     `pg:"many2many:article_tags" json:"tags"`
 }
 
 func NewArticle(Id int) *Article {

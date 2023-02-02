@@ -33,7 +33,7 @@ func NewTopPageHandler(topPageUseCase usecase.TopPageUseCase, c *request.Context
 }
 
 type responseTopPage struct {
-	Article []model.Article `json:"article"`
+	Article []model.Article `json:"articlesd"`
 	Pager   *pager.Pager    `json:"pager"`
 }
 
