@@ -28,7 +28,7 @@ func (h Handler) PostArticle(w http.ResponseWriter, r *http.Request) error {
 		Title:   title,
 		Content: content,
 	}
-	err = a.Insert(h.Context.Db.PsqlDB)
+	err = a.Insert(h.Context.DB())
 	if err != nil {
 		return h.Context.JSON(w, http.StatusInternalServerError, err.Error())
 	}
@@ -38,7 +38,7 @@ func (h Handler) PostArticle(w http.ResponseWriter, r *http.Request) error {
 
 func (h Handler) GetArticles(w http.ResponseWriter, r *http.Request) error {
 	a := new(article_linkages_to_category.Article)
-	articles, err := a.GetList(h.Context.Db.PsqlDB)
+	articles, err := a.GetList(h.Context.DB())
 
 	if err != nil {
 		return h.Context.JSON(w, http.StatusInternalServerError, err.Error())
@@ -54,7 +54,7 @@ func (h Handler) GetArticleByID(w http.ResponseWriter, r *http.Request) error {
 
 	article := article_linkages_to_many.New(id)
 
-	err := article.GetArticle(h.Context.Db.PsqlDB)
+	err := article.GetArticle(h.Context.DB())
 	if err != nil {
 		return h.Context.JSON(w, http.StatusBadRequest, err.Error())
 	}

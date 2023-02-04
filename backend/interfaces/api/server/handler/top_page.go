@@ -43,7 +43,7 @@ func (tp topPageHandler) Get(w http.ResponseWriter, r *http.Request) error {
 
 	resKey := fmt.Sprintf(cache.TopPageAritcleListKeyByPage, currentPage)
 
-	err := tp.Cache.GET(resKey, &res)
+	err := tp.Cache().GET(resKey, &res)
 	if err == nil {
 		return tp.JSON(w, http.StatusOK, res)
 	}
@@ -61,6 +61,6 @@ func (tp topPageHandler) Get(w http.ResponseWriter, r *http.Request) error {
 		return tp.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 
-	_ = tp.Cache.SET(resKey, res)
+	_ = tp.Cache().SET(resKey, res)
 	return tp.JSON(w, http.StatusOK, res)
 }

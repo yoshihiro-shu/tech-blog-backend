@@ -43,7 +43,7 @@ func (h indexHandler) TestSetRedis(w http.ResponseWriter, r *http.Request) error
 		Value: v,
 	}
 
-	err := h.Cache.SET(k, t)
+	err := h.Cache().SET(k, t)
 	if err != nil {
 		return h.JSON(w, http.StatusInternalServerError, err.Error())
 	}
@@ -56,7 +56,7 @@ func (h indexHandler) TestGetRedis(w http.ResponseWriter, r *http.Request) error
 	k := vars["key"]
 
 	t := TestRedis{}
-	err := h.Cache.GET(k, &t)
+	err := h.Cache().GET(k, &t)
 	if err != nil {
 		return h.JSON(w, http.StatusInternalServerError, err.Error())
 	}

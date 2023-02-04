@@ -8,15 +8,19 @@ import (
 )
 
 type DBContext struct {
-	PsqlDB *pg.DB
+	master *pg.DB
 	// TODO
 	// ReadDb  *[]sql.DB
 	// WriteDb *[]sql.DB
 }
 
+func (c DBContext) Master() *pg.DB {
+	return c.master
+}
+
 func New(conf config.Configs) *DBContext {
 	return &DBContext{
-		PsqlDB: GetDBConnection(conf.GetDb()),
+		master: GetDBConnection(conf.GetDb()),
 	}
 }
 
