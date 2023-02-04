@@ -14,9 +14,7 @@ func (r Router) ApplyRouters() {
 	ctx := request.NewContext(r.Config)
 	r.Use(middleware.CorsMiddleware)
 
-	h := handler.Handler{
-		Context: ctx,
-	}
+	h := handler.NewIndexHandler(ctx)
 
 	{
 		r.AppHandle("/", h.Index).Methods(http.MethodGet)
