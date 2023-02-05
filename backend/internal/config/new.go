@@ -8,16 +8,27 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+const (
+	StatusUnpublished = iota + 1
+	StatusPublished
+	StatusClosed
+)
+
 type Configs struct {
-	User       User       `yaml:"user"`
-	Db         DB         `yaml:"db"`
-	CacheRedis RedisCache `yaml:"cacheRedis"`
-	Twitter    Twitter    `yaml:"twitter"`
+	User         User         `yaml:"user"`
+	RelationalDB RelationalDB `yaml:"relationalDB"`
+	CacheRedis   RedisCache   `yaml:"cacheRedis"`
+	Twitter      Twitter      `yaml:"twitter"`
 }
 
 type User struct {
 	Host string `yaml:"host"`
 	Port string `yaml:"port"`
+}
+
+type RelationalDB struct {
+	Master   DB   `yaml:"master"`
+	Repricas []DB `yaml:"repricas"`
 }
 
 type DB struct {
@@ -44,11 +55,25 @@ type Twitter struct {
 	UserId       string `yaml:"user_id"`
 }
 
-const (
-	StatusUnpublished = iota + 1
-	StatusPublished
-	StatusClosed
-)
+func (c Configs) MasterDB() DB {
+	return c.RelationalDB.Master
+}
+
+func (c Configs) RepricaDB() []DB {
+	return c.RelationalDB.Repricas
+}
+
+func (c Configs) GetCacheRedis() RedisCache {
+	return c.CacheRedis
+}
+
+func (c Configs) GetRedisDNS() string {
+	return fmt.Sprintf("%s:%s", c.CacheRedis.Host, c.CacheRedis.Port)
+}
+
+func (c Configs) GetUserAddr() string {
+	return fmt.Sprintf("%s:%s", c.User.Host, c.User.Port)
+}
 
 func New() Configs {
 	conf := Configs{}
@@ -63,20 +88,4 @@ func New() Configs {
 	}
 
 	return conf
-}
-
-func (c Configs) GetDb() DB {
-	return c.Db
-}
-
-func (c Configs) GetCacheRedis() RedisCache {
-	return c.CacheRedis
-}
-
-func (c Configs) GetRedisDNS() string {
-	return fmt.Sprintf("%s:%s", c.CacheRedis.Host, c.CacheRedis.Port)
-}
-
-func (c Configs) GetUserAddr() string {
-	return fmt.Sprintf("%s:%s", c.User.Host, c.User.Port)
 }

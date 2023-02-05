@@ -8,7 +8,7 @@ import (
 )
 
 func NewUserRegistory(ctx *request.Context) handler.UserHandler {
-	userRepository := persistence.NewUserPersistence(ctx.DB())
+	userRepository := persistence.NewUserPersistence(ctx.MasterDB())
 	userUseCase := usecase.NewUserUseCase(userRepository)
 	return handler.NewUserHandler(userUseCase, ctx)
 }

@@ -8,7 +8,7 @@ import (
 )
 
 func NewArticleRegistory(ctx *request.Context) handler.ArticleHandler {
-	articleRepository := persistence.NewArticlePersistence(ctx.DB())
+	articleRepository := persistence.NewArticlePersistence(ctx.MasterDB())
 	articleUseCase := usecase.NewArticleUseCase(articleRepository)
 	return handler.NewArticleHandler(articleUseCase, ctx)
 }

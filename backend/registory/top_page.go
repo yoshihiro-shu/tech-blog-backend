@@ -8,7 +8,7 @@ import (
 )
 
 func NewTopPageRegistory(ctx *request.Context) handler.TopPageHandler {
-	topPageRepository := persistence.NewTopPagePersistence(ctx.DB())
+	topPageRepository := persistence.NewTopPagePersistence(ctx.MasterDB(), ctx.RepricaDB())
 	topPageUseCase := usecase.NewTopPageUseCase(topPageRepository)
 	return handler.NewTopPageHandler(topPageUseCase, ctx)
 }

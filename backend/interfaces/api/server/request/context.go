@@ -31,8 +31,12 @@ func NewContext(conf config.Configs) *Context {
 	}
 }
 
-func (c Context) DB() *pg.DB {
+func (c Context) MasterDB() *pg.DB {
 	return c.db.Master()
+}
+
+func (c Context) RepricaDB() *pg.DB {
+	return c.db.Reprica()
 }
 
 func (c Context) Cache() *cache.RedisContext {
