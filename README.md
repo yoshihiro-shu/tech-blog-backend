@@ -25,6 +25,10 @@ docker volume create --name=draft-postgres-db
 docker volume create --name=draft-cache-redis
 ```
 
+```
+chmod 755 ./tmp/db/replica/entrypoint.sh
+```
+
 imageをビルドする
 
 ```
