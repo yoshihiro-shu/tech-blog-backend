@@ -15,8 +15,10 @@ relationalDB:
   repricas:
     - driver: "postgres"
       # host: "127.0.0.1"
-      host: "reprica"
-      port: "15432"
+      # host: "reprica"
+      host: "primary"
+      # port: "15432"
+      port: "5432"
       user: "postgres"
       name: "postgres"
       password: "password"

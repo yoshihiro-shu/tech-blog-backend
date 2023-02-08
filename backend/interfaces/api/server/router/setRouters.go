@@ -12,12 +12,13 @@ import (
 
 func (r Router) ApplyRouters() {
 	ctx := request.NewContext(r.Config)
+
 	r.Use(middleware.CorsMiddleware)
 
 	h := handler.NewIndexHandler(ctx)
 
 	{
-		r.AppHandle("/", h.Index).Methods(http.MethodGet)
+		r.AppHandle("/healthcheck", h.Index).Methods(http.MethodGet)
 	}
 	{
 		// th := api.NewTopPageHandler(ctx)

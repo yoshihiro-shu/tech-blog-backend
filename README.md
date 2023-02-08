@@ -50,7 +50,7 @@ docker-compose up -d
 確認
 
 ```
-curl localhost:80/
+curl localhost:80/healthcheck
 ```
 
 ## Connect to psql

@@ -53,6 +53,7 @@ services:
       POSTGRES_DB: $DB_MASTER_NAME
       POSTGRES_USER: $DB_MASTER_USER
       POSTGRES_PASSWORD: $DB_MASTER_PASSWORD
+      PGUSER: $DB_MASTER_USER
       TZ: "Asia/Tokyo"
     ports:
       - 5432:5432
@@ -72,6 +73,12 @@ services:
   replica:
     image: postgres:14.4
     restart: always
+    command: 
+      - "postgres" 
+      - "-c" 
+      - "config_file=/etc/postgresql/postgresql.conf" 
+      - "-c" 
+      - "hba_file=/etc/postgresql/pg_hba.conf"
     entrypoint: /entrypoint.sh
     environment:
       POSTGRES_DB: $DB_REPLICA_NAME
@@ -81,6 +88,8 @@ services:
       DB_PRIMARY_PORT: $DB_MASTER_PORT
       DB_PRIMARY_NAME: $DB_MASTER_NAME      
       DB_PRIMARY_USER: $DB_MASTER_USER
+      DB_PRIMARY_PASSWORD: $DB_MASTER_PASSWORD
+      PGUSER: $DB_REPLICA_USER
       PGDATA: /var/lib/postgresql/data
     ports:
       - 15432:5432
@@ -89,6 +98,7 @@ services:
       - ./tmp/db/replica/entrypoint.sh:/entrypoint.sh
       - ./tmp/db/replica/postgresql.conf:/etc/postgresql/postgresql.conf
       - ./tmp/db/replica/pg_hba.conf:/etc/postgresql/pg_hba.conf
+      # - ./tmp/db/replica/postgres.auto.conf:/postgres.auto.conf
     healthcheck:
       test: ["CMD-SHELL", "pg_isready", "-q", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
       interval: 1s
