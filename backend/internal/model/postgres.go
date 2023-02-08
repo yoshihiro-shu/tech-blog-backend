@@ -1,7 +1,9 @@
 package model
 
 import (
+	"crypto/rand"
 	"fmt"
+	"math/big"
 
 	"github.com/go-pg/pg"
 	"github.com/yoshihiro-shu/draft-backend/internal/config"
@@ -17,8 +19,12 @@ func (c DBContext) Master() *pg.DB {
 }
 
 func (c DBContext) Reprica() *pg.DB {
-	// TODO fix later
-	return c.repricas[0]
+	numOfDB := big.NewInt(int64(len(c.repricas)))
+	n, err := rand.Int(rand.Reader, numOfDB)
+	if err != nil {
+		return c.repricas[0]
+	}
+	return c.repricas[n.Int64()]
 }
 
 func initMaster(conf config.DB) *pg.DB {

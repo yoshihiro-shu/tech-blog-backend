@@ -7,19 +7,19 @@ import (
 )
 
 type topPagePersistence struct {
-	WriteDB *pg.DB
-	ReadDB  *pg.DB
+	Master  func() *pg.DB
+	Reprica func() *pg.DB
 }
 
-func NewTopPagePersistence(primary, reprica *pg.DB) repository.TopPageRepository {
+func NewTopPagePersistence(master, reprica func() *pg.DB) repository.TopPageRepository {
 	return &topPagePersistence{
-		WriteDB: primary,
-		ReadDB:  reprica,
+		Master:  master,
+		Reprica: reprica,
 	}
 }
 
 func (tp topPagePersistence) GetArticles(articles *[]model.Article, limit, offset int) error {
-	query := tp.ReadDB.Model(articles).
+	query := tp.Reprica().Model(articles).
 		Relation("Tags").
 		Relation("Category").
 		Relation("User").
@@ -36,7 +36,7 @@ func (tp topPagePersistence) GetArticles(articles *[]model.Article, limit, offse
 }
 
 func (tp topPagePersistence) GetPager(a *model.Article) (int, error) {
-	query := tp.ReadDB.Model(a)
+	query := tp.Reprica().Model(a)
 
 	count, err := query.Count()
 	if err != nil {

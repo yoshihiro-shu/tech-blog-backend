@@ -22,7 +22,11 @@ func (r Router) ApplyRouters() {
 	}
 	{
 		// th := api.NewTopPageHandler(ctx)
-		topPageHandler := registory.NewTopPageRegistory(ctx)
+		topPageHandler := registory.NewTopPageRegistory(
+			ctx,
+			ctx.MasterDB,
+			ctx.RepricaDB,
+		)
 		r.AppHandle("/top", topPageHandler.Get).Methods(http.MethodGet)
 	}
 	{

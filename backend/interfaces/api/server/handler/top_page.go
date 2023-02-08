@@ -61,6 +61,9 @@ func (tp topPageHandler) Get(w http.ResponseWriter, r *http.Request) error {
 		return tp.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 
-	_ = tp.Cache().SET(resKey, res)
+	err = tp.Cache().SET(resKey, res)
+	if err != nil {
+		tp.Logger.Fatal(err.Error())
+	}
 	return tp.JSON(w, http.StatusOK, res)
 }
