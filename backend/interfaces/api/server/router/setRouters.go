@@ -21,13 +21,21 @@ func (r Router) ApplyRouters() {
 		r.AppHandle("/healthcheck", h.Index).Methods(http.MethodGet)
 	}
 	{
-		// th := api.NewTopPageHandler(ctx)
 		topPageHandler := registory.NewTopPageRegistory(
 			ctx,
 			ctx.MasterDB,
 			ctx.RepricaDB,
 		)
 		r.AppHandle("/top", topPageHandler.Get).Methods(http.MethodGet)
+	}
+	{
+		lastestAriclesHandler := registory.NewLatestArticlesRegistory(
+			ctx,
+			ctx.MasterDB,
+			ctx.RepricaDB,
+		)
+		latestArticles := r.Group("/new")
+		latestArticles.AppHandle("", lastestAriclesHandler.Get).Methods(http.MethodGet)
 	}
 	{
 		twitterHandler := registory.NewTwitterRegistory(ctx)
@@ -54,10 +62,9 @@ func (r Router) ApplyRouters() {
 		// user.HandleFunc("/register", h.RegisterAccount).Methods(http.MethodPost)
 	}
 	{
-		articleHandler := registory.NewArticleRegistory(ctx)
+		articleHandler := registory.NewArticleRegistory(ctx, ctx.MasterDB, ctx.RepricaDB)
 		article := r.Group("/articles")
-		// article.AppHandle("", h.GetArticles).Methods(http.MethodGet)
-		article.AppHandle("/{id}", articleHandler.Get).Methods(http.MethodGet)
+		article.AppHandle("/{id:[0-9]+}", articleHandler.Get).Methods(http.MethodGet)
 	}
 	{
 		a := r.Group("/auth")
