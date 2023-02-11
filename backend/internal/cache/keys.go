@@ -1,4 +1,4 @@
-package article_cache
+package cache
 
 const (
 	TopPageAritcleListKey       = "top_page_article_list"

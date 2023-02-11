@@ -2,18 +2,43 @@ user:
   host: "0.0.0.0"
   port: 8000
 
-db:
-  driver: "postgres"
-  # host: "127.0.0.1"
-  host: "draft-postgres"
-  port: "5432"
-  user: "postgres"
-  name: "postgres"
-  password: "password"
-  sslMode: "disable"
+relationalDB:
+  master:
+    driver: "postgres"
+    # host: "127.0.0.1"
+    host: "primary"
+    port: "5432"
+    user: "postgres"
+    name: "postgres"
+    password: "password"
+    sslMode: "disable"
+  repricas:
+    - driver: "postgres"
+      # host: "reprica"
+      host: "primary"
+      # port: "15432"
+      port: "5432"
+      user: "postgres"
+      name: "postgres"
+      password: "password"
+      sslMode: "disable"
+    - driver: "postgres"
+      host: "primary"
+      port: "5432"
+      user: "postgres"
+      name: "postgres"
+      password: "password"
+      sslMode: "disable"
+    - driver: "postgres"
+      host: "primary"
+      port: "5432"
+      user: "postgres"
+      name: "postgres"
+      password: "password"
+      sslMode: "disable"
 
 cacheRedis:
-  host: "draft-redis"
+  host: "redis"
   port: "6379"
   password: ""
   dbNumber: 0

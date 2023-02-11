@@ -3,11 +3,14 @@ package usecase
 import (
 	"github.com/yoshihiro-shu/draft-backend/domain/model"
 	"github.com/yoshihiro-shu/draft-backend/domain/repository"
+	"github.com/yoshihiro-shu/draft-backend/internal/pkg/pager"
 )
 
 type ArticleUseCase interface {
 	Create(title, content string, userId, categoryId int) (*model.Article, error)
 	FindByID(id int) (*model.Article, error)
+	GetArticles(articles *[]model.Article, limit, offset int) error
+	GetPager(currentPage, offset int) (*pager.Pager, error)
 	Update(id int, title, content string) (*model.Article, error)
 	Delete(id int) error
 }
@@ -42,6 +45,24 @@ func (au *articleUseCase) FindByID(id int) (*model.Article, error) {
 		return nil, err
 	}
 	return foundArticle, nil
+}
+
+func (au *articleUseCase) GetArticles(articles *[]model.Article, limit, offset int) error {
+	return au.articleRepo.GetArticles(articles, limit, offset)
+}
+
+func (au *articleUseCase) GetPager(currentPage, offset int) (*pager.Pager, error) {
+	var a model.Article
+
+	numOfArticles, err := au.articleRepo.GetPager(&a)
+	if err != nil {
+		return nil, err
+	}
+
+	pager := pager.New(currentPage)
+	pager.SetLastPage(offset, numOfArticles)
+
+	return pager, nil
 }
 
 func (au *articleUseCase) Update(id int, title, content string) (*model.Article, error) {

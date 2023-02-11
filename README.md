@@ -25,6 +25,10 @@ docker volume create --name=draft-postgres-db
 docker volume create --name=draft-cache-redis
 ```
 
+```
+chmod 755 ./tmp/db/replica/entrypoint.sh
+```
+
 imageをビルドする
 
 ```
@@ -46,7 +50,7 @@ docker-compose up -d
 確認
 
 ```
-curl localhost:80/
+curl localhost:80/healthcheck
 ```
 
 ## Connect to psql

@@ -7,7 +7,7 @@ import (
 	"github.com/yoshihiro-shu/draft-backend/application/usecase"
 	"github.com/yoshihiro-shu/draft-backend/domain/model"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
-	article_cache "github.com/yoshihiro-shu/draft-backend/internal/model/article/cache"
+	"github.com/yoshihiro-shu/draft-backend/internal/cache"
 	"github.com/yoshihiro-shu/draft-backend/internal/pkg/pager"
 )
 
@@ -16,24 +16,24 @@ type TopPageHandler interface {
 }
 
 type topPageHandler struct {
+	*request.Context
 	topPageUseCase usecase.TopPageUseCase
-	C              *request.Context
 }
 
 const (
 	// 一ページあたりの記事数
-	numberOfArticlePer1Page = 1
+	numberOfArticlePerPage = 10
 )
 
 func NewTopPageHandler(topPageUseCase usecase.TopPageUseCase, c *request.Context) TopPageHandler {
 	return &topPageHandler{
+		Context:        c,
 		topPageUseCase: topPageUseCase,
-		C:              c,
 	}
 }
 
 type responseTopPage struct {
-	Article []model.Article `json:"article"`
+	Article []model.Article `json:"articles"`
 	Pager   *pager.Pager    `json:"pager"`
 }
 
@@ -41,26 +41,29 @@ func (tp topPageHandler) Get(w http.ResponseWriter, r *http.Request) error {
 	currentPage := 1
 	var res responseTopPage
 
-	resKey := fmt.Sprintf(article_cache.TopPageAritcleListKeyByPage, currentPage)
+	resKey := fmt.Sprintf(cache.TopPageAritcleListKeyByPage, currentPage)
 
-	err := tp.C.Cache.GET(resKey, &res)
+	err := tp.Cache().GET(resKey, &res)
 	if err == nil {
-		return tp.C.JSON(w, http.StatusOK, res)
+		return tp.JSON(w, http.StatusOK, res)
 	}
 
 	// Number Of Articles Per 1 page
-	limit := numberOfArticlePer1Page
-	offset := numberOfArticlePer1Page * (currentPage - 1)
+	limit := numberOfArticlePerPage
+	offset := numberOfArticlePerPage * (currentPage - 1)
 	err = tp.topPageUseCase.GetArticles(&res.Article, limit, offset)
 	if err != nil {
-		return tp.C.JSON(w, http.StatusInternalServerError, err.Error())
+		return tp.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 
-	res.Pager, err = tp.topPageUseCase.GetPager(currentPage, numberOfArticlePer1Page)
+	res.Pager, err = tp.topPageUseCase.GetPager(currentPage, numberOfArticlePerPage)
 	if err != nil {
-		return tp.C.JSON(w, http.StatusInternalServerError, err.Error())
+		return tp.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 
-	_ = tp.C.Cache.SET(resKey, res)
-	return tp.C.JSON(w, http.StatusOK, res)
+	err = tp.Cache().SET(resKey, res)
+	if err != nil {
+		tp.Logger.Fatal(err.Error())
+	}
+	return tp.JSON(w, http.StatusOK, res)
 }

@@ -8,8 +8,8 @@ import (
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
 )
 
-type Handler struct {
-	Context *request.Context
+type indexHandler struct {
+	*request.Context
 }
 
 type TestRedis struct {
@@ -17,11 +17,11 @@ type TestRedis struct {
 	Value string `json:"value"`
 }
 
-func (h Handler) Index(w http.ResponseWriter, r *http.Request) error {
-	return h.Context.JSON(w, http.StatusOK, "HELLO WORLD")
+func (h indexHandler) Index(w http.ResponseWriter, r *http.Request) error {
+	return h.JSON(w, http.StatusOK, "HELLO WORLD")
 }
 
-func (h Handler) TestHandler(w http.ResponseWriter, r *http.Request) error {
+func (h indexHandler) TestHandler(w http.ResponseWriter, r *http.Request) error {
 	fmt.Println("UNKOOOOO")
 	fmt.Printf("RequestContext: %#v\n", h.Context)
 	fmt.Fprintf(w, "RequestContext: %#v\n", h.Context)
@@ -29,12 +29,12 @@ func (h Handler) TestHandler(w http.ResponseWriter, r *http.Request) error {
 	return h.Context.JSON(w, http.StatusOK, h.Context)
 }
 
-func (h Handler) AuthIndex(w http.ResponseWriter, r *http.Request) error {
-	id := h.Context.GetAuthUserID(r.Context())
-	return h.Context.JSON(w, http.StatusOK, id)
+func (h indexHandler) AuthIndex(w http.ResponseWriter, r *http.Request) error {
+	id := h.GetAuthUserID(r.Context())
+	return h.JSON(w, http.StatusOK, id)
 }
 
-func (h Handler) TestSetRedis(w http.ResponseWriter, r *http.Request) error {
+func (h indexHandler) TestSetRedis(w http.ResponseWriter, r *http.Request) error {
 	k := r.FormValue("key")
 	v := r.FormValue("value")
 
@@ -43,23 +43,27 @@ func (h Handler) TestSetRedis(w http.ResponseWriter, r *http.Request) error {
 		Value: v,
 	}
 
-	err := h.Context.Cache.SET(k, t)
+	err := h.Cache().SET(k, t)
 	if err != nil {
-		return h.Context.JSON(w, http.StatusInternalServerError, err.Error())
+		return h.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 
-	return h.Context.JSON(w, http.StatusOK, t)
+	return h.JSON(w, http.StatusOK, t)
 }
 
-func (h Handler) TestGetRedis(w http.ResponseWriter, r *http.Request) error {
+func (h indexHandler) TestGetRedis(w http.ResponseWriter, r *http.Request) error {
 	vars := mux.Vars(r)
 	k := vars["key"]
 
 	t := TestRedis{}
-	err := h.Context.Cache.GET(k, &t)
+	err := h.Cache().GET(k, &t)
 	if err != nil {
-		return h.Context.JSON(w, http.StatusInternalServerError, err.Error())
+		return h.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 
-	return h.Context.JSON(w, http.StatusOK, t)
+	return h.JSON(w, http.StatusOK, t)
+}
+
+func NewIndexHandler(c *request.Context) *indexHandler {
+	return &indexHandler{c}
 }

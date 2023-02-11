@@ -8,8 +8,8 @@ import (
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
 )
 
-func NewArticleRegistory(ctx *request.Context, master, reprica func() *pg.DB) handler.ArticleHandler {
+func NewLatestArticlesRegistory(ctx *request.Context, master, reprica func() *pg.DB) handler.LatestArticlesHandler {
 	articleRepository := persistence.NewArticlePersistence(master, reprica)
 	articleUseCase := usecase.NewArticleUseCase(articleRepository)
-	return handler.NewArticleHandler(articleUseCase, ctx)
+	return handler.NewLatestArticlesHandler(articleUseCase, ctx)
 }

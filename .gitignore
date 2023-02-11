@@ -1,3 +1,4 @@
 tmp/cache/data
 
-tmp/db/data
+tmp/db/primary/data
+tmp/db/replica/data

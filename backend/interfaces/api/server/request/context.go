@@ -16,23 +16,31 @@ import (
 )
 
 type Context struct {
-	Db     *model.DBContext
-	Cache  *cache.RedisContext
+	db     *model.DBContext
+	cache  *cache.RedisContext
 	Conf   config.Configs
 	Logger *log.Logger
 }
 
 func NewContext(conf config.Configs) *Context {
 	return &Context{
-		Db:     model.New(conf),
-		Cache:  cache.New(conf),
+		db:     model.New(conf),
+		cache:  cache.New(conf),
 		Conf:   conf,
 		Logger: log.New(os.Stdout, "", log.LstdFlags),
 	}
 }
 
-func (c Context) DB() *pg.DB {
-	return c.Db.PsqlDB
+func (c Context) MasterDB() *pg.DB {
+	return c.db.Master()
+}
+
+func (c Context) RepricaDB() *pg.DB {
+	return c.db.Reprica()
+}
+
+func (c Context) Cache() *cache.RedisContext {
+	return c.cache
 }
 
 func (c Context) UnmarshalFromRequest(r *http.Request, i interface{}) error {

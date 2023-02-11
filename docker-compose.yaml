@@ -1,15 +1,15 @@
 version: '3.9'
 services:
-  draft-nginx:
+  nginx:
     build: ./nginx
     ports:
       - "80:80"
     depends_on:
-      - draft-backend
+      - backend
     networks:
       - draft-backend-network
 
-  draft-backend:
+  backend:
     build:
       context: ./backend
       dockerfile: ./Dockerfile
@@ -20,39 +20,98 @@ services:
       - "8000:8000"
     tty: true
     depends_on:
-      draft-postgres:
+      primary:
         condition: service_healthy
-      draft-redis:
+      replica:
+        condition: service_healthy
+      redis:
         condition: service_started
-      draft-migration:
+      migration:
         condition: service_completed_successfully
     networks:
       - draft-backend-network
 
-  draft-postgres:
-    build: ./tmp/db
+  primary:
+    image: postgres:14.4
     restart: always
-    user: postgres
+    command:
+      - "postgres"
+      - "-c"
+      - "config_file=/etc/postgresql/postgresql.conf"
+      - "-c"
+      - "hba_file=/etc/postgresql/pg_hba.conf"
+      # - "-c"
+      # - "log_destination=stderr"
+      # - "-c"
+      # - "log_statement=all"
+      # - "-c"
+      # - "log_connections=on"
+      # - "-c"
+      # - "log_disconnections=on"
     environment:
     # if not POSTGRES_USER and POSTGRES_DB, it will be "postgres".
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: $DB_MASTER_NAME
+      POSTGRES_USER: $DB_MASTER_USER
+      POSTGRES_PASSWORD: $DB_MASTER_PASSWORD
+      PGUSER: $DB_MASTER_USER
       TZ: "Asia/Tokyo"
     ports:
       - 5432:5432
     volumes:
-      - ./tmp/db/data:/var/lib/postgresql/data
-    # command: postgres -c log_destination=stderr -c log_statement=all -c log_connections=on -c log_disconnections=on
+      - ./tmp/db/primary/data:/var/lib/postgresql/data
+      - ./tmp/db/primary/postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./tmp/db/primary/pg_hba.conf:/etc/postgresql/pg_hba.conf
+      - ./tmp/db/primary/init.sh:/docker-entrypoint-initdb.d/init.sh
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready", "-U", "${POSTGRES_USER}"]
+      test: ["CMD-SHELL", "pg_isready", "-q", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
       interval: 1s
-      timeout: 5s
+      timeout: 1s
       retries: 5
     networks:
       - draft-backend-network
 
-  draft-redis:
+  # 動作していない
+  replica:
+    image: postgres:14.4
+    restart: always
+    command:
+      - "postgres"
+      - "-c"
+      - "config_file=/etc/postgresql/postgresql.conf"
+      - "-c"
+      - "hba_file=/etc/postgresql/pg_hba.conf"
+    entrypoint: /entrypoint.sh
+    environment:
+      POSTGRES_DB: $DB_REPLICA_NAME
+      POSTGRES_USER: $DB_REPLICA_USER
+      POSTGRES_PASSWORD: $DB_REPLICA_PASSWORD
+      DB_PRIMARY_HOST: $DB_MASTER_HOST
+      DB_PRIMARY_PORT: $DB_MASTER_PORT
+      DB_PRIMARY_NAME: $DB_MASTER_NAME
+      DB_PRIMARY_USER: $DB_MASTER_USER
+      DB_PRIMARY_PASSWORD: $DB_MASTER_PASSWORD
+      PGUSER: $DB_REPLICA_USER
+      PGDATA: /var/lib/postgresql/data
+    ports:
+      - 15432:5432
+    volumes:
+      - ./tmp/db/replica/data:/var/lib/postgresql/data
+      - ./tmp/db/replica/entrypoint.sh:/entrypoint.sh
+      - ./tmp/db/replica/postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./tmp/db/replica/pg_hba.conf:/etc/postgresql/pg_hba.conf
+      # - ./tmp/db/replica/postgres.auto.conf:/postgres.auto.conf
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-q", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
+      interval: 1s
+      timeout: 1s
+      retries: 5
+    depends_on:
+      primary:
+        condition: service_healthy
+    networks:
+      - draft-backend-network
+
+  redis:
     build: ./tmp/cache
     restart: always
     ports:
@@ -62,10 +121,10 @@ services:
     networks:
       - draft-backend-network
 
-  draft-migration:
+  migration:
     build: ./migrations
     depends_on:
-      draft-postgres :
+      primary:
         condition: service_healthy
     env_file:
       - .env
