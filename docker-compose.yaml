@@ -34,18 +34,18 @@ services:
   primary:
     image: postgres:14.4
     restart: always
-    command: 
-      - "postgres" 
-      - "-c" 
-      - "config_file=/etc/postgresql/postgresql.conf" 
-      - "-c" 
+    command:
+      - "postgres"
+      - "-c"
+      - "config_file=/etc/postgresql/postgresql.conf"
+      - "-c"
       - "hba_file=/etc/postgresql/pg_hba.conf"
-      # - "-c" 
+      # - "-c"
       # - "log_destination=stderr"
-      # - "-c" 
-      # - "log_statement=all" 
-      # - "-c" 
-      # - "log_connections=on" 
+      # - "-c"
+      # - "log_statement=all"
+      # - "-c"
+      # - "log_connections=on"
       # - "-c"
       # - "log_disconnections=on"
     environment:
@@ -70,14 +70,15 @@ services:
     networks:
       - draft-backend-network
 
+  # 動作していない
   replica:
     image: postgres:14.4
     restart: always
-    command: 
-      - "postgres" 
-      - "-c" 
-      - "config_file=/etc/postgresql/postgresql.conf" 
-      - "-c" 
+    command:
+      - "postgres"
+      - "-c"
+      - "config_file=/etc/postgresql/postgresql.conf"
+      - "-c"
       - "hba_file=/etc/postgresql/pg_hba.conf"
     entrypoint: /entrypoint.sh
     environment:
@@ -86,7 +87,7 @@ services:
       POSTGRES_PASSWORD: $DB_REPLICA_PASSWORD
       DB_PRIMARY_HOST: $DB_MASTER_HOST
       DB_PRIMARY_PORT: $DB_MASTER_PORT
-      DB_PRIMARY_NAME: $DB_MASTER_NAME      
+      DB_PRIMARY_NAME: $DB_MASTER_NAME
       DB_PRIMARY_USER: $DB_MASTER_USER
       DB_PRIMARY_PASSWORD: $DB_MASTER_PASSWORD
       PGUSER: $DB_REPLICA_USER
