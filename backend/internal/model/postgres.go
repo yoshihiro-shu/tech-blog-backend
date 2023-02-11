@@ -27,11 +27,11 @@ func (c DBContext) Reprica() *pg.DB {
 	return c.repricas[n.Int64()]
 }
 
-func initMaster(conf config.DB) *pg.DB {
+func connectToMaster(conf config.DB) *pg.DB {
 	return getDBConnection(conf)
 }
 
-func initRepicas(conf []config.DB) []*pg.DB {
+func connectToRepricas(conf []config.DB) []*pg.DB {
 	dbs := make([]*pg.DB, len(conf))
 	for i, v := range conf {
 		dbs[i] = getDBConnection(v)
@@ -50,7 +50,7 @@ func getDBConnection(c config.DB) *pg.DB {
 
 func New(conf config.Configs) *DBContext {
 	return &DBContext{
-		master:   initMaster(conf.MasterDB()),
-		repricas: initRepicas(conf.RepricaDB()),
+		master:   connectToMaster(conf.MasterDB()),
+		repricas: connectToRepricas(conf.RepricaDB()),
 	}
 }
