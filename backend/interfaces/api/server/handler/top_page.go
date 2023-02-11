@@ -22,7 +22,7 @@ type topPageHandler struct {
 
 const (
 	// 一ページあたりの記事数
-	numberOfArticlePerPage = 1
+	numberOfArticlePerPage = 10
 )
 
 func NewTopPageHandler(topPageUseCase usecase.TopPageUseCase, c *request.Context) TopPageHandler {
