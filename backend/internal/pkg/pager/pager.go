@@ -11,11 +11,11 @@ func New(currentPage int) *Pager {
 	}
 }
 
-func (p *Pager) SetLastPage(offset, numOfArticles int) {
-	numOfPage := numOfArticles / offset
+func (p *Pager) SetLastPage(limit, numOfArticles int) {
+	numOfPage := numOfArticles / limit
 
 	//　余りありの時
-	if numOfArticles%offset > 0 {
+	if numOfArticles%limit > 0 {
 		numOfPage += 1
 	}
 
