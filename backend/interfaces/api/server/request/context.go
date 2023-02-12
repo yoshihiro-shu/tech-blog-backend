@@ -25,7 +25,7 @@ type Context struct {
 func NewContext(conf config.Configs) *Context {
 	return &Context{
 		db:     model.New(conf),
-		cache:  cache.New(conf),
+		cache:  cache.New(conf.CacheRedis),
 		Conf:   conf,
 		Logger: log.New(os.Stdout, "", log.LstdFlags),
 	}

@@ -18,11 +18,11 @@ type redisContext struct {
 	ctx        context.Context
 }
 
-func New(c config.Configs) RedisClient {
+func New(c config.RedisCache) RedisClient {
 	rds := redis.NewClient(&redis.Options{
 		Addr:     c.GetRedisDNS(),
-		Password: c.GetCacheRedis().Password, // no password sret
-		DB:       c.GetCacheRedis().DbNumber, // use default DB
+		Password: c.Password, // no password sret
+		DB:       c.DbNumber, // use default DB
 	})
 
 	return &redisContext{
