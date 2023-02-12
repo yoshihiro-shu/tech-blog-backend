@@ -7,10 +7,7 @@ import (
 )
 
 type Logger interface {
-	Debug(msg string, opts ...zap.Field)
-	Info(msg string, opts ...zap.Field)
-	Warn(msg string, opts ...zap.Field)
-	Error(msg string, opts ...zap.Field)
+	Zap() *zap.Logger
 }
 
 type logger struct {
@@ -18,20 +15,8 @@ type logger struct {
 	sugar *zap.SugaredLogger
 }
 
-func (l logger) Debug(msg string, opts ...zap.Field) {
-	l.zap.Debug(msg, opts...)
-}
-
-func (l logger) Info(msg string, opts ...zap.Field) {
-	l.zap.Info(msg, opts...)
-}
-
-func (l logger) Warn(msg string, opts ...zap.Field) {
-	l.zap.Warn(msg, opts...)
-}
-
-func (l logger) Error(msg string, opts ...zap.Field) {
-	l.zap.Error(msg, opts...)
+func (l logger) Zap() *zap.Logger {
+	return l.zap
 }
 
 func New() Logger {
