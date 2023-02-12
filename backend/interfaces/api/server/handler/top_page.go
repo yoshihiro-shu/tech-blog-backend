@@ -6,8 +6,8 @@ import (
 
 	"github.com/yoshihiro-shu/draft-backend/application/usecase"
 	"github.com/yoshihiro-shu/draft-backend/domain/model"
+	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/cache"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
-	"github.com/yoshihiro-shu/draft-backend/internal/cache"
 	"github.com/yoshihiro-shu/draft-backend/internal/pkg/pager"
 )
 

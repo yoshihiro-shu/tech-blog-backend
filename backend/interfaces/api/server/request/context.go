@@ -10,14 +10,14 @@ import (
 
 	"github.com/go-pg/pg"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/auth"
-	"github.com/yoshihiro-shu/draft-backend/internal/cache"
+	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/cache"
+	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/model"
 	"github.com/yoshihiro-shu/draft-backend/internal/config"
-	"github.com/yoshihiro-shu/draft-backend/internal/model"
 )
 
 type Context struct {
 	db     *model.DBContext
-	cache  *cache.RedisContext
+	cache  cache.RedisClient
 	Conf   config.Configs
 	Logger *log.Logger
 }
@@ -25,7 +25,7 @@ type Context struct {
 func NewContext(conf config.Configs) *Context {
 	return &Context{
 		db:     model.New(conf),
-		cache:  cache.New(conf),
+		cache:  cache.New(conf.CacheRedis),
 		Conf:   conf,
 		Logger: log.New(os.Stdout, "", log.LstdFlags),
 	}
@@ -39,7 +39,7 @@ func (c Context) RepricaDB() *pg.DB {
 	return c.db.Reprica()
 }
 
-func (c Context) Cache() *cache.RedisContext {
+func (c Context) Cache() cache.RedisClient {
 	return c.cache
 }
 

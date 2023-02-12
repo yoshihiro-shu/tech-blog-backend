@@ -67,12 +67,12 @@ func (c Configs) GetCacheRedis() RedisCache {
 	return c.CacheRedis
 }
 
-func (c Configs) GetRedisDNS() string {
-	return fmt.Sprintf("%s:%s", c.CacheRedis.Host, c.CacheRedis.Port)
-}
-
 func (c Configs) GetUserAddr() string {
 	return fmt.Sprintf("%s:%s", c.User.Host, c.User.Port)
+}
+
+func (c RedisCache) GetRedisDNS() string {
+	return fmt.Sprintf("%s:%s", c.Host, c.Port)
 }
 
 func New() Configs {

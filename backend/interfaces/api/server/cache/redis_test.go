@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/yoshihiro-shu/draft-backend/internal/cache"
+	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/cache"
 	"github.com/yoshihiro-shu/draft-backend/internal/config"
 )
 
@@ -64,13 +64,11 @@ func TestRedis(t *testing.T) {
 	}
 }
 
-func testConfig() config.Configs {
-	return config.Configs{
-		CacheRedis: config.RedisCache{
-			Host:     "127.0.0.1",
-			Port:     "6379",
-			Password: "",
-			DbNumber: 0,
-		},
+func testConfig() config.RedisCache {
+	return config.RedisCache{
+		Host:     "127.0.0.1",
+		Port:     "6379",
+		Password: "",
+		DbNumber: 0,
 	}
 }
