@@ -18,5 +18,8 @@ require (
 	github.com/go-pg/pg v8.0.7+incompatible // indirect
 	github.com/google/go-cmp v0.5.8 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
+	go.uber.org/atomic v1.10.0 // indirect
+	go.uber.org/multierr v1.9.0 // indirect
+	go.uber.org/zap v1.24.0 // indirect
 	mellium.im/sasl v0.3.0 // indirect
 )

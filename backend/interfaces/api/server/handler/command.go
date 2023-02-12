@@ -12,7 +12,6 @@ func (h indexHandler) Command(w http.ResponseWriter, r *http.Request) error {
 	cmd.Stdout = &out
 	err := cmd.Run()
 	if err != nil {
-		h.Context.Logger.Fatalln(err)
 		return h.JSON(w, http.StatusOK, err.Error())
 	}
 

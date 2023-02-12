@@ -8,7 +8,9 @@ import (
 	"github.com/yoshihiro-shu/draft-backend/domain/model"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/cache"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
+	"github.com/yoshihiro-shu/draft-backend/internal/pkg/logger"
 	"github.com/yoshihiro-shu/draft-backend/internal/pkg/pager"
+	"go.uber.org/zap"
 )
 
 type TopPageHandler interface {
@@ -17,6 +19,7 @@ type TopPageHandler interface {
 
 type topPageHandler struct {
 	*request.Context
+	logger         logger.Logger
 	topPageUseCase usecase.TopPageUseCase
 }
 
@@ -25,9 +28,10 @@ const (
 	numberOfArticlePerPage = 10
 )
 
-func NewTopPageHandler(topPageUseCase usecase.TopPageUseCase, c *request.Context) TopPageHandler {
+func NewTopPageHandler(topPageUseCase usecase.TopPageUseCase, c *request.Context, l logger.Logger) TopPageHandler {
 	return &topPageHandler{
 		Context:        c,
+		logger:         l,
 		topPageUseCase: topPageUseCase,
 	}
 }
@@ -37,33 +41,35 @@ type responseTopPage struct {
 	Pager   *pager.Pager    `json:"pager"`
 }
 
-func (tp topPageHandler) Get(w http.ResponseWriter, r *http.Request) error {
+func (h topPageHandler) Get(w http.ResponseWriter, r *http.Request) error {
 	currentPage := 1
 	var res responseTopPage
 
 	resKey := fmt.Sprintf(cache.TopPageAritcleListKeyByPage, currentPage)
 
-	err := tp.Cache().GET(resKey, &res)
+	err := h.Cache().GET(resKey, &res)
 	if err == nil {
-		return tp.JSON(w, http.StatusOK, res)
+		return h.JSON(w, http.StatusOK, res)
 	}
 
 	// Number Of Articles Per 1 page
 	limit := numberOfArticlePerPage
 	offset := numberOfArticlePerPage * (currentPage - 1)
-	err = tp.topPageUseCase.GetArticles(&res.Article, limit, offset)
+	err = h.topPageUseCase.GetArticles(&res.Article, limit, offset)
 	if err != nil {
-		return tp.JSON(w, http.StatusInternalServerError, err.Error())
+		h.logger.Warn("failed at get articles at top page.", zap.Error(err))
+		return h.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 
-	res.Pager, err = tp.topPageUseCase.GetPager(currentPage, numberOfArticlePerPage)
+	res.Pager, err = h.topPageUseCase.GetPager(currentPage, numberOfArticlePerPage)
 	if err != nil {
-		return tp.JSON(w, http.StatusInternalServerError, err.Error())
+		h.logger.Warn("failed at get pager at top page.", zap.Error(err))
+		return h.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 
-	err = tp.Cache().SET(resKey, res)
+	err = h.Cache().SET(resKey, res)
 	if err != nil {
-		tp.Logger.Fatal(err.Error())
+		h.logger.Error("failed at set cache redis at top page.", zap.Error(err))
 	}
-	return tp.JSON(w, http.StatusOK, res)
+	return h.JSON(w, http.StatusOK, res)
 }

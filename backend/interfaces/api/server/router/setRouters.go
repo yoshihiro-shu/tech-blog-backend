@@ -7,13 +7,16 @@ import (
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/handler"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/middleware"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
+	"github.com/yoshihiro-shu/draft-backend/internal/pkg/logger"
 	"github.com/yoshihiro-shu/draft-backend/registory"
 )
 
 func (r Router) ApplyRouters() {
 	ctx := request.NewContext(r.Config)
+	logger := logger.New()
 
 	r.Use(middleware.CorsMiddleware)
+	r.Use(middleware.LoggerMiddleware(logger))
 
 	h := handler.NewIndexHandler(ctx)
 
@@ -23,6 +26,7 @@ func (r Router) ApplyRouters() {
 	{
 		topPageHandler := registory.NewTopPageRegistory(
 			ctx,
+			logger,
 			ctx.MasterDB,
 			ctx.RepricaDB,
 		)
@@ -31,6 +35,7 @@ func (r Router) ApplyRouters() {
 	{
 		lastestAriclesHandler := registory.NewLatestArticlesRegistory(
 			ctx,
+			logger,
 			ctx.MasterDB,
 			ctx.RepricaDB,
 		)

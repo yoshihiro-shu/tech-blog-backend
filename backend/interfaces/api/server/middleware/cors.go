@@ -16,7 +16,6 @@ func CorsMiddleware(next http.Handler) http.Handler {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 
-		// c.Logger.Println("url:", r.URL)
 		next.ServeHTTP(w, r)
 	})
 }
