@@ -26,6 +26,7 @@ func (r Router) ApplyRouters() {
 	{
 		topPageHandler := registory.NewTopPageRegistory(
 			ctx,
+			logger,
 			ctx.MasterDB,
 			ctx.RepricaDB,
 		)

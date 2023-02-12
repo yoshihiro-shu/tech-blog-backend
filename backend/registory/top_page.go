@@ -6,10 +6,11 @@ import (
 	"github.com/yoshihiro-shu/draft-backend/infrastructure/persistence"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/handler"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
+	"github.com/yoshihiro-shu/draft-backend/internal/pkg/logger"
 )
 
-func NewTopPageRegistory(ctx *request.Context, master, reprica func() *pg.DB) handler.TopPageHandler {
+func NewTopPageRegistory(ctx *request.Context, l logger.Logger, master, reprica func() *pg.DB) handler.TopPageHandler {
 	topPageRepository := persistence.NewTopPagePersistence(master, reprica)
 	topPageUseCase := usecase.NewTopPageUseCase(topPageRepository)
-	return handler.NewTopPageHandler(topPageUseCase, ctx)
+	return handler.NewTopPageHandler(topPageUseCase, ctx, l)
 }
