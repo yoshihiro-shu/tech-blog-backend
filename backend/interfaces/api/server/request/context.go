@@ -17,7 +17,7 @@ import (
 
 type Context struct {
 	db     *model.DBContext
-	cache  *cache.RedisContext
+	cache  cache.RedisClient
 	Conf   config.Configs
 	Logger *log.Logger
 }
@@ -39,7 +39,7 @@ func (c Context) RepricaDB() *pg.DB {
 	return c.db.Reprica()
 }
 
-func (c Context) Cache() *cache.RedisContext {
+func (c Context) Cache() cache.RedisClient {
 	return c.cache
 }
 
