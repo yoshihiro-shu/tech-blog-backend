@@ -8,7 +8,9 @@ import (
 	"github.com/yoshihiro-shu/draft-backend/application/usecase"
 	"github.com/yoshihiro-shu/draft-backend/domain/model"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
+	"github.com/yoshihiro-shu/draft-backend/internal/pkg/logger"
 	"github.com/yoshihiro-shu/draft-backend/internal/pkg/pager"
+	"go.uber.org/zap"
 )
 
 type LatestArticlesHandler interface {
@@ -17,6 +19,7 @@ type LatestArticlesHandler interface {
 
 type latestArticlesHandler struct {
 	*request.Context
+	logger         logger.Logger
 	articleUseCase usecase.ArticleUseCase
 }
 
@@ -25,9 +28,10 @@ const (
 	numberOfArticlePerPageAtLatestAritcles = 1
 )
 
-func NewLatestArticlesHandler(articleUseCase usecase.ArticleUseCase, c *request.Context) LatestArticlesHandler {
+func NewLatestArticlesHandler(articleUseCase usecase.ArticleUseCase, c *request.Context, l logger.Logger) LatestArticlesHandler {
 	return &latestArticlesHandler{
 		Context:        c,
+		logger:         l,
 		articleUseCase: articleUseCase,
 	}
 }
@@ -43,7 +47,8 @@ func (h latestArticlesHandler) Get(w http.ResponseWriter, r *http.Request) error
 	page := r.URL.Query().Get("page")
 	currentPage, err := strconv.Atoi(page)
 	if err != nil {
-		return h.Error(w, http.StatusBadRequest, err)
+		h.logger.Error("failed at convert string to integer.", zap.Error(err))
+		currentPage = 1
 	}
 
 	limit := numberOfArticlePerPageAtLatestAritcles
@@ -52,13 +57,16 @@ func (h latestArticlesHandler) Get(w http.ResponseWriter, r *http.Request) error
 	err = h.articleUseCase.GetArticles(&res.Articles, limit, offset)
 	if err != nil {
 		if err == pg.ErrNoRows {
+			h.logger.Warn("err no articles at latest Articles Handler")
 			return h.JSON(w, http.StatusNotFound, err)
 		}
+		h.logger.Warn("failed at get articles at latest articles.", zap.Error(err))
 		return h.Error(w, http.StatusInternalServerError, err)
 	}
 
 	res.Pager, err = h.articleUseCase.GetPager(currentPage, limit)
 	if err != nil {
+		h.logger.Warn("failed at get pager at top page.", zap.Error(err))
 		return h.Error(w, http.StatusInternalServerError, err)
 	}
 

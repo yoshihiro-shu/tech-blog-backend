@@ -35,6 +35,7 @@ func (r Router) ApplyRouters() {
 	{
 		lastestAriclesHandler := registory.NewLatestArticlesRegistory(
 			ctx,
+			logger,
 			ctx.MasterDB,
 			ctx.RepricaDB,
 		)
