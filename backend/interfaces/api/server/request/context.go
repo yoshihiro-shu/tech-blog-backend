@@ -10,9 +10,9 @@ import (
 
 	"github.com/go-pg/pg"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/auth"
+	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/model"
 	"github.com/yoshihiro-shu/draft-backend/internal/cache"
 	"github.com/yoshihiro-shu/draft-backend/internal/config"
-	"github.com/yoshihiro-shu/draft-backend/internal/model"
 )
 
 type Context struct {

@@ -4,8 +4,7 @@ import (
 	"time"
 
 	"github.com/go-pg/pg"
-
-	"github.com/yoshihiro-shu/draft-backend/internal/model/article/table"
+	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/model/article/table"
 )
 
 type (
