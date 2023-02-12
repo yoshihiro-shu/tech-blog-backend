@@ -4,22 +4,21 @@ import (
 	"context"
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"net/http"
-	"os"
 
 	"github.com/go-pg/pg"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/auth"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/cache"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/model"
 	"github.com/yoshihiro-shu/draft-backend/internal/config"
+	"github.com/yoshihiro-shu/draft-backend/internal/pkg/logger"
 )
 
 type Context struct {
 	db     *model.DBContext
 	cache  cache.RedisClient
 	Conf   config.Configs
-	Logger *log.Logger
+	Logger logger.Logger
 }
 
 func NewContext(conf config.Configs) *Context {
@@ -27,7 +26,7 @@ func NewContext(conf config.Configs) *Context {
 		db:     model.New(conf),
 		cache:  cache.New(conf.CacheRedis),
 		Conf:   conf,
-		Logger: log.New(os.Stdout, "", log.LstdFlags),
+		Logger: logger.New(),
 	}
 }
 
