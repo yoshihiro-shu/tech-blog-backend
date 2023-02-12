@@ -57,19 +57,19 @@ func (h topPageHandler) Get(w http.ResponseWriter, r *http.Request) error {
 	offset := numberOfArticlePerPage * (currentPage - 1)
 	err = h.topPageUseCase.GetArticles(&res.Article, limit, offset)
 	if err != nil {
-		h.logger.Warn("failed at get articles at top page", zap.Error(err))
+		h.logger.Warn("failed at get articles at top page.", zap.Error(err))
 		return h.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 
 	res.Pager, err = h.topPageUseCase.GetPager(currentPage, numberOfArticlePerPage)
 	if err != nil {
-		h.logger.Warn("failed at get pager at top page", zap.Error(err))
+		h.logger.Warn("failed at get pager at top page.", zap.Error(err))
 		return h.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 
 	err = h.Cache().SET(resKey, res)
 	if err != nil {
-		h.logger.Error("failed at set cache redis at top page", zap.Error(err))
+		h.logger.Error("failed at set cache redis at top page.", zap.Error(err))
 	}
 	return h.JSON(w, http.StatusOK, res)
 }
