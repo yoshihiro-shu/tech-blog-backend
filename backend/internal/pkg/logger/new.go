@@ -35,9 +35,9 @@ func (l logger) Error(msg string, fields ...zap.Field) {
 }
 
 func New() Logger {
-	zap, err := zap.NewDevelopment(zap.AddCallerSkip(1))
+	zap, err := config.Build(zap.AddCallerSkip(1))
 	if err != nil {
-		log.Fatalf("ERROR AT Init Logger %s\n", err.Error())
+		log.Fatalf("error at init zap logger err is%s.\n", err.Error())
 		panic(err)
 	}
 	return logger{
