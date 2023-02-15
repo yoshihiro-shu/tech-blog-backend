@@ -24,14 +24,10 @@ func (c Context) JSON(w http.ResponseWriter, status int, data interface{}) error
 	}
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(status)
 	_, err = w.Write(b)
 	if err != nil {
 		log.Fatalf("failed at write response. err is %s\n", err.Error())
-	}
-
-	// TODO FIX Headerに反映されていない。
-	if status != http.StatusOK {
-		w.WriteHeader(status)
 	}
 
 	return nil
