@@ -2,8 +2,9 @@ package request
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
+
+	"go.uber.org/zap"
 )
 
 type JSONResponce struct {
@@ -27,7 +28,7 @@ func (c Context) JSON(w http.ResponseWriter, status int, data interface{}) error
 	w.WriteHeader(status)
 	_, err = w.Write(b)
 	if err != nil {
-		log.Fatalf("failed at write response. err is %s\n", err.Error())
+		c.Logger.Error("failed at write response.", zap.Error(err))
 	}
 
 	return nil
