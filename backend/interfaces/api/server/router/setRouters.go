@@ -40,7 +40,7 @@ func (r Router) Apply(conf config.Configs, logger logger.Logger) {
 			ctx.RepricaDB,
 		)
 		latestArticles := r.Group("/new")
-		latestArticles.AppHandle("", lastestAriclesHandler.Get).Methods(http.MethodGet)
+		latestArticles.AppHandle("/{page:[0-9]+}", lastestAriclesHandler.Get).Methods(http.MethodGet)
 	}
 	{
 		twitterHandler := registory.NewTwitterRegistory(ctx)

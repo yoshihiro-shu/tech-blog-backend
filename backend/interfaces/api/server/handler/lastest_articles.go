@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/go-pg/pg"
+	"github.com/gorilla/mux"
 	"github.com/yoshihiro-shu/draft-backend/application/usecase"
 	"github.com/yoshihiro-shu/draft-backend/domain/model"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
@@ -43,9 +44,9 @@ type responseLatestAritcles struct {
 
 func (h latestArticlesHandler) Get(w http.ResponseWriter, r *http.Request) error {
 	var res responseLatestAritcles
-
-	page := r.URL.Query().Get("page")
-	currentPage, err := strconv.Atoi(page)
+	vars := mux.Vars(r)
+	strPage := vars["page"]
+	currentPage, err := strconv.Atoi(strPage)
 	if err != nil {
 		h.logger.Error("failed at convert string to integer.", zap.Error(err))
 		currentPage = 1
