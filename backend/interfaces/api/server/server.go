@@ -26,6 +26,7 @@ ____________________________________O/_______
 
 type Server struct {
 	*http.Server
+	conf   config.Configs
 	logger logger.Logger
 }
 
@@ -33,17 +34,18 @@ func New(conf config.Configs, logger logger.Logger) *Server {
 	return &Server{
 		Server: &http.Server{
 			Addr:           conf.GetUserAddr(),
-			Handler:        router.New(conf),
+			Handler:        router.New(),
 			ReadTimeout:    10 * time.Second,
 			WriteTimeout:   10 * time.Second,
 			MaxHeaderBytes: 1 << 20,
 		},
+		conf:   conf,
 		logger: logger,
 	}
 }
 
 func (s Server) SetRouters() {
-	s.Server.Handler.(*router.Router).Apply(s.logger)
+	s.Server.Handler.(*router.Router).Apply(s.conf, s.logger)
 }
 
 func (srv Server) Start() {

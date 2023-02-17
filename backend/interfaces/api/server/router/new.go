@@ -5,18 +5,15 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/httputils"
-	"github.com/yoshihiro-shu/draft-backend/internal/config"
 )
 
 type Router struct {
 	*mux.Router
-	Config config.Configs
 }
 
-func New(conf config.Configs) *Router {
+func New() *Router {
 	return &Router{
 		Router: mux.NewRouter(),
-		Config: conf,
 	}
 }
 

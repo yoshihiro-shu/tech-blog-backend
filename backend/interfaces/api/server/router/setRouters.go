@@ -7,12 +7,13 @@ import (
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/handler"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/middleware"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
+	"github.com/yoshihiro-shu/draft-backend/internal/config"
 	"github.com/yoshihiro-shu/draft-backend/internal/pkg/logger"
 	"github.com/yoshihiro-shu/draft-backend/registory"
 )
 
-func (r Router) Apply(logger logger.Logger) {
-	ctx := request.NewContext(r.Config)
+func (r Router) Apply(conf config.Configs, logger logger.Logger) {
+	ctx := request.NewContext(conf, logger)
 
 	r.Use(middleware.CorsMiddleware)
 	r.Use(middleware.LoggerMiddleware(logger))
