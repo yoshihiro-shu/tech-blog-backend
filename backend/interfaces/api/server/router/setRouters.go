@@ -11,9 +11,8 @@ import (
 	"github.com/yoshihiro-shu/draft-backend/registory"
 )
 
-func (r Router) ApplyRouters() {
+func (r Router) Apply(logger logger.Logger) {
 	ctx := request.NewContext(r.Config)
-	logger := logger.New()
 
 	r.Use(middleware.CorsMiddleware)
 	r.Use(middleware.LoggerMiddleware(logger))

@@ -11,13 +11,25 @@ import (
 
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/router"
 	"github.com/yoshihiro-shu/draft-backend/internal/config"
+	"github.com/yoshihiro-shu/draft-backend/internal/pkg/logger"
+)
+
+const (
+	banner = `
+____________________________________O/_______
+                                    O\
+Server is Started
+____________________________________O/_______
+                                    O\
+`
 )
 
 type Server struct {
 	*http.Server
+	logger logger.Logger
 }
 
-func New(conf config.Configs) *Server {
+func New(conf config.Configs, logger logger.Logger) *Server {
 	return &Server{
 		Server: &http.Server{
 			Addr:           conf.GetUserAddr(),
@@ -26,11 +38,12 @@ func New(conf config.Configs) *Server {
 			WriteTimeout:   10 * time.Second,
 			MaxHeaderBytes: 1 << 20,
 		},
+		logger: logger,
 	}
 }
 
 func (s Server) SetRouters() {
-	s.Server.Handler.(*router.Router).ApplyRouters()
+	s.Server.Handler.(*router.Router).Apply(s.logger)
 }
 
 func (srv Server) Start() {
@@ -44,6 +57,8 @@ func (srv Server) Start() {
 			log.Println(err)
 		}
 	}()
+
+	srv.logger.Info(banner)
 
 	c := make(chan os.Signal, 1)
 	// We'll accept graceful shutdowns when quit via SIGINT (Ctrl+C)
