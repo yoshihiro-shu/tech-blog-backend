@@ -40,11 +40,12 @@ func (au *articleUseCase) Create(title, content string, userId, categoryId int) 
 }
 
 func (au *articleUseCase) FindByID(id int) (*model.Article, error) {
-	foundArticle, err := au.articleRepo.FindByID(id)
+	article := &model.Article{Id: id}
+	err := au.articleRepo.FindByID(article)
 	if err != nil {
 		return nil, err
 	}
-	return foundArticle, nil
+	return article, nil
 }
 
 func (au *articleUseCase) GetArticles(articles *[]model.Article, limit, offset int) error {

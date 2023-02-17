@@ -22,16 +22,19 @@ func (ap *articlePersistence) Create(article *model.Article) (*model.Article, er
 	return &model.Article{}, nil
 }
 
-func (ap *articlePersistence) FindByID(id int) (*model.Article, error) {
-	article := &model.Article{Id: id}
-	query := ap.Reprica().Model(article).WherePK()
+func (ap *articlePersistence) FindByID(article *model.Article) error {
+	query := ap.Reprica().Model(article).
+		Relation("Tags").
+		Relation("Category").
+		Relation("User").
+		WherePK()
 
 	err := query.Select()
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return article, nil
+	return nil
 }
 
 func (ap *articlePersistence) GetArticles(articles *[]model.Article, limit, offset int) error {
