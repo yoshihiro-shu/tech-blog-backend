@@ -9,7 +9,7 @@ import (
 
 type Router interface {
 	Group(path string) Router
-	Use(fn ...mux.MiddlewareFunc)
+	Use(fn ...func(http.Handler) http.Handler)
 	ServeHTTP(rw http.ResponseWriter, req *http.Request)
 	GET(path string, fn func(http.ResponseWriter, *http.Request) error)
 	POST(path string, fn func(http.ResponseWriter, *http.Request) error)
@@ -21,8 +21,7 @@ type router struct {
 	Router *mux.Router
 }
 
-// type MiddlewareFunc func(http.Handler) http.Handler
-type MiddlewareFunc mux.MiddlewareFunc
+type MiddlewareFunc func(http.Handler) http.Handler
 
 func New() Router {
 	return &router{
@@ -35,8 +34,14 @@ func (r router) Group(path string) Router {
 	return r
 }
 
-func (r router) Use(fn ...mux.MiddlewareFunc) {
-	r.Router.Use(fn...)
+func (r router) Use(fns ...func(http.Handler) http.Handler) {
+
+	middlewareFuncs := make([]mux.MiddlewareFunc, len(fns))
+	for i, v := range fns {
+		middlewareFuncs[i] = mux.MiddlewareFunc(v)
+	}
+
+	r.Router.Use(middlewareFuncs...)
 }
 
 func (r router) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
