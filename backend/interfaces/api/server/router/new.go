@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/httputils"
 )
 
 type Router interface {
@@ -49,17 +48,17 @@ func (r router) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 }
 
 func (r router) GET(path string, fn func(http.ResponseWriter, *http.Request) error) {
-	r.Router.Handle(path, httputils.Handler(fn)).Methods(http.MethodGet)
+	r.Router.Handle(path, appHandler(fn)).Methods(http.MethodGet)
 }
 
 func (r router) POST(path string, fn func(http.ResponseWriter, *http.Request) error) {
-	r.Router.Handle(path, httputils.Handler(fn)).Methods(http.MethodPost)
+	r.Router.Handle(path, appHandler(fn)).Methods(http.MethodPost)
 }
 
 func (r router) PUT(path string, fn func(http.ResponseWriter, *http.Request) error) {
-	r.Router.Handle(path, httputils.Handler(fn)).Methods(http.MethodPut)
+	r.Router.Handle(path, appHandler(fn)).Methods(http.MethodPut)
 }
 
 func (r router) DELETE(path string, fn func(http.ResponseWriter, *http.Request) error) {
-	r.Router.Handle(path, httputils.Handler(fn)).Methods(http.MethodDelete)
+	r.Router.Handle(path, appHandler(fn)).Methods(http.MethodDelete)
 }
