@@ -11,6 +11,7 @@ import (
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/cache"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/model"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/router"
+	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/user_api"
 	"github.com/yoshihiro-shu/draft-backend/internal/config"
 	"github.com/yoshihiro-shu/draft-backend/internal/pkg/logger"
 	"go.uber.org/zap"
@@ -51,7 +52,13 @@ func New(conf config.Configs, logger logger.Logger, db *model.DBContext, cache c
 }
 
 func (s Server) SetRouters() {
-	s.Server.Handler.(*router.Router).Apply(s.conf, s.logger, s.db, s.cache)
+	user_api.Apply(
+		s.Handler.(router.Router),
+		s.conf,
+		s.logger,
+		s.db,
+		s.cache,
+	)
 }
 
 func (srv Server) Start() {

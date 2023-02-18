@@ -1,20 +1,19 @@
-package router
+package user_api
 
 import (
-	"net/http"
-
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/auth"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/cache"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/handler"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/middleware"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/model"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
+	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/router"
 	"github.com/yoshihiro-shu/draft-backend/internal/config"
 	"github.com/yoshihiro-shu/draft-backend/internal/pkg/logger"
 	"github.com/yoshihiro-shu/draft-backend/registory"
 )
 
-func (r Router) Apply(conf config.Configs, logger logger.Logger, db *model.DBContext, cache cache.RedisClient) {
+func Apply(r router.Router, conf config.Configs, logger logger.Logger, db *model.DBContext, cache cache.RedisClient) {
 	ctx := request.NewContext(conf, logger, db, cache)
 
 	r.Use(middleware.CorsMiddleware)
@@ -23,7 +22,7 @@ func (r Router) Apply(conf config.Configs, logger logger.Logger, db *model.DBCon
 	h := handler.NewIndexHandler(ctx)
 
 	{
-		r.AppHandle("/healthcheck", h.Index).Methods(http.MethodGet)
+		r.GET("/healthcheck", h.Index)
 	}
 	{
 		topPageHandler := registory.NewTopPageRegistory(
@@ -32,7 +31,7 @@ func (r Router) Apply(conf config.Configs, logger logger.Logger, db *model.DBCon
 			ctx.MasterDB,
 			ctx.RepricaDB,
 		)
-		r.AppHandle("/top", topPageHandler.Get).Methods(http.MethodGet)
+		r.GET("/top", topPageHandler.Get)
 	}
 	{
 		lastestAriclesHandler := registory.NewLatestArticlesRegistory(
@@ -42,40 +41,41 @@ func (r Router) Apply(conf config.Configs, logger logger.Logger, db *model.DBCon
 			ctx.RepricaDB,
 		)
 		latestArticles := r.Group("/new")
-		latestArticles.AppHandle("/{page:[0-9]+}", lastestAriclesHandler.Get).Methods(http.MethodGet)
+		latestArticles.GET("/{page:[0-9]+}", lastestAriclesHandler.Get)
+
 	}
 	{
 		twitterHandler := registory.NewTwitterRegistory(ctx)
 		twitter := r.Group("/twitter")
-		twitter.AppHandle("/timeline", twitterHandler.GetTimeLine).Methods(http.MethodGet)
+		twitter.GET("/timeline", twitterHandler.GetTimeLine)
 	}
 	{
 		// Grouping
 		t := r.Group("/test")
-		t.AppHandle("", h.TestHandler).Methods(http.MethodGet)
-		t.AppHandle("/redis", h.TestSetRedis).Methods(http.MethodPost)
-		t.AppHandle("/redis/{key}", h.TestGetRedis).Methods(http.MethodGet)
-		t.AppHandle("/v2", h.Index).Methods(http.MethodGet)
+		t.GET("", h.TestHandler)
+		t.POST("/redis", h.TestSetRedis)
+		t.GET("/redis/{key}", h.TestGetRedis)
+		t.GET("/v2", h.Index)
 	}
 	{
 		c := r.Group("/cmd")
-		c.AppHandle("", h.Command).Methods(http.MethodGet)
+		c.GET("", h.Command)
 	}
 	{
 		user := r.Group("/users")
 		userHandler := registory.NewUserRegistory(ctx)
-		user.AppHandle("/login", userHandler.Login).Methods(http.MethodPost)
-		user.AppHandle("/signup", userHandler.SignUp).Methods(http.MethodPost)
-		// user.HandleFunc("/register", h.RegisterAccount).Methods(http.MethodPost)
+		user.POST("/login", userHandler.Login)
+		user.POST("/signup", userHandler.SignUp)
+		// user.POST("/register", h.RegisterAccount)
 	}
 	{
 		articleHandler := registory.NewArticleRegistory(ctx, ctx.MasterDB, ctx.RepricaDB)
 		article := r.Group("/articles")
-		article.AppHandle("/{id:[0-9]+}", articleHandler.Get).Methods(http.MethodGet)
+		article.GET("/{id:[0-9]+}", articleHandler.Get)
 	}
 	{
 		a := r.Group("/auth")
 		a.Use(auth.AuthMiddleware)
-		a.AppHandle("/index", h.AuthIndex).Methods(http.MethodGet)
+		a.GET("/index", h.AuthIndex)
 	}
 }
