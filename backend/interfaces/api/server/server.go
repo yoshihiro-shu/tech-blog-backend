@@ -8,6 +8,8 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/cache"
+	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/model"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/router"
 	"github.com/yoshihiro-shu/draft-backend/internal/config"
 	"github.com/yoshihiro-shu/draft-backend/internal/pkg/logger"
@@ -28,9 +30,11 @@ type Server struct {
 	*http.Server
 	conf   config.Configs
 	logger logger.Logger
+	db     *model.DBContext
+	cache  cache.RedisClient
 }
 
-func New(conf config.Configs, logger logger.Logger) *Server {
+func New(conf config.Configs, logger logger.Logger, db *model.DBContext, cache cache.RedisClient) *Server {
 	return &Server{
 		Server: &http.Server{
 			Addr:           conf.GetUserAddr(),
@@ -41,11 +45,13 @@ func New(conf config.Configs, logger logger.Logger) *Server {
 		},
 		conf:   conf,
 		logger: logger,
+		db:     db,
+		cache:  cache,
 	}
 }
 
 func (s Server) SetRouters() {
-	s.Server.Handler.(*router.Router).Apply(s.conf, s.logger)
+	s.Server.Handler.(*router.Router).Apply(s.conf, s.logger, s.db, s.cache)
 }
 
 func (srv Server) Start() {

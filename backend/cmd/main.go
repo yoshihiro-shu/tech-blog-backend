@@ -3,6 +3,8 @@ package main
 import (
 	_ "github.com/lib/pq"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server"
+	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/cache"
+	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/model"
 	"github.com/yoshihiro-shu/draft-backend/internal/config"
 	"github.com/yoshihiro-shu/draft-backend/internal/pkg/logger"
 )
@@ -10,8 +12,10 @@ import (
 func main() {
 	conf := config.New()
 	logger := logger.New()
+	db := model.New(conf)
+	cache := cache.New(conf.CacheRedis)
 
-	s := server.New(conf, logger)
+	s := server.New(conf, logger, db, cache)
 
 	s.SetRouters()
 

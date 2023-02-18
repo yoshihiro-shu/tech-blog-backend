@@ -4,16 +4,18 @@ import (
 	"net/http"
 
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/auth"
+	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/cache"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/handler"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/middleware"
+	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/model"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
 	"github.com/yoshihiro-shu/draft-backend/internal/config"
 	"github.com/yoshihiro-shu/draft-backend/internal/pkg/logger"
 	"github.com/yoshihiro-shu/draft-backend/registory"
 )
 
-func (r Router) Apply(conf config.Configs, logger logger.Logger) {
-	ctx := request.NewContext(conf, logger)
+func (r Router) Apply(conf config.Configs, logger logger.Logger, db *model.DBContext, cache cache.RedisClient) {
+	ctx := request.NewContext(conf, logger, db, cache)
 
 	r.Use(middleware.CorsMiddleware)
 	r.Use(middleware.LoggerMiddleware(logger))
