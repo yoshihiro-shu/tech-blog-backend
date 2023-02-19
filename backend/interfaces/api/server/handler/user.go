@@ -32,7 +32,7 @@ type responseUser struct {
 }
 
 type loginResponse struct {
-	Token auth.AuthToken `json:"token"`
+	AuthToken auth.AuthToken `json:"auth_token"`
 }
 
 func (uh *userHandler) SignUp(w http.ResponseWriter, r *http.Request) error {
@@ -60,7 +60,7 @@ func (uh *userHandler) Login(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	res := loginResponse{
-		Token: *token,
+		AuthToken: *token,
 	}
 	return uh.JSON(w, http.StatusOK, res)
 }
