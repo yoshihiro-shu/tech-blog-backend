@@ -56,7 +56,7 @@ func (uh *userHandler) Login(w http.ResponseWriter, r *http.Request) error {
 
 	token, err := uh.userUseCase.Login(email, password)
 	if err != nil {
-		return uh.Error(w, http.StatusInternalServerError, nil)
+		return uh.Error(w, http.StatusInternalServerError, err)
 	}
 
 	res := loginResponse{

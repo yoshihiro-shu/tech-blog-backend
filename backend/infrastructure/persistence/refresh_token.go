@@ -25,6 +25,7 @@ func (rp *refreshTokenPersistence) Create(userId int, jwtId string) error {
 	token := &model.RefreshToken{
 		UserId:    userId,
 		JwtId:     jwtId,
+		ExpiredAt: now.Add(time.Hour * 24 * 30),
 		CreatedAt: now,
 		UpdatedAt: now,
 	}
