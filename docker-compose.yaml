@@ -126,6 +126,8 @@ services:
     depends_on:
       primary:
         condition: service_healthy
+    volumes:
+      - ./migrations/db:/go/src/db
     env_file:
       - .env
     networks:
