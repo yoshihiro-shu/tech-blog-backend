@@ -42,7 +42,7 @@ func verifyToken(tokenString string) (*jwt.Token, error) {
 	return token, nil
 }
 
-func getTokenFromHeader(r *http.Request) (*jwt.Token, error) {
+func GetTokenFromHeader(r *http.Request) (*jwt.Token, error) {
 	token := r.Header.Get("Authorization")
 	token = strings.TrimPrefix(token, "Bearer ")
 

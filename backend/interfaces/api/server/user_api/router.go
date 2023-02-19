@@ -65,7 +65,6 @@ func Apply(r router.Router, conf config.Configs, logger logger.Logger, db *model
 		userHandler := registory.NewUserRegistory(ctx)
 		auth.POST("/login", userHandler.Login)
 		auth.POST("/signup", userHandler.SignUp)
-		// user.POST("/register", h.RegisterAccount)
 	}
 	{
 		articleHandler := registory.NewArticleRegistory(ctx, ctx.MasterDB, ctx.RepricaDB)
@@ -74,7 +73,7 @@ func Apply(r router.Router, conf config.Configs, logger logger.Logger, db *model
 	}
 	// {
 	// 	a := r.Group("/auth")
-	// 	a.Use(auth.AuthMiddleware)
+	// 	a.Use(middleware.Auth)
 	// 	a.GET("/index", h.AuthIndex)
 	// }
 }
