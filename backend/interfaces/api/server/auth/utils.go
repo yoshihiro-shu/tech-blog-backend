@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -13,10 +14,11 @@ func GenerateBcryptPassword(password string) (string, error) {
 	return string(hash), nil
 }
 
-func IsVerifyPassword(textConplainPassword, hashedPassword string) error {
+func IsVerifyPassword(textConplainPassword, hashedPassword string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(textConplainPassword))
-	if err != nil {
-		return err
-	}
-	return nil
+	return err == nil
+}
+
+func GenerateToken() string {
+	return uuid.Must(uuid.NewRandom()).String()
 }
