@@ -17,14 +17,14 @@ type UserHandler interface {
 }
 
 type userHandler struct {
+	*request.Context
 	userUseCase usecase.UserUseCase
-	C           *request.Context
 }
 
 func NewUserHandler(userUseCase usecase.UserUseCase, c *request.Context) *userHandler {
 	return &userHandler{
+		Context:     c,
 		userUseCase: userUseCase,
-		C:           c,
 	}
 }
 
@@ -47,10 +47,10 @@ func (uh *userHandler) SignUp(w http.ResponseWriter, r *http.Request) error {
 
 	err := uh.userUseCase.Create(name, hash, email)
 	if err != nil {
-		return uh.C.JSON(w, http.StatusInternalServerError, err.Error())
+		return uh.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 
-	return uh.C.JSON(w, http.StatusOK, nil)
+	return uh.JSON(w, http.StatusOK, nil)
 }
 
 func (uh *userHandler) Login(w http.ResponseWriter, r *http.Request) error {
@@ -60,9 +60,9 @@ func (uh *userHandler) Login(w http.ResponseWriter, r *http.Request) error {
 	user, err := uh.userUseCase.FindByEmail(email)
 	if err != nil {
 		if err == pg.ErrNoRows {
-			return uh.C.JSON(w, http.StatusNotFound, err.Error())
+			return uh.JSON(w, http.StatusNotFound, err.Error())
 		}
-		return uh.C.JSON(w, http.StatusInternalServerError, err.Error())
+		return uh.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 
 	fmt.Println(*user)
@@ -70,12 +70,12 @@ func (uh *userHandler) Login(w http.ResponseWriter, r *http.Request) error {
 	// TODO fix here
 	err = auth.IsVerifyPassword(password, user.Password)
 	if err != nil {
-		return uh.C.JSON(w, http.StatusUnauthorized, "your password is invalid")
+		return uh.JSON(w, http.StatusUnauthorized, "your password is invalid")
 	}
 
 	// create TOKEN
 	token := auth.CreateToken(strconv.Itoa(user.Id))
 
 	res := loginResponse{Token: token}
-	return uh.C.JSON(w, http.StatusOK, res)
+	return uh.JSON(w, http.StatusOK, res)
 }
