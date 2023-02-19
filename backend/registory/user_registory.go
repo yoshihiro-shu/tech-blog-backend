@@ -9,6 +9,7 @@ import (
 
 func NewUserRegistory(ctx *request.Context) handler.UserHandler {
 	userRepository := persistence.NewUserPersistence(ctx.MasterDB())
-	userUseCase := usecase.NewUserUseCase(userRepository)
+	refreshTokenRepository := persistence.NewRefreshTokenPersistence(ctx.MasterDB, ctx.RepricaDB)
+	userUseCase := usecase.NewUserUseCase(userRepository, refreshTokenRepository)
 	return handler.NewUserHandler(userUseCase, ctx)
 }

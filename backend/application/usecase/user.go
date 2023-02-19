@@ -18,8 +18,11 @@ type userUseCase struct {
 	refreshTokenRepo repository.RefreshTokenRepository
 }
 
-func NewUserUseCase(userRepo repository.UserRepository) UserUseCase {
-	return &userUseCase{userRepo: userRepo}
+func NewUserUseCase(userRepo repository.UserRepository, refreshTokenRepo repository.RefreshTokenRepository) UserUseCase {
+	return &userUseCase{
+		userRepo:         userRepo,
+		refreshTokenRepo: refreshTokenRepo,
+	}
 }
 
 func (uu *userUseCase) Create(name, password, email string) error {
