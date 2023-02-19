@@ -24,7 +24,7 @@ func Init(accessTokenConf, refreshTokenConf config.AuthToken) {
 	}
 }
 
-func CreateAccessToken(id int) string {
+func GenarateAccessToken(id int) string {
 	claims := jwt.MapClaims{
 		"user_id": strconv.Itoa(id),
 		"exp":     time.Now().Add(conf.AccessToken.Expires).Unix(),
