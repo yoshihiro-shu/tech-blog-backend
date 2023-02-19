@@ -1,7 +1,6 @@
 package user_api
 
 import (
-	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/auth"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/cache"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/handler"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/middleware"
@@ -62,10 +61,10 @@ func Apply(r router.Router, conf config.Configs, logger logger.Logger, db *model
 		c.GET("", h.Command)
 	}
 	{
-		user := r.Group("/users")
+		auth := r.Group("/auth")
 		userHandler := registory.NewUserRegistory(ctx)
-		user.POST("/login", userHandler.Login)
-		user.POST("/signup", userHandler.SignUp)
+		auth.POST("/login", userHandler.Login)
+		auth.POST("/signup", userHandler.SignUp)
 		// user.POST("/register", h.RegisterAccount)
 	}
 	{
@@ -73,9 +72,9 @@ func Apply(r router.Router, conf config.Configs, logger logger.Logger, db *model
 		article := r.Group("/articles")
 		article.GET("/{id:[0-9]+}", articleHandler.Get)
 	}
-	{
-		a := r.Group("/auth")
-		a.Use(auth.AuthMiddleware)
-		a.GET("/index", h.AuthIndex)
-	}
+	// {
+	// 	a := r.Group("/auth")
+	// 	a.Use(auth.AuthMiddleware)
+	// 	a.GET("/index", h.AuthIndex)
+	// }
 }
