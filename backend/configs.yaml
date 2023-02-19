@@ -48,3 +48,11 @@ twitter:
   api_key_secret: XXXXXXXXXX
   bearer_token: XXXXXXXXXX
   user_id: XXXXXXXXXX
+
+access_token:
+  secret_key: SECRETKEY
+  expires: 30m
+
+refresh_token:
+  secret_key: SECRETKEY
+  expires: 720h

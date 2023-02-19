@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"gopkg.in/yaml.v3"
 )
@@ -19,6 +20,8 @@ type Configs struct {
 	RelationalDB RelationalDB `yaml:"relationalDB"`
 	CacheRedis   RedisCache   `yaml:"cacheRedis"`
 	Twitter      Twitter      `yaml:"twitter"`
+	AccessToken  AuthToken    `yaml:"access_token"`
+	RefreshToken AuthToken    `yaml:"refresh_token"`
 }
 
 type User struct {
@@ -53,6 +56,11 @@ type Twitter struct {
 	ApiKeySecret string `yaml:"api_key_secret"`
 	BearerToken  string `yaml:"bearer_token"`
 	UserId       string `yaml:"user_id"`
+}
+
+type AuthToken struct {
+	SecretKey string        `yaml:"secret_key"`
+	Expires   time.Duration `yaml:"expires"`
 }
 
 func (c Configs) MasterDB() DB {
