@@ -20,12 +20,12 @@ func NewRefreshTokenPersistence(master, reprica func() *pg.DB) repository.Refres
 	}
 }
 
-func (rp *refreshTokenPersistence) Create(userId int, jwtId string) error {
+func (rp *refreshTokenPersistence) Create(userId int, jwtId string, expires time.Time) error {
 	now := time.Now()
 	token := &model.RefreshToken{
 		UserId:    userId,
 		JwtId:     jwtId,
-		ExpiredAt: now.Add(time.Hour * 24 * 30),
+		ExpiredAt: expires,
 		CreatedAt: now,
 		UpdatedAt: now,
 	}

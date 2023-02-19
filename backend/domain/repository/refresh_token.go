@@ -1,5 +1,7 @@
 package repository
 
+import "time"
+
 type RefreshTokenRepository interface {
-	Create(userId int, jwtId string) error
+	Create(userId int, jwtId string, expires time.Time) error
 }

@@ -68,15 +68,16 @@ func (u *userUseCase) Login(email, password string) (*auth.AuthToken, error) {
 
 	accessToken := auth.NewAccessToken(user.Id)
 
-	refreshToken := auth.GenerateToken()
-	err = u.refreshTokenRepo.Create(user.Id, refreshToken)
+	refreshToken := auth.NewRefreshToken(user.Id)
+
+	err = u.refreshTokenRepo.Create(refreshToken.UserId, refreshToken.JwtId, refreshToken.ExpiredAt)
 	if err != nil {
 		return nil, err
 	}
 
 	return &auth.AuthToken{
-		AccessToken:  accessToken.Token(),
-		RefreshToken: refreshToken,
+		AccessToken:  accessToken.JwtToken(),
+		RefreshToken: refreshToken.JwtToken(),
 	}, nil
 }
 

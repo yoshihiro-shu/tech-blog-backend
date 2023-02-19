@@ -19,7 +19,7 @@ func NewAccessToken(userId int) *AccessToken {
 	}
 }
 
-func (a AccessToken) Token() string {
+func (a AccessToken) JwtToken() string {
 	claims := jwt.MapClaims{
 		"user_id": strconv.Itoa(a.UserId),
 		"exp":     a.ExpiredAt.Unix(),
