@@ -66,7 +66,7 @@ func (u *userUseCase) Login(email, password string) (*auth.AuthToken, error) {
 		return nil, auth.ErrInvalidPassword
 	}
 
-	accessToken := auth.GenarateAccessToken(user.Id)
+	accessToken := auth.NewAccessToken(user.Id)
 
 	refreshToken := auth.GenerateToken()
 	err = u.refreshTokenRepo.Create(user.Id, refreshToken)
@@ -75,7 +75,7 @@ func (u *userUseCase) Login(email, password string) (*auth.AuthToken, error) {
 	}
 
 	return &auth.AuthToken{
-		AccessToken:  accessToken,
+		AccessToken:  accessToken.Token(),
 		RefreshToken: refreshToken,
 	}, nil
 }

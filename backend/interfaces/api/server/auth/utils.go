@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -25,6 +26,20 @@ func IsVerifyPassword(textConplainPassword, hashedPassword string) bool {
 
 func GenerateToken() string {
 	return uuid.Must(uuid.NewRandom()).String()
+}
+
+func verifyToken(tokenString string) (*jwt.Token, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		return []byte(conf.AccessToken.SecretKey), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return token, nil
 }
 
 func getTokenFromHeader(r *http.Request) (*jwt.Token, error) {
