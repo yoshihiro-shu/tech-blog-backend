@@ -3,6 +3,7 @@ package auth
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -15,9 +16,9 @@ const (
 	UserKey   = "userID"
 )
 
-func CreateToken(id string) string {
+func CreateAccessToken(id int) string {
 	claims := jwt.MapClaims{
-		"user_id": id,
+		"user_id": strconv.Itoa(id),
 		"exp":     time.Now().Add(time.Hour * expHour).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
