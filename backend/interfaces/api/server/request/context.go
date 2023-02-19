@@ -21,12 +21,12 @@ type Context struct {
 	Logger logger.Logger
 }
 
-func NewContext(conf config.Configs) *Context {
+func NewContext(conf config.Configs, logger logger.Logger, db *model.DBContext, cache cache.RedisClient) *Context {
 	return &Context{
-		db:     model.New(conf),
-		cache:  cache.New(conf.CacheRedis),
+		db:     db,
+		cache:  cache,
 		Conf:   conf,
-		Logger: logger.New(),
+		Logger: logger,
 	}
 }
 

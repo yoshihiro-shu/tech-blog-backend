@@ -1,17 +1,17 @@
-package httputils
+package router
 
 import (
 	"log"
 	"net/http"
 )
 
-type Handler func(w http.ResponseWriter, r *http.Request) error
+type appHandler func(w http.ResponseWriter, r *http.Request) error
 
-func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h appHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	err := h(w, r)
 	if err != nil {
 		switch e := err.(type) {
-		case Error:
+		case appError:
 			// We can retrieve the status here and write out a specific
 			// HTTP status code.
 			log.Printf("HTTP %d - %s", e.Status, e)
@@ -23,4 +23,13 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				http.StatusInternalServerError)
 		}
 	}
+}
+
+type appError struct {
+	Status int
+	Err    error
+}
+
+func (e appError) Error() string {
+	return e.Err.Error()
 }
