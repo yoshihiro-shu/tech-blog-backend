@@ -3,7 +3,7 @@
 ## goose install
 
 ```
-# mac 
+# mac
 go install github.com/pressly/goose/v3/cmd/goose@latest
 ```
 
@@ -17,7 +17,7 @@ go build -o goose ./cmd/goose
 
 ./goose --version
 # コマンド実行するときはここのpathでcd /backend/db/migrations
-cd /backend/db/migrations;
+cd /migrations/db;
 GOOSE_DRIVER=postgres GOOSE_DBSTRING="host=localhost port=5432 user=postgres dbname=postgres password=password sslmode=disable" ./goose/goose up;
 ```
 
@@ -32,7 +32,7 @@ GOOSE_DRIVER=postgres GOOSE_DBSTRING="host=localhost port=5432 user=postgres dbn
 ファイルのフォーマットを作成、編集
 
 ```
-cd backend/db/migrations
+cd migrations/db
 goose create create_user sql
 ```
 
