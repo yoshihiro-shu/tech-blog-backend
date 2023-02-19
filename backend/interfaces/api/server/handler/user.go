@@ -1,11 +1,8 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
-	"strconv"
 
-	"github.com/go-pg/pg"
 	"github.com/yoshihiro-shu/draft-backend/application/usecase"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/auth"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
@@ -35,7 +32,7 @@ type responseUser struct {
 }
 
 type loginResponse struct {
-	Token string `json:"token"`
+	Token auth.AuthToken `json:"token"`
 }
 
 func (uh *userHandler) SignUp(w http.ResponseWriter, r *http.Request) error {
@@ -57,25 +54,13 @@ func (uh *userHandler) Login(w http.ResponseWriter, r *http.Request) error {
 	email := r.FormValue("email")
 	password := r.FormValue("password")
 
-	user, err := uh.userUseCase.FindByEmail(email)
+	token, err := uh.userUseCase.Login(email, password)
 	if err != nil {
-		if err == pg.ErrNoRows {
-			return uh.JSON(w, http.StatusNotFound, err.Error())
-		}
-		return uh.JSON(w, http.StatusInternalServerError, err.Error())
+		return uh.Error(w, http.StatusInternalServerError, nil)
 	}
 
-	fmt.Println(*user)
-
-	// TODO fix here
-	err = auth.IsVerifyPassword(password, user.Password)
-	if err != nil {
-		return uh.JSON(w, http.StatusUnauthorized, "your password is invalid")
+	res := loginResponse{
+		Token: *token,
 	}
-
-	// create TOKEN
-	token := auth.CreateToken(strconv.Itoa(user.Id))
-
-	res := loginResponse{Token: token}
 	return uh.JSON(w, http.StatusOK, res)
 }
