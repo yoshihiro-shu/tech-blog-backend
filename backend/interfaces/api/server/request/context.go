@@ -42,7 +42,7 @@ func (c Context) Cache() cache.RedisClient {
 	return c.cache
 }
 
-func (c Context) UnmarshalFromRequest(r *http.Request, i interface{}) error {
+func (c Context) Bind(r *http.Request, i interface{}) error {
 	defer r.Body.Close()
 
 	body, err := ioutil.ReadAll(r.Body)

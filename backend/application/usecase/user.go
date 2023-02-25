@@ -3,22 +3,27 @@ package usecase
 import (
 	"github.com/yoshihiro-shu/draft-backend/domain/model"
 	"github.com/yoshihiro-shu/draft-backend/domain/repository"
+	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/auth"
 )
 
 type UserUseCase interface {
 	Create(name, password, email string) error
-	FindByID(id int) (*model.User, error)
-	FindByEmail(email string) (*model.User, error)
+	Login(email, password string) (*auth.AuthToken, error)
+	RefreshToken(refreshToken string) (*auth.AuthToken, error)
 	Update(id int, name, password, email string) error
 	Delete(id int) error
 }
 
 type userUseCase struct {
-	userRepo repository.UserRepository
+	userRepo         repository.UserRepository
+	refreshTokenRepo repository.RefreshTokenRepository
 }
 
-func NewUserUseCase(userRepo repository.UserRepository) UserUseCase {
-	return &userUseCase{userRepo: userRepo}
+func NewUserUseCase(userRepo repository.UserRepository, refreshTokenRepo repository.RefreshTokenRepository) UserUseCase {
+	return &userUseCase{
+		userRepo:         userRepo,
+		refreshTokenRepo: refreshTokenRepo,
+	}
 }
 
 func (uu *userUseCase) Create(name, password, email string) error {
@@ -50,6 +55,54 @@ func (uu *userUseCase) FindByEmail(email string) (*model.User, error) {
 	}
 
 	return user, nil
+}
+
+func (u *userUseCase) Login(email, password string) (*auth.AuthToken, error) {
+	user, err := u.userRepo.FindByEmail(email)
+	if err != nil {
+		return nil, err
+	}
+
+	if !auth.IsVerifyPassword(password, user.Password) {
+		return nil, auth.ErrInvalidPassword
+	}
+
+	accessToken := auth.NewAccessToken(user.Id)
+	refreshToken := auth.NewRefreshToken(user.Id)
+
+	err = u.refreshTokenRepo.Create(refreshToken.UserId, refreshToken.JwtId, refreshToken.ExpiredAt)
+	if err != nil {
+		return nil, err
+	}
+
+	return &auth.AuthToken{
+		AccessToken:  *accessToken,
+		RefreshToken: *refreshToken,
+	}, nil
+}
+
+func (u *userUseCase) RefreshToken(token string) (*auth.AuthToken, error) {
+	refreshToken, err := auth.VerifyRefeshToken(token)
+	if err != nil {
+		return nil, err
+	}
+
+	rt, err := u.refreshTokenRepo.GetByJwtId(refreshToken.JwtId)
+	if err != nil {
+		return nil, err
+	}
+
+	newAccessToken := auth.NewAccessToken(rt.UserId)
+	newRefreshToken := auth.NewRefreshToken(rt.UserId)
+	err = u.refreshTokenRepo.Update(rt.Id, newRefreshToken.JwtId, newRefreshToken.ExpiredAt)
+	if err != nil {
+		return nil, err
+	}
+
+	return &auth.AuthToken{
+		AccessToken:  *newAccessToken,
+		RefreshToken: *newRefreshToken,
+	}, nil
 }
 
 func (uu *userUseCase) Update(id int, name, password, email string) error {
