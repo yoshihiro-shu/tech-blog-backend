@@ -35,25 +35,28 @@ func (c DBContext) Close() {
 	}
 }
 
+// TODO add ping
 func connectToMaster(conf config.DB) *pg.DB {
-	return getDBConnection(conf)
-}
-
-func connectToRepricas(conf []config.DB) []*pg.DB {
-	dbs := make([]*pg.DB, len(conf))
-	for i, v := range conf {
-		dbs[i] = getDBConnection(v)
-	}
-	return dbs
-}
-
-func getDBConnection(c config.DB) *pg.DB {
 	return pg.Connect(&pg.Options{
-		Addr:     fmt.Sprintf("%s:%s", c.Host, c.Port),
-		User:     c.User,
-		Password: c.Password,
-		Database: c.Name,
+		Addr:     fmt.Sprintf("%s:%s", conf.Host, conf.Port),
+		User:     conf.User,
+		Password: conf.Password,
+		Database: conf.Name,
 	})
+}
+
+// TODO add ping
+func connectToRepricas(conf []config.DB) []*pg.DB {
+	repricas := make([]*pg.DB, len(conf))
+	for i, v := range conf {
+		repricas[i] = pg.Connect(&pg.Options{
+			Addr:     fmt.Sprintf("%s:%s", v.Host, v.Port),
+			User:     v.User,
+			Password: v.Password,
+			Database: v.Name,
+		})
+	}
+	return repricas
 }
 
 func New(conf config.Configs) *DBContext {
