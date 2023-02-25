@@ -28,12 +28,12 @@ func GenerateToken() string {
 	return uuid.Must(uuid.NewRandom()).String()
 }
 
-func verifyToken(tokenString string) (*jwt.Token, error) {
+func verifyToken(tokenString, secret string) (*jwt.Token, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
-		return []byte(conf.AccessToken.SecretKey), nil
+		return []byte(secret), nil
 	})
 	if err != nil {
 		return nil, err
@@ -46,7 +46,7 @@ func GetTokenFromHeader(r *http.Request) (*jwt.Token, error) {
 	token := r.Header.Get("Authorization")
 	token = strings.TrimPrefix(token, "Bearer ")
 
-	jwtToken, err := verifyToken(token)
+	jwtToken, err := verifyToken(token, conf.AccessToken.SecretKey)
 	if err != nil {
 		return nil, err
 	}
