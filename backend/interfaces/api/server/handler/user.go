@@ -48,8 +48,8 @@ func (uh *userHandler) SignUp(w http.ResponseWriter, r *http.Request) error {
 }
 
 type loginReq struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `json:"email" validate:"required"`
+	Password string `json:"password" validate:"required"`
 }
 
 type loginResponse struct {
@@ -57,27 +57,27 @@ type loginResponse struct {
 	RefreshToken string `json:"refresh_token"`
 }
 
-func (uh *userHandler) Login(w http.ResponseWriter, r *http.Request) error {
+func (h *userHandler) Login(w http.ResponseWriter, r *http.Request) error {
 	var req loginReq
-	err := uh.Bind(r, &req)
+	err := h.MustBind(r, &req)
 	if err != nil {
-		return err
+		return h.Error(w, http.StatusBadRequest, err)
 	}
 
-	token, err := uh.userUseCase.Login(req.Email, req.Password)
+	token, err := h.userUseCase.Login(req.Email, req.Password)
 	if err != nil {
-		return uh.Error(w, http.StatusInternalServerError, err)
+		return h.Error(w, http.StatusInternalServerError, err)
 	}
 
 	res := loginResponse{
 		AccessToken:  token.AccessToken.JwtToken(),
 		RefreshToken: token.RefreshToken.JwtToken(),
 	}
-	return uh.JSON(w, http.StatusOK, res)
+	return h.JSON(w, http.StatusOK, res)
 }
 
 type refreshTokenReq struct {
-	RefreshToken string `json:"refresh_token"`
+	RefreshToken string `json:"refresh_token" validate:"required"`
 }
 
 type refreshTokenRes struct {
@@ -87,7 +87,7 @@ type refreshTokenRes struct {
 
 func (h *userHandler) RefreshToken(w http.ResponseWriter, r *http.Request) error {
 	var req refreshTokenReq
-	err := h.Bind(r, &req)
+	err := h.MustBind(r, &req)
 	if err != nil {
 		return h.Error(w, http.StatusInternalServerError, err)
 	}
