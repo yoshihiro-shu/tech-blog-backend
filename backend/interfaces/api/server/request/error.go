@@ -3,15 +3,19 @@ package request
 import (
 	"encoding/json"
 	"net/http"
+
+	"go.uber.org/zap"
 )
 
-type ErrorResponse struct {
+type errorResponse struct {
+	Status int    `json:"status"`
+	Err    string `json:"error"`
 }
 
 func (c Context) Error(w http.ResponseWriter, status int, err error) error {
-	res := JSONResponce{
+	res := errorResponse{
 		Status: status,
-		Data:   err.Error(),
+		Err:    err.Error(),
 	}
 
 	b, err := json.Marshal(res)
@@ -21,7 +25,10 @@ func (c Context) Error(w http.ResponseWriter, status int, err error) error {
 	}
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.Write(b)
 	w.WriteHeader(status)
+	_, err = w.Write(b)
+	if err != nil {
+		c.Logger.Error("failed at write response.", zap.Error(err))
+	}
 	return nil
 }
