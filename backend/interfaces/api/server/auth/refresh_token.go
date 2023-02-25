@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"errors"
 	"strconv"
 	"time"
 
@@ -30,9 +29,19 @@ func VerifyRefeshToken(tokenString string) (*RefreshToken, error) {
 
 	claims := jwtToken.Claims.(jwt.MapClaims)
 
+	jwt_id := claims["jwt_id"]
+	if jwt_id == nil {
+		return nil, ErrJwtIdIsMissingAtRefreshToken
+	}
+
+	exp := claims["exp"]
+	if jwt_id == nil {
+		return nil, ErrExpiresIsMissingAtRefreshToken
+	}
+
 	user_id := claims["user_id"]
 	if user_id == nil {
-		return nil, errors.New("failed at get user id from token")
+		return nil, ErrUserIdIsMissingAtRefreshToken
 	}
 
 	userId, err := strconv.Atoi(user_id.(string))
@@ -40,22 +49,14 @@ func VerifyRefeshToken(tokenString string) (*RefreshToken, error) {
 		return nil, err
 	}
 
-	jwt_id := claims["jwt_id"]
-	if jwt_id == nil {
-		return nil, errors.New("failed at get jwt id from token")
-	}
-
-	exp := claims["exp"]
-	if jwt_id == nil {
-		return nil, errors.New("failed at get exp from token")
-	}
+	jwtId := jwt_id.(string)
 
 	expfloat := exp.(float64)
 	expires := time.Unix(int64(expfloat), 0)
 
 	return &RefreshToken{
 		UserId:    userId,
-		JwtId:     jwt_id.(string),
+		JwtId:     jwtId,
 		ExpiredAt: expires,
 	}, nil
 }
