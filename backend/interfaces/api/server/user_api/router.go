@@ -65,6 +65,7 @@ func Apply(r router.Router, conf config.Configs, logger logger.Logger, db *model
 		userHandler := registory.NewUserRegistory(ctx)
 		auth.POST("/login", userHandler.Login)
 		auth.POST("/signup", userHandler.SignUp)
+		auth.POST("/refresh_token", userHandler.RefreshToken)
 	}
 	{
 		articleHandler := registory.NewArticleRegistory(ctx, ctx.MasterDB, ctx.RepricaDB)

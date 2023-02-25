@@ -9,6 +9,7 @@ import (
 type UserUseCase interface {
 	Create(name, password, email string) error
 	Login(email, password string) (*auth.AuthToken, error)
+	RefreshToken(refreshToken string) (*auth.AuthToken, error)
 	Update(id int, name, password, email string) error
 	Delete(id int) error
 }
@@ -67,7 +68,6 @@ func (u *userUseCase) Login(email, password string) (*auth.AuthToken, error) {
 	}
 
 	accessToken := auth.NewAccessToken(user.Id)
-
 	refreshToken := auth.NewRefreshToken(user.Id)
 
 	err = u.refreshTokenRepo.Create(refreshToken.UserId, refreshToken.JwtId, refreshToken.ExpiredAt)
@@ -76,8 +76,32 @@ func (u *userUseCase) Login(email, password string) (*auth.AuthToken, error) {
 	}
 
 	return &auth.AuthToken{
-		AccessToken:  accessToken.JwtToken(),
-		RefreshToken: refreshToken.JwtToken(),
+		AccessToken:  *accessToken,
+		RefreshToken: *refreshToken,
+	}, nil
+}
+
+func (u *userUseCase) RefreshToken(token string) (*auth.AuthToken, error) {
+	refreshToken, err := auth.VerifyRefeshToken(token)
+	if err != nil {
+		return nil, err
+	}
+
+	rt, err := u.refreshTokenRepo.GetByJwtId(refreshToken.JwtId)
+	if err != nil {
+		return nil, err
+	}
+
+	newAccessToken := auth.NewAccessToken(rt.UserId)
+	newRefreshToken := auth.NewRefreshToken(rt.UserId)
+	err = u.refreshTokenRepo.Update(rt.Id, newRefreshToken.JwtId, newRefreshToken.ExpiredAt)
+	if err != nil {
+		return nil, err
+	}
+
+	return &auth.AuthToken{
+		AccessToken:  *newAccessToken,
+		RefreshToken: *newRefreshToken,
 	}, nil
 }
 

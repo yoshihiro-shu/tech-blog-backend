@@ -11,6 +11,7 @@ import (
 type UserHandler interface {
 	SignUp(w http.ResponseWriter, r *http.Request) error
 	Login(w http.ResponseWriter, r *http.Request) error
+	RefreshToken(w http.ResponseWriter, r *http.Request) error
 }
 
 type userHandler struct {
@@ -32,7 +33,8 @@ type responseUser struct {
 }
 
 type loginResponse struct {
-	AuthToken auth.AuthToken `json:"auth_token"`
+	AccessToken  string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
 }
 
 func (uh *userHandler) SignUp(w http.ResponseWriter, r *http.Request) error {
@@ -60,7 +62,38 @@ func (uh *userHandler) Login(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	res := loginResponse{
-		AuthToken: *token,
+		AccessToken:  token.AccessToken.JwtToken(),
+		RefreshToken: token.RefreshToken.JwtToken(),
 	}
 	return uh.JSON(w, http.StatusOK, res)
+}
+
+type refreshTokenReq struct {
+	RefreshToken string `json:"refresh_token"`
+}
+
+type refreshTokenRes struct {
+	AccessToken  string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
+}
+
+func (h *userHandler) RefreshToken(w http.ResponseWriter, r *http.Request) error {
+	h.Logger.Info("hogehoge")
+	var req refreshTokenReq
+	err := h.Bind(r, &req)
+	if err != nil {
+		return h.Error(w, http.StatusInternalServerError, err)
+	}
+
+	authToken, err := h.userUseCase.RefreshToken(req.RefreshToken)
+	if err != nil {
+		return h.Error(w, http.StatusInternalServerError, err)
+	}
+
+	res := refreshTokenRes{
+		AccessToken:  authToken.AccessToken.JwtToken(),
+		RefreshToken: authToken.RefreshToken.JwtToken(),
+	}
+
+	return h.JSON(w, http.StatusOK, res)
 }
