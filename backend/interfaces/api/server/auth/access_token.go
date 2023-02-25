@@ -26,7 +26,10 @@ func (a AccessToken) JwtToken() string {
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	tokenString, _ := token.SignedString([]byte(conf.AccessToken.SecretKey))
+	tokenString, err := token.SignedString([]byte(conf.AccessToken.SecretKey))
+	if err != nil {
+		panic(err)
+	}
 
 	return tokenString
 }
