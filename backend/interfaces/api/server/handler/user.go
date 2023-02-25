@@ -32,11 +32,6 @@ type requestUser struct {
 type responseUser struct {
 }
 
-type loginResponse struct {
-	AccessToken  string `json:"access_token"`
-	RefreshToken string `json:"refresh_token"`
-}
-
 func (uh *userHandler) SignUp(w http.ResponseWriter, r *http.Request) error {
 	name := r.FormValue("name")
 	email := r.FormValue("email")
@@ -52,11 +47,24 @@ func (uh *userHandler) SignUp(w http.ResponseWriter, r *http.Request) error {
 	return uh.JSON(w, http.StatusOK, nil)
 }
 
-func (uh *userHandler) Login(w http.ResponseWriter, r *http.Request) error {
-	email := r.FormValue("email")
-	password := r.FormValue("password")
+type loginReq struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
 
-	token, err := uh.userUseCase.Login(email, password)
+type loginResponse struct {
+	AccessToken  string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
+}
+
+func (uh *userHandler) Login(w http.ResponseWriter, r *http.Request) error {
+	var req loginReq
+	err := uh.Bind(r, &req)
+	if err != nil {
+		return err
+	}
+
+	token, err := uh.userUseCase.Login(req.Email, req.Password)
 	if err != nil {
 		return uh.Error(w, http.StatusInternalServerError, err)
 	}
@@ -78,7 +86,6 @@ type refreshTokenRes struct {
 }
 
 func (h *userHandler) RefreshToken(w http.ResponseWriter, r *http.Request) error {
-	h.Logger.Info("hogehoge")
 	var req refreshTokenReq
 	err := h.Bind(r, &req)
 	if err != nil {
