@@ -1,9 +1,9 @@
 package usecase
 
 import (
-	"github.com/yoshihiro-shu/draft-backend/domain/model"
-	"github.com/yoshihiro-shu/draft-backend/domain/repository"
-	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/auth"
+	"github.com/yoshihiro-shu/draft-backend/backend/domain/model"
+	"github.com/yoshihiro-shu/draft-backend/backend/domain/repository"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/auth"
 )
 
 type UserUseCase interface {

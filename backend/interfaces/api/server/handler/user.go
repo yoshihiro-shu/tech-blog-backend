@@ -3,9 +3,9 @@ package handler
 import (
 	"net/http"
 
-	"github.com/yoshihiro-shu/draft-backend/application/usecase"
-	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/auth"
-	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
+	"github.com/yoshihiro-shu/draft-backend/backend/application/usecase"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/auth"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/request"
 )
 
 type UserHandler interface {

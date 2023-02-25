@@ -1,7 +1,7 @@
 package tweet_timeline
 
 import (
-	twitter_utils "github.com/yoshihiro-shu/draft-backend/internal/twitter_api/utils"
+	twitter_utils "github.com/yoshihiro-shu/draft-backend/backend/internal/twitter_api/utils"
 )
 
 const apiEndpoint = "/2/users/%s/tweets"

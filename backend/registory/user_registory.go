@@ -1,10 +1,10 @@
 package registory
 
 import (
-	"github.com/yoshihiro-shu/draft-backend/application/usecase"
-	"github.com/yoshihiro-shu/draft-backend/infrastructure/persistence"
-	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/handler"
-	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
+	"github.com/yoshihiro-shu/draft-backend/backend/application/usecase"
+	"github.com/yoshihiro-shu/draft-backend/backend/infrastructure/persistence"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/handler"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/request"
 )
 
 func NewUserRegistory(ctx *request.Context) handler.UserHandler {

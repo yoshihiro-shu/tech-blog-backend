@@ -2,8 +2,8 @@ package article_linkages_to_category
 
 import (
 	"github.com/go-pg/pg"
-	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/model/article/table"
-	"github.com/yoshihiro-shu/draft-backend/internal/config"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/model/article/table"
+	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
 )
 
 type Article struct {

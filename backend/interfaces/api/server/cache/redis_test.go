@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/cache"
-	"github.com/yoshihiro-shu/draft-backend/internal/config"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/cache"
+	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
 )
 
 type data struct {

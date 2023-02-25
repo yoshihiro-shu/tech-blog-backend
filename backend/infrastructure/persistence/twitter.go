@@ -3,10 +3,10 @@ package persistence
 import (
 	"encoding/json"
 
-	"github.com/yoshihiro-shu/draft-backend/domain/model"
-	"github.com/yoshihiro-shu/draft-backend/domain/repository"
-	"github.com/yoshihiro-shu/draft-backend/internal/config"
-	"github.com/yoshihiro-shu/draft-backend/internal/twitter_api"
+	"github.com/yoshihiro-shu/draft-backend/backend/domain/model"
+	"github.com/yoshihiro-shu/draft-backend/backend/domain/repository"
+	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
+	"github.com/yoshihiro-shu/draft-backend/backend/internal/twitter_api"
 )
 
 type twitterPersistence struct {

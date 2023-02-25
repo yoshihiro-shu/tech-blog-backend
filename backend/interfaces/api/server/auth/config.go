@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"github.com/yoshihiro-shu/draft-backend/internal/config"
+	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
 )
 
 type authConfig struct {

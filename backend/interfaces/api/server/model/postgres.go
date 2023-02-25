@@ -6,7 +6,7 @@ import (
 	"math/big"
 
 	"github.com/go-pg/pg"
-	"github.com/yoshihiro-shu/draft-backend/internal/config"
+	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
 )
 
 type DBContext struct {

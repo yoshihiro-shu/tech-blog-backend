@@ -5,11 +5,11 @@ import (
 
 	"github.com/go-pg/pg"
 	"github.com/go-playground/validator/v10"
-	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/auth"
-	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/cache"
-	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/model"
-	"github.com/yoshihiro-shu/draft-backend/internal/config"
-	"github.com/yoshihiro-shu/draft-backend/internal/pkg/logger"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/auth"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/cache"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/model"
+	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
+	"github.com/yoshihiro-shu/draft-backend/backend/internal/pkg/logger"
 )
 
 type Context struct {
