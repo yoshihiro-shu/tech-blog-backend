@@ -16,6 +16,8 @@ func main() {
 	db := model.New(conf)
 	cache := cache.New(conf.CacheRedis)
 
+	defer db.Close()
+
 	auth.Init(conf.AccessToken, conf.RefreshToken)
 	s := server.New(conf, logger, db, cache)
 

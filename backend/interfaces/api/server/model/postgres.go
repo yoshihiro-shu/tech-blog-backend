@@ -27,6 +27,14 @@ func (c DBContext) Reprica() *pg.DB {
 	return c.repricas[n.Int64()]
 }
 
+func (c DBContext) Close() {
+	c.master.Close()
+
+	for i := range c.repricas {
+		c.repricas[i].Close()
+	}
+}
+
 func connectToMaster(conf config.DB) *pg.DB {
 	return getDBConnection(conf)
 }
