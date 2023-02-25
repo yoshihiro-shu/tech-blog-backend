@@ -35,3 +35,37 @@ func (rp *refreshTokenPersistence) Create(userId int, jwtId string, expires time
 	}
 	return nil
 }
+
+func (rp *refreshTokenPersistence) GetByJwtId(jwtId string) (*model.RefreshToken, error) {
+	var rt model.RefreshToken
+	query := rp.Reprica().Model(&rt).
+		Where("jwt_id = ?", jwtId)
+
+	err := query.Select()
+	if err != nil {
+		return nil, err
+	}
+
+	return &rt, nil
+}
+
+func (rp *refreshTokenPersistence) Update(id int, jwtId string, expires time.Time) error {
+	now := time.Now()
+	rf := &model.RefreshToken{
+		Id:        id,
+		JwtId:     jwtId,
+		ExpiredAt: expires,
+		UpdatedAt: now,
+	}
+	_, err := rp.Master().
+		Model(rf).
+		Column("id", "jwt_id", "expired_at", "updated_at").
+		WherePK().
+		Update()
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
