@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/go-pg/pg"
+	"github.com/go-playground/validator/v10"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/auth"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/cache"
 	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/model"
@@ -15,18 +16,20 @@ import (
 )
 
 type Context struct {
-	db     *model.DBContext
-	cache  cache.RedisClient
-	Conf   config.Configs
-	Logger logger.Logger
+	db       *model.DBContext
+	cache    cache.RedisClient
+	Conf     config.Configs
+	Logger   logger.Logger
+	validate *validator.Validate
 }
 
 func NewContext(conf config.Configs, logger logger.Logger, db *model.DBContext, cache cache.RedisClient) *Context {
 	return &Context{
-		db:     db,
-		cache:  cache,
-		Conf:   conf,
-		Logger: logger,
+		db:       db,
+		cache:    cache,
+		Conf:     conf,
+		Logger:   logger,
+		validate: validator.New(),
 	}
 }
 
@@ -50,7 +53,17 @@ func (c Context) Bind(r *http.Request, i interface{}) error {
 		return err
 	}
 
-	return json.Unmarshal(body, i)
+	err = json.Unmarshal(body, i)
+	if err != nil {
+		return err
+	}
+
+	err = c.Validate(i)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (c Context) GetAuthUserID(ctx context.Context) interface{} {
