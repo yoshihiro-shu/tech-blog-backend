@@ -59,7 +59,7 @@ type loginResponse struct {
 
 func (h *userHandler) Login(w http.ResponseWriter, r *http.Request) error {
 	var req loginReq
-	err := h.Bind(r, &req)
+	err := h.MustBind(r, &req)
 	if err != nil {
 		return h.Error(w, http.StatusBadRequest, err)
 	}
@@ -87,7 +87,7 @@ type refreshTokenRes struct {
 
 func (h *userHandler) RefreshToken(w http.ResponseWriter, r *http.Request) error {
 	var req refreshTokenReq
-	err := h.Bind(r, &req)
+	err := h.MustBind(r, &req)
 	if err != nil {
 		return h.Error(w, http.StatusInternalServerError, err)
 	}

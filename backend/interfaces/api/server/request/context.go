@@ -2,9 +2,6 @@ package request
 
 import (
 	"context"
-	"encoding/json"
-	"io/ioutil"
-	"net/http"
 
 	"github.com/go-pg/pg"
 	"github.com/go-playground/validator/v10"
@@ -43,27 +40,6 @@ func (c Context) RepricaDB() *pg.DB {
 
 func (c Context) Cache() cache.RedisClient {
 	return c.cache
-}
-
-func (c Context) Bind(r *http.Request, i interface{}) error {
-	defer r.Body.Close()
-
-	body, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(body, i)
-	if err != nil {
-		return err
-	}
-
-	err = c.Validate(i)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
 
 func (c Context) GetAuthUserID(ctx context.Context) interface{} {
