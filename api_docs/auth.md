@@ -26,7 +26,7 @@ Response(error 400)
 "invalid.info"
 ```
 
-## リフレッシュ (POST "/refresh")
+## リフレッシュ (POST "/refresh_token")
 
 リフレッシュトークンをリクエストすると、有効だった場合アクセストークンとリフレッシュトークンが新規発行され、返却されます。
 
@@ -34,7 +34,7 @@ Request
 
 ```json
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }
 ```
 
