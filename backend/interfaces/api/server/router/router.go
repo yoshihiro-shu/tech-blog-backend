@@ -48,17 +48,17 @@ func (r router) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 }
 
 func (r router) GET(path string, fn func(http.ResponseWriter, *http.Request) error) {
-	r.Router.Handle(path, appHandler(fn)).Methods(http.MethodGet)
+	r.Router.Handle(path, appHandler(fn)).Methods(http.MethodGet, http.MethodOptions)
 }
 
 func (r router) POST(path string, fn func(http.ResponseWriter, *http.Request) error) {
-	r.Router.Handle(path, appHandler(fn)).Methods(http.MethodPost)
+	r.Router.Handle(path, appHandler(fn)).Methods(http.MethodPost, http.MethodOptions)
 }
 
 func (r router) PUT(path string, fn func(http.ResponseWriter, *http.Request) error) {
-	r.Router.Handle(path, appHandler(fn)).Methods(http.MethodPut)
+	r.Router.Handle(path, appHandler(fn)).Methods(http.MethodPut, http.MethodOptions)
 }
 
 func (r router) DELETE(path string, fn func(http.ResponseWriter, *http.Request) error) {
-	r.Router.Handle(path, appHandler(fn)).Methods(http.MethodDelete)
+	r.Router.Handle(path, appHandler(fn)).Methods(http.MethodDelete, http.MethodOptions)
 }
