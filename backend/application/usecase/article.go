@@ -1,9 +1,9 @@
 package usecase
 
 import (
-	"github.com/yoshihiro-shu/draft-backend/domain/model"
-	"github.com/yoshihiro-shu/draft-backend/domain/repository"
-	"github.com/yoshihiro-shu/draft-backend/internal/pkg/pager"
+	"github.com/yoshihiro-shu/draft-backend/backend/domain/model"
+	"github.com/yoshihiro-shu/draft-backend/backend/domain/repository"
+	"github.com/yoshihiro-shu/draft-backend/backend/internal/pkg/pager"
 )
 
 type ArticleUseCase interface {

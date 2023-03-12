@@ -4,8 +4,8 @@ import (
 	"time"
 
 	"github.com/go-pg/pg"
-	"github.com/yoshihiro-shu/draft-backend/domain/model"
-	"github.com/yoshihiro-shu/draft-backend/domain/repository"
+	"github.com/yoshihiro-shu/draft-backend/backend/domain/model"
+	"github.com/yoshihiro-shu/draft-backend/backend/domain/repository"
 )
 
 type refreshTokenPersistence struct {

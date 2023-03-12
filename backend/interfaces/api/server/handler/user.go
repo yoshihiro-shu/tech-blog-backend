@@ -3,9 +3,10 @@ package handler
 import (
 	"net/http"
 
-	"github.com/yoshihiro-shu/draft-backend/application/usecase"
-	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/auth"
-	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
+	"github.com/yoshihiro-shu/draft-backend/backend/application/usecase"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/auth"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/request"
+	"go.uber.org/zap"
 )
 
 type UserHandler interface {
@@ -61,11 +62,18 @@ func (h *userHandler) Login(w http.ResponseWriter, r *http.Request) error {
 	var req loginReq
 	err := h.MustBind(r, &req)
 	if err != nil {
+		h.Logger.Error("error invalid request body.", zap.Error(err))
 		return h.Error(w, http.StatusBadRequest, err)
 	}
 
 	token, err := h.userUseCase.Login(req.Email, req.Password)
 	if err != nil {
+		switch err {
+		case auth.ErrInvalidPassword:
+			h.Logger.Error("Invalid Password.", zap.Error(err))
+			return h.Error(w, http.StatusUnauthorized, err)
+		}
+		h.Logger.Error("server error.", zap.Error(err))
 		return h.Error(w, http.StatusInternalServerError, err)
 	}
 

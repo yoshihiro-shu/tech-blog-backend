@@ -20,6 +20,7 @@ func (c Context) Error(w http.ResponseWriter, status int, err error) error {
 
 	b, err := json.Marshal(res)
 	if err != nil {
+		c.Logger.Error("failed at convert responset to json.", zap.Error(err))
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return nil
 	}
@@ -29,6 +30,7 @@ func (c Context) Error(w http.ResponseWriter, status int, err error) error {
 	_, err = w.Write(b)
 	if err != nil {
 		c.Logger.Error("failed at write response.", zap.Error(err))
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 	return nil
 }

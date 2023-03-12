@@ -1,4 +1,4 @@
-module github.com/yoshihiro-shu/draft-backend
+module github.com/yoshihiro-shu/draft-backend/backend
 
 go 1.18
 

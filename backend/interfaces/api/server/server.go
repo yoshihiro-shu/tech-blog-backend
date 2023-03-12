@@ -8,12 +8,12 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/cache"
-	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/model"
-	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/router"
-	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/user_api"
-	"github.com/yoshihiro-shu/draft-backend/internal/config"
-	"github.com/yoshihiro-shu/draft-backend/internal/pkg/logger"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/cache"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/model"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/router"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/user_api"
+	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
+	"github.com/yoshihiro-shu/draft-backend/backend/internal/pkg/logger"
 	"go.uber.org/zap"
 )
 

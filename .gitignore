@@ -1,4 +1,3 @@
 tmp/cache/data
 
-tmp/db/primary/data
-tmp/db/replica/data
+tmp/db/data

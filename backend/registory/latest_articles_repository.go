@@ -2,11 +2,11 @@ package registory
 
 import (
 	"github.com/go-pg/pg"
-	"github.com/yoshihiro-shu/draft-backend/application/usecase"
-	"github.com/yoshihiro-shu/draft-backend/infrastructure/persistence"
-	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/handler"
-	"github.com/yoshihiro-shu/draft-backend/interfaces/api/server/request"
-	"github.com/yoshihiro-shu/draft-backend/internal/pkg/logger"
+	"github.com/yoshihiro-shu/draft-backend/backend/application/usecase"
+	"github.com/yoshihiro-shu/draft-backend/backend/infrastructure/persistence"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/handler"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/request"
+	"github.com/yoshihiro-shu/draft-backend/backend/internal/pkg/logger"
 )
 
 func NewLatestArticlesRegistory(ctx *request.Context, l logger.Logger, master, reprica func() *pg.DB) handler.LatestArticlesHandler {
