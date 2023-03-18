@@ -24,7 +24,8 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Checkout
+      -
+        name: Checkout
         uses: actions/checkout@v2
       -
         name: Build and push
@@ -34,4 +35,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/draft-backend:${{ github.sha }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/draft-backend:${{ github.sha:7 }}
