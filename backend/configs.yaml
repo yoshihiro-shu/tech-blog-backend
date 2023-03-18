@@ -42,6 +42,7 @@ cacheRedis:
   port: "6379"
   password: ""
   dbNumber: 0
+  expires: 24h
 
 twitter:
   api_key: XXXXXXXXXX
