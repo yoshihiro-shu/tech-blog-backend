@@ -12,6 +12,10 @@ RUN CGO_ENABLED=0 go build -o binary ./cmd/main.go
 FROM scratch
 
 WORKDIR /usr/src/app
+
+# scratch doesn't have timezone.
+COPY --from=builder /usr/share/zoneinfo/Asia/Tokyo /usr/share/zoneinfo/Asia/Tokyo
+
 COPY --from=builder /usr/src/app/binary /usr/src/app/binary
 COPY ./backend/configs.yaml .
 
