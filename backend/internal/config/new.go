@@ -45,10 +45,11 @@ type DB struct {
 }
 
 type RedisCache struct {
-	Host     string `yaml:"host"`
-	Port     string `yaml:"port"`
-	Password string `yaml:"password"`
-	DbNumber int    `yaml:"dbNumber"`
+	Host     string        `yaml:"host"`
+	Port     string        `yaml:"port"`
+	Password string        `yaml:"password"`
+	DbNumber int           `yaml:"dbNumber"`
+	Expires  time.Duration `yaml:"expires"`
 }
 
 type Twitter struct {

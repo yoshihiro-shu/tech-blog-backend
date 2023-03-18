@@ -3,6 +3,7 @@ package cache
 import (
 	"context"
 	"encoding/json"
+	"time"
 
 	"github.com/go-redis/redis/v9"
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
@@ -16,6 +17,11 @@ type RedisClient interface {
 type redisContext struct {
 	cahceRedis *redis.Client
 	ctx        context.Context
+	opts       redisOptions
+}
+
+type redisOptions struct {
+	expires time.Duration
 }
 
 func New(c config.RedisCache) RedisClient {
@@ -28,6 +34,9 @@ func New(c config.RedisCache) RedisClient {
 	return &redisContext{
 		cahceRedis: rds,
 		ctx:        context.Background(),
+		opts: redisOptions{
+			expires: c.Expires,
+		},
 	}
 }
 
@@ -36,7 +45,7 @@ func (r redisContext) SET(key string, i interface{}) error {
 	if err != nil {
 		return err
 	}
-	err = r.cahceRedis.Set(r.ctx, key, b, 0).Err()
+	err = r.cahceRedis.Set(r.ctx, key, b, r.opts.expires).Err()
 	return err
 }
 
