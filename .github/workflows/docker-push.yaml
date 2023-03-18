@@ -30,5 +30,6 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm64
+          file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/draft-backend:${{ github.sha }}
