@@ -85,7 +85,7 @@ func (c RedisCache) GetRedisDNS() string {
 }
 
 func New() Configs {
-	conf := Configs{}
+	var conf Configs
 
 	b, err := os.ReadFile("./configs.yaml")
 	if err != nil {
