@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 
 	"github.com/go-redis/redis/v9"
-	"github.com/yoshihiro-shu/draft-backend/internal/config"
+	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
 )
 
 type RedisContext struct {
@@ -15,7 +15,7 @@ type RedisContext struct {
 
 func New(c config.Configs) *RedisContext {
 	rds := redis.NewClient(&redis.Options{
-		Addr:     c.GetRedisDNS(),
+		Addr:     c.GetCacheRedis().GetRedisDNS(),
 		Password: c.GetCacheRedis().Password, // no password sret
 		DB:       c.GetCacheRedis().DbNumber, // use default DB
 	})
