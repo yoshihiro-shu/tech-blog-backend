@@ -1,8 +1,10 @@
-name: Build
+name: go-build
 
 on:
   workflow_dispatch:
   pull_request:
+    paths:
+      - "backend/**"
 
 permissions: read-all
 
