@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"log"
 	"time"
 
 	"go.uber.org/zap"
@@ -12,6 +13,7 @@ var config zap.Config
 func init() {
 	jst, err := time.LoadLocation("Asia/Tokyo")
 	if err != nil {
+		log.Fatalf("err load time location, %s", err.Error())
 		panic(err)
 	}
 	time.Local = jst
