@@ -31,3 +31,4 @@ jobs:
           push: true
           # tags: yoshi429/draft-backend:${{ github.sha }}
           tags: yoshi429/draft-backend:latest
+          workdir: ./backend
