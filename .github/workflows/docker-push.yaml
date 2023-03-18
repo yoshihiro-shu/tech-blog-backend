@@ -1,12 +1,9 @@
 name: docker-push
 
-# on:
-#   push:
-#     branches:
-#       - 'main'
 on:
-  workflow_dispatch:
-  pull_request:
+  push:
+    branches:
+      - 'main'
 
 jobs:
   docker:
@@ -24,9 +21,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Set SHORT_SHA
-        id: short_sha
-        run: echo ::set-output name=VERSION::$(git rev-parse --short HEAD)
       -
         name: Checkout
         uses: actions/checkout@v2
@@ -38,4 +32,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/draft-backend:${{ steps.short_sha.outputs.VERSION }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/draft-backend:${{ github.sha }}
