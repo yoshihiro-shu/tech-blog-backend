@@ -29,4 +29,5 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: yoshi429/draft-backend:${{ github.sha }}
+          # tags: yoshi429/draft-backend:${{ github.sha }}
+          tags: yoshi429/draft-backend:latest
