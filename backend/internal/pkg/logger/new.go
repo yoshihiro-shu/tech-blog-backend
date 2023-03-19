@@ -11,6 +11,8 @@ type Logger interface {
 	Info(msg string, fields ...zap.Field)
 	Warn(msg string, fields ...zap.Field)
 	Error(msg string, fields ...zap.Field)
+	Panic(msg string, fields ...zap.Field)
+	Fatal(msg string, fields ...zap.Field)
 }
 
 type logger struct {
@@ -19,7 +21,7 @@ type logger struct {
 }
 
 func (l logger) Debug(msg string, fields ...zap.Field) {
-	l.zap.Info(msg, fields...)
+	l.zap.Debug(msg, fields...)
 }
 
 func (l logger) Info(msg string, fields ...zap.Field) {
@@ -32,6 +34,14 @@ func (l logger) Warn(msg string, fields ...zap.Field) {
 
 func (l logger) Error(msg string, fields ...zap.Field) {
 	l.zap.Error(msg, fields...)
+}
+
+func (l logger) Panic(msg string, fields ...zap.Field) {
+	l.zap.Panic(msg, fields...)
+}
+
+func (l logger) Fatal(msg string, fields ...zap.Field) {
+	l.zap.Fatal(msg, fields...)
 }
 
 func New() Logger {
