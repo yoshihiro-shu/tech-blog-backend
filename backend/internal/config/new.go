@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -23,6 +22,10 @@ type Configs struct {
 	RefreshToken AuthToken    `yaml:"refresh_token"`
 }
 
+func (c Configs) GetUserAddr() string {
+	return c.User.GetAddr()
+}
+
 func (c Configs) MasterDB() DB {
 	return c.RelationalDB.Master
 }
@@ -33,10 +36,6 @@ func (c Configs) RepricaDB() []DB {
 
 func (c Configs) GetCacheRedis() RedisCache {
 	return c.CacheRedis
-}
-
-func (c Configs) GetUserAddr() string {
-	return fmt.Sprintf("%s:%s", c.User.Host, c.User.Port)
 }
 
 func New() Configs {
