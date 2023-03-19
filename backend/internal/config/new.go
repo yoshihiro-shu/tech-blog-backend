@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"time"
 
 	"gopkg.in/yaml.v3"
 )
@@ -16,22 +15,12 @@ const (
 )
 
 type Configs struct {
-	User         User         `yaml:"user"`
+	User         Server       `yaml:"user"`
 	RelationalDB RelationalDB `yaml:"relationalDB"`
 	CacheRedis   RedisCache   `yaml:"cacheRedis"`
 	Twitter      Twitter      `yaml:"twitter"`
 	AccessToken  AuthToken    `yaml:"access_token"`
 	RefreshToken AuthToken    `yaml:"refresh_token"`
-}
-
-type User struct {
-	Host string `yaml:"host"`
-	Port string `yaml:"port"`
-}
-
-type AuthToken struct {
-	SecretKey string        `yaml:"secret_key"`
-	Expires   time.Duration `yaml:"expires"`
 }
 
 func (c Configs) MasterDB() DB {
