@@ -38,17 +38,19 @@ func (c Configs) GetCacheRedis() RedisCache {
 	return c.CacheRedis
 }
 
-func New() Configs {
+func New() (Configs, error) {
 	var conf Configs
 
 	b, err := os.ReadFile("./configs.yaml")
 	if err != nil {
-		log.Fatalf("failed read configs.yaml. err :%s", err.Error())
+		log.Printf("failed read configs.yaml. err :%s", err.Error())
+		return conf, ErrReadConfigFile
 	}
 	err = yaml.Unmarshal(b, &conf)
 	if err != nil {
-		log.Fatalf("failed Unmarshal configs.yaml. err :%s", err.Error())
+		log.Printf("failed Unmarshal configs.yaml. err :%s", err.Error())
+		return conf, ErrUnmarshalConfigFile
 	}
 
-	return conf
+	return conf, nil
 }
