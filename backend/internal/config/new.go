@@ -44,14 +44,6 @@ type DB struct {
 	Sslmode  string `yaml:"sslMode"`
 }
 
-type RedisCache struct {
-	Host     string        `yaml:"host"`
-	Port     string        `yaml:"port"`
-	Password string        `yaml:"password"`
-	DbNumber int           `yaml:"dbNumber"`
-	Expires  time.Duration `yaml:"expires"`
-}
-
 type Twitter struct {
 	Apikey       string `yaml:"api_key"`
 	ApiKeySecret string `yaml:"api_key_secret"`
@@ -78,10 +70,6 @@ func (c Configs) GetCacheRedis() RedisCache {
 
 func (c Configs) GetUserAddr() string {
 	return fmt.Sprintf("%s:%s", c.User.Host, c.User.Port)
-}
-
-func (c RedisCache) GetRedisDNS() string {
-	return fmt.Sprintf("%s:%s", c.Host, c.Port)
 }
 
 func New() Configs {
