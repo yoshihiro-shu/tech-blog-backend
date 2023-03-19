@@ -15,7 +15,7 @@ func main() {
 	logger := logger.New()
 	conf, err := config.New()
 	if err != nil {
-		logger.Error("failed at load config file.", zap.Error(err))
+		logger.Fatal("failed at load config.", zap.Error(err))
 		return
 	}
 	db := model.New(conf)
