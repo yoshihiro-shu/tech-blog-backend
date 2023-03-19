@@ -29,21 +29,6 @@ type User struct {
 	Port string `yaml:"port"`
 }
 
-type RelationalDB struct {
-	Master   DB   `yaml:"master"`
-	Repricas []DB `yaml:"repricas"`
-}
-
-type DB struct {
-	Driver   string `yaml:"driver"`
-	Host     string `yaml:"host"`
-	Port     string `yaml:"port"`
-	User     string `yaml:"user"`
-	Name     string `yaml:"name"`
-	Password string `yaml:"password"`
-	Sslmode  string `yaml:"sslMode"`
-}
-
 type Twitter struct {
 	Apikey       string `yaml:"api_key"`
 	ApiKeySecret string `yaml:"api_key_secret"`
