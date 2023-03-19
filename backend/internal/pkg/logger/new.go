@@ -19,7 +19,7 @@ type logger struct {
 }
 
 func (l logger) Debug(msg string, fields ...zap.Field) {
-	l.zap.Info(msg, fields...)
+	l.zap.Debug(msg, fields...)
 }
 
 func (l logger) Info(msg string, fields ...zap.Field) {
