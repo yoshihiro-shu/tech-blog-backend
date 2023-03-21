@@ -20,6 +20,7 @@ type Configs struct {
 	Twitter      Twitter      `yaml:"twitter"`
 	AccessToken  AuthToken    `yaml:"access_token"`
 	RefreshToken AuthToken    `yaml:"refresh_token"`
+	CsrfToken    CsrfToken    `yaml:"csrf_token"`
 }
 
 func (c Configs) GetUserAddr() string {

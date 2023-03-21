@@ -57,3 +57,6 @@ access_token:
 refresh_token:
   secret_key: SECRETKEY
   expires: 720h
+
+csrf_token:
+  key: 32-byte-long-auth-key
