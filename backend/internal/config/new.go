@@ -15,6 +15,7 @@ const (
 
 type Configs struct {
 	User         Server       `yaml:"user"`
+	Frontend     Frontend     `yaml:"frontend"`
 	RelationalDB RelationalDB `yaml:"relationalDB"`
 	CacheRedis   RedisCache   `yaml:"cacheRedis"`
 	Twitter      Twitter      `yaml:"twitter"`
