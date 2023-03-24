@@ -17,8 +17,8 @@ func Apply(r router.Router, conf config.Configs, logger logger.Logger, db *model
 
 	r.Use(middlewares.Cors(conf.Frontend))
 	r.Use(middlewares.Logger(logger))
-	// r.Use(middlewares.CsrfProtecter(conf.CsrfToken.Key))
-	// r.Use(middlewares.SetterCsrfToken)
+	r.Use(middlewares.CsrfProtecter(conf, logger))
+	r.Use(middlewares.SetterCsrfToken)
 
 	h := handler.NewIndexHandler(ctx)
 
