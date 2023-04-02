@@ -22,6 +22,7 @@ func Apply(r router.Router, conf config.Configs, logger logger.Logger, db *model
 
 	h := handler.NewIndexHandler(ctx)
 
+	r = r.Group("/api")
 	{
 		r.GET("/healthcheck", h.Index)
 	}
