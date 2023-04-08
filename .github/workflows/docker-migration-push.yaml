@@ -1,11 +1,11 @@
-name: docker-push
+name: docker-migration-push
 
 on:
   push:
     branches:
       - 'main'
     paths:
-      - "backend/**"
+      - "migrations/**"
 
 jobs:
   docker:
@@ -31,4 +31,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/draft-backend:${{ github.sha }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/draft-migration:${{ github.sha }}

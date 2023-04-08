@@ -1,4 +1,4 @@
-package middleware
+package middlewares
 
 import (
 	"net/http"
@@ -7,7 +7,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func LoggerMiddleware(logger logger.Logger) func(http.Handler) http.Handler {
+func Logger(logger logger.Logger) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			logger.Info("request",

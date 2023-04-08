@@ -3,7 +3,7 @@ package user_api
 import (
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/cache"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/handler"
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/middleware"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/middlewares"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/model"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/request"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/router"
@@ -15,11 +15,14 @@ import (
 func Apply(r router.Router, conf config.Configs, logger logger.Logger, db *model.DBContext, cache cache.RedisClient) {
 	ctx := request.NewContext(conf, logger, db, cache)
 
-	r.Use(middleware.CorsMiddleware)
-	r.Use(middleware.LoggerMiddleware(logger))
+	r.Use(middlewares.Logger(logger))
+	r.Use(middlewares.CsrfProtecter(conf, logger))
+	r.Use(middlewares.SetterCsrfToken)
+	r.Use(middlewares.Cors(conf.Frontend))
 
 	h := handler.NewIndexHandler(ctx)
 
+	r = r.Group("/api")
 	{
 		r.GET("/healthcheck", h.Index)
 	}

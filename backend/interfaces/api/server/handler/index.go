@@ -48,6 +48,13 @@ func (h indexHandler) TestSetRedis(w http.ResponseWriter, r *http.Request) error
 		return h.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 
+	cookie := &http.Cookie{
+		Name:  k,
+		Value: v,
+	}
+
+	http.SetCookie(w, cookie)
+
 	return h.JSON(w, http.StatusOK, t)
 }
 
