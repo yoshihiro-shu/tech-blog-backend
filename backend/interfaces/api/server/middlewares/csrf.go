@@ -1,7 +1,6 @@
 package middlewares
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gorilla/csrf"
@@ -18,14 +17,22 @@ const (
 
 func SetterCsrfToken(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodGet {
-			// X-CSRF-Tokenをフロント側で受け取れるようにする
+		switch r.Method {
+		case http.MethodOptions:
 			w.Header().Set("Access-Control-Allow-Headers", headerName)
+			w.Header().Set("Access-Control-Allow-Credentials", "true")
+		case http.MethodGet:
+			// X-CSRF-Tokenをフロント側で受け取れるようにする
 			w.Header().Set("Access-Control-Expose-Headers", headerName)
 			// フロント側のブラウザにクッキーがセットされるようにする
 			w.Header().Set("Access-Control-Allow-Credentials", "true")
 			w.Header().Set(headerName, csrf.Token(r))
+		case http.MethodPost:
+			// X-CSRF-Tokenをフロント側で受け取れるようにする
+			w.Header().Set("Access-Control-Expose-Headers", headerName)
+			w.Header().Set("Access-Control-Allow-Credentials", "true")
 		}
+
 		next.ServeHTTP(w, r)
 	})
 }
@@ -44,9 +51,6 @@ func CsrfProtecter(conf config.Configs, l logger.Logger) func(h http.Handler) ht
 
 func errHandler(l logger.Logger) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// l.Info("INFOMATION", zap.Any("cookie", r.Cookies()))
-		fmt.Println("cookie", r.Cookies())
-		// l.Error("CSRF攻撃の疑いのあるリクエストが発行されました", zap.Error(csrf.FailureReason(r)))
 		l.Error("CSRF攻撃の疑いのあるリクエストが発行されました", zap.Error(nil))
 		w.WriteHeader(http.StatusForbidden)
 	})
