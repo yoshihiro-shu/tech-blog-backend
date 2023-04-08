@@ -15,8 +15,8 @@ import (
 func Apply(r router.Router, conf config.Configs, logger logger.Logger, db *model.DBContext, cache cache.RedisClient) {
 	ctx := request.NewContext(conf, logger, db, cache)
 
-	r.Use(middlewares.Cors(conf.Frontend))
 	r.Use(middlewares.Logger(logger))
+	r.Use(middlewares.Cors(conf.Frontend))
 	r.Use(middlewares.CsrfProtecter(conf, logger))
 	r.Use(middlewares.SetterCsrfToken)
 
