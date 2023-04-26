@@ -27,7 +27,7 @@ func SetterCsrfToken(next http.Handler) http.Handler {
 			// フロント側のブラウザにクッキーがセットされるようにする
 			w.Header().Set("Access-Control-Allow-Credentials", "true")
 			w.Header().Set(headerName, csrf.Token(r))
-		case http.MethodPost:
+		case http.MethodPost, http.MethodPut, http.MethodPatch, http.MethodDelete:
 			// X-CSRF-Tokenをフロント側で受け取れるようにする
 			w.Header().Set("Access-Control-Expose-Headers", headerName)
 			w.Header().Set("Access-Control-Allow-Credentials", "true")
