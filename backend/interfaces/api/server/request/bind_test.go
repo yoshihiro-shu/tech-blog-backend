@@ -21,6 +21,7 @@ func TestMustBind(t *testing.T) {
 	tests := []struct {
 		Key      string
 		Data     requestBody
+		IsError  bool
 		Expected Expected
 	}{
 		{
@@ -29,6 +30,7 @@ func TestMustBind(t *testing.T) {
 				"name": "John",
 				"age":  30,
 			},
+			IsError: false,
 			Expected: Expected{
 				Name: "John",
 				Age:  30,
@@ -39,15 +41,16 @@ func TestMustBind(t *testing.T) {
 			Data: requestBody{
 				"name": "John",
 			},
+			IsError: false,
 			Expected: Expected{
 				Name: "John"},
 		},
 		{
-			// It will occur an Error Log.But it is ok!
 			Key: "test3",
 			Data: requestBody{
 				"age": 30,
 			},
+			IsError: true,
 			Expected: Expected{
 				Age: 30,
 			},
@@ -66,8 +69,10 @@ func TestMustBind(t *testing.T) {
 			// Call MustBind to bind the request and validate the struct
 			var testObj Expected
 			err = ctx.MustBind(req, &testObj)
-			if err != nil {
-				t.Logf("MustBind returned an error: %v", err)
+			if !test.IsError {
+				if err != nil {
+					t.Logf("MustBind returned an error: %v", err)
+				}
 			}
 			if !reflect.DeepEqual(testObj, test.Expected) {
 				t.Errorf("MustBind did not bind the request correctly. Got: %+v, Expected: %+v", testObj, test.Expected)
