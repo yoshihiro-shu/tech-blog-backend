@@ -7,7 +7,7 @@ require (
 	github.com/alicebob/miniredis/v2 v2.30.3
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-playground/validator/v10 v10.14.1
-	github.com/go-redis/redis/v9 v9.0.0-beta.1
+	github.com/go-redis/redis/v9 v9.0.5
 	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.0
 	github.com/gorilla/csrf v1.7.1
