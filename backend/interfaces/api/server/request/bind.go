@@ -2,7 +2,7 @@ package request
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 )
 
@@ -22,7 +22,7 @@ func (c Context) MustBind(r *http.Request, i interface{}) error {
 func (c Context) bind(r *http.Request, i interface{}) error {
 	defer r.Body.Close()
 
-	body, err := ioutil.ReadAll(r.Body)
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		return err
 	}
