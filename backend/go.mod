@@ -7,7 +7,7 @@ require (
 	github.com/go-pg/pg v8.0.7+incompatible
 	github.com/go-playground/validator/v10 v10.11.2
 	github.com/go-redis/redis/v9 v9.0.0-beta.1
-	github.com/google/go-cmp v0.5.8
+	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.0
 	github.com/gorilla/csrf v1.7.1
 	github.com/gorilla/mux v1.8.0
