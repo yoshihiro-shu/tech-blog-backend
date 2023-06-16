@@ -4,10 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/alicebob/miniredis/v2"
 	"github.com/google/go-cmp/cmp"
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/cache"
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
+	"github.com/yoshihiro-shu/draft-backend/backend/internal/mock_test"
 )
 
 type data struct {
@@ -17,7 +15,7 @@ type data struct {
 }
 
 func TestRedis(t *testing.T) {
-	testRedis := MockRedis(t)
+	testRedis := mock_test.MockRedis(t)
 	tests := []struct {
 		Key  string
 		Data data
@@ -63,12 +61,4 @@ func TestRedis(t *testing.T) {
 			}
 		})
 	}
-}
-
-func MockRedis(t *testing.T) cache.RedisClient {
-	redisServer := miniredis.RunT(t)
-	return cache.New(config.RedisCache{
-		Host: redisServer.Host(),
-		Port: redisServer.Port(),
-	})
 }
