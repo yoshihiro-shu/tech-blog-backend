@@ -12,6 +12,6 @@ func NewContext(t *testing.T) *request.Context {
 	conf := config.Configs{}
 	db, _ := MockDB(t)
 	logger := logger.New()
-	cache := MockRedisClient{}
+	cache := MockRedis(t)
 	return request.NewContext(conf, logger, db, cache)
 }
