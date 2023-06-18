@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/yoshihiro-shu/draft-backend/backend/application/usecase"
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/auth"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/request"
+	"github.com/yoshihiro-shu/draft-backend/backend/internal/auth"
 	"go.uber.org/zap"
 )
 
