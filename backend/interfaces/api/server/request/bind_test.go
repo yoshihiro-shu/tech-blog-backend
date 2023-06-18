@@ -64,7 +64,7 @@ func TestMustBind(t *testing.T) {
 				t.Fatal(err)
 			}
 			// Create a test context
-			ctx := mock_test.NewContext(t)
+			ctx := mock_test.NewMinContext()
 
 			// Call MustBind to bind the request and validate the struct
 			var testObj Expected

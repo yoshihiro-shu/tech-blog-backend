@@ -18,3 +18,12 @@ func NewContext(t *testing.T, sqlDB *sql.DB) (*request.Context, error) {
 	cache := MockRedis(t)
 	return request.NewContext(config.Configs{}, logger, db, cache), err
 }
+
+func NewMinContext() *request.Context {
+	return request.NewContext(
+		config.Configs{},
+		logger.New(),
+		nil,
+		nil,
+	)
+}
