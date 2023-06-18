@@ -11,5 +11,5 @@ type RefreshToken struct {
 	ExpiredAt time.Time `json:"expired_at"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
-	User      *User     `pg:"fk:user_id" json:"user"`
+	User      *User     `gorm:"foreignKey:user_id;" json:"user"`
 }

@@ -5,7 +5,7 @@ import (
 
 	"github.com/gorilla/csrf"
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/pkg/logger"
+	"github.com/yoshihiro-shu/draft-backend/backend/internal/logger"
 	"go.uber.org/zap"
 )
 

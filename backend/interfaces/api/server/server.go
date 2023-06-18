@@ -8,12 +8,12 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/cache"
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/model"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/router"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/user_api"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/cache"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/model"
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/pkg/logger"
+	"github.com/yoshihiro-shu/draft-backend/backend/internal/logger"
 	"go.uber.org/zap"
 )
 
@@ -31,11 +31,11 @@ type Server struct {
 	*http.Server
 	conf   config.Configs
 	logger logger.Logger
-	db     *model.DBContext
+	db     model.DBClient
 	cache  cache.RedisClient
 }
 
-func New(conf config.Configs, logger logger.Logger, db *model.DBContext, cache cache.RedisClient) *Server {
+func New(conf config.Configs, logger logger.Logger, db model.DBClient, cache cache.RedisClient) *Server {
 	return &Server{
 		Server: &http.Server{
 			Addr:           conf.GetUserAddr(),

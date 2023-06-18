@@ -4,23 +4,23 @@ import (
 	"context"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/auth"
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/cache"
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/model"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/cache"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/model"
+	"github.com/yoshihiro-shu/draft-backend/backend/internal/auth"
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/pkg/logger"
+	"github.com/yoshihiro-shu/draft-backend/backend/internal/logger"
 	"gorm.io/gorm"
 )
 
 type Context struct {
-	db       *model.DBContext
+	db       model.DBClient
 	cache    cache.RedisClient
 	Conf     config.Configs
 	Logger   logger.Logger
 	validate *validator.Validate
 }
 
-func NewContext(conf config.Configs, logger logger.Logger, db *model.DBContext, cache cache.RedisClient) *Context {
+func NewContext(conf config.Configs, logger logger.Logger, db model.DBClient, cache cache.RedisClient) *Context {
 	return &Context{
 		db:       db,
 		cache:    cache,
