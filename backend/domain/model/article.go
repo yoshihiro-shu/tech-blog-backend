@@ -14,9 +14,9 @@ type Article struct {
 	CreatedAt    time.Time `json:"createdAt"`
 	UpdatedAt    time.Time `json:"updatedAt"`
 	CategoryId   int       `json:"categoryId"`
-	User         *User     `pg:"fk:user_id" gorm:"foreignKey:UserId;" json:"user"`
-	Category     *Category `pg:"fk:category_id" gorm:"foreignKey:CategoryId;" json:"category"`
-	Tags         []Tag     `pg:"many2many:article_tags" gorm:"many2many:article_tags;" json:"tags"`
+	User         *User     `gorm:"foreignKey:UserId;" json:"user"`
+	Category     *Category `gorm:"foreignKey:CategoryId;" json:"category"`
+	Tags         []Tag     `gorm:"many2many:article_tags;" json:"tags"`
 }
 
 func NewArticle(Id int) *Article {
