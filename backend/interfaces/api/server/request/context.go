@@ -10,6 +10,7 @@ import (
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/model"
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/pkg/logger"
+	"gorm.io/gorm"
 )
 
 type Context struct {
@@ -36,6 +37,10 @@ func (c Context) MasterDB() *pg.DB {
 
 func (c Context) RepricaDB() *pg.DB {
 	return c.db.Reprica()
+}
+
+func (c Context) DBPrimary() *gorm.DB {
+	return c.db.Primary()
 }
 
 func (c Context) Cache() cache.RedisClient {

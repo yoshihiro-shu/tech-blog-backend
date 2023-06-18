@@ -7,11 +7,13 @@ import (
 
 	"github.com/go-pg/pg"
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
+	"gorm.io/gorm"
 )
 
 type DBContext struct {
 	master   *pg.DB
 	repricas []*pg.DB
+	primary  *gorm.DB
 }
 
 func (c DBContext) Master() *pg.DB {
@@ -25,6 +27,10 @@ func (c DBContext) Reprica() *pg.DB {
 		return c.repricas[0]
 	}
 	return c.repricas[n.Int64()]
+}
+
+func (c DBContext) Primary() *gorm.DB {
+	return c.primary
 }
 
 func (c DBContext) Close() {
@@ -59,9 +65,14 @@ func connectToRepricas(conf []config.DB) []*pg.DB {
 	return repricas
 }
 
-func New(conf config.Configs) *DBContext {
+func New(conf config.Configs) (*DBContext, error) {
+	primary, err := connectToPrimary(conf.MasterDB())
+	if err != nil {
+		return nil, err
+	}
 	return &DBContext{
 		master:   connectToMaster(conf.MasterDB()),
 		repricas: connectToRepricas(conf.RepricaDB()),
-	}
+		primary:  primary,
+	}, nil
 }
