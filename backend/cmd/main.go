@@ -7,7 +7,7 @@ import (
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/model"
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/auth"
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/pkg/logger"
+	"github.com/yoshihiro-shu/draft-backend/backend/internal/logger"
 	"go.uber.org/zap"
 )
 

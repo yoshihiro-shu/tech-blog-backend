@@ -6,7 +6,7 @@ import (
 
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/request"
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/pkg/logger"
+	"github.com/yoshihiro-shu/draft-backend/backend/internal/logger"
 )
 
 func NewContext(t *testing.T, sqlDB *sql.DB) (*request.Context, error) {
