@@ -4,17 +4,20 @@ import (
 	"github.com/go-pg/pg"
 	"github.com/yoshihiro-shu/draft-backend/backend/domain/model"
 	"github.com/yoshihiro-shu/draft-backend/backend/domain/repository"
+	"gorm.io/gorm"
 )
 
 type articlePersistence struct {
 	Master  func() *pg.DB
 	Reprica func() *pg.DB
+	Primary func() *gorm.DB
 }
 
-func NewArticlePersistence(master, reprica func() *pg.DB) repository.ArticleRepository {
+func NewArticlePersistence(master, reprica func() *pg.DB, primary func() *gorm.DB) repository.ArticleRepository {
 	return &articlePersistence{
 		Master:  master,
 		Reprica: reprica,
+		Primary: primary,
 	}
 }
 
@@ -23,18 +26,12 @@ func (ap *articlePersistence) Create(article *model.Article) (*model.Article, er
 }
 
 func (ap *articlePersistence) FindByID(article *model.Article) error {
-	query := ap.Reprica().Model(article).
-		Relation("Tags").
-		Relation("Category").
-		Relation("User").
-		WherePK()
-
-	err := query.Select()
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return ap.Primary().
+		Joins("User").
+		Joins("Category").
+		Preload("Tags").
+		Find(article).
+		Error
 }
 
 func (ap *articlePersistence) GetArticles(articles *[]model.Article, limit, offset int) error {

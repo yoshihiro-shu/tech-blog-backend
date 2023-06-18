@@ -1,9 +1,11 @@
 package model
 
-import "time"
+import (
+	"time"
+)
 
 type Article struct {
-	Id           int       `json:"id"`
+	Id           int       `gorm:"primaryKey;" json:"id"`
 	UserId       int       `json:"userId"`
 	ThumbnailUrl string    `json:"thumbnailUrl"`
 	Title        string    `json:"title"`
@@ -12,9 +14,9 @@ type Article struct {
 	CreatedAt    time.Time `json:"createdAt"`
 	UpdatedAt    time.Time `json:"updatedAt"`
 	CategoryId   int       `json:"categoryId"`
-	User         *User     `pg:"fk:user_id" json:"user"`
-	Category     *Category `pg:"fk:category_id" json:"category"`
-	Tags         []Tag     `pg:"many2many:article_tags" json:"tags"`
+	User         *User     `pg:"fk:user_id" gorm:"foreignKey:UserId;" json:"user"`
+	Category     *Category `pg:"fk:category_id" gorm:"foreignKey:CategoryId;" json:"category"`
+	Tags         []Tag     `pg:"many2many:article_tags" gorm:"many2many:article_tags;" json:"tags"`
 }
 
 func NewArticle(Id int) *Article {
