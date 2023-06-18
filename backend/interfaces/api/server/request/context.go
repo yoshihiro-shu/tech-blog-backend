@@ -13,14 +13,14 @@ import (
 )
 
 type Context struct {
-	db       *model.DBContext
+	db       model.DBClient
 	cache    cache.RedisClient
 	Conf     config.Configs
 	Logger   logger.Logger
 	validate *validator.Validate
 }
 
-func NewContext(conf config.Configs, logger logger.Logger, db *model.DBContext, cache cache.RedisClient) *Context {
+func NewContext(conf config.Configs, logger logger.Logger, db model.DBClient, cache cache.RedisClient) *Context {
 	return &Context{
 		db:       db,
 		cache:    cache,

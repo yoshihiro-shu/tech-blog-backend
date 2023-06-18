@@ -31,11 +31,11 @@ type Server struct {
 	*http.Server
 	conf   config.Configs
 	logger logger.Logger
-	db     *model.DBContext
+	db     model.DBClient
 	cache  cache.RedisClient
 }
 
-func New(conf config.Configs, logger logger.Logger, db *model.DBContext, cache cache.RedisClient) *Server {
+func New(conf config.Configs, logger logger.Logger, db model.DBClient, cache cache.RedisClient) *Server {
 	return &Server{
 		Server: &http.Server{
 			Addr:           conf.GetUserAddr(),

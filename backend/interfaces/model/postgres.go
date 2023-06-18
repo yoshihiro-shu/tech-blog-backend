@@ -9,16 +9,22 @@ import (
 	"gorm.io/gorm"
 )
 
-type DBContext struct {
+type DBClient interface {
+	Master() *gorm.DB
+	Reprica() *gorm.DB
+	Close() error
+}
+
+type context struct {
 	master   *gorm.DB
 	repricas []*gorm.DB
 }
 
-func (c DBContext) Master() *gorm.DB {
+func (c context) Master() *gorm.DB {
 	return c.master
 }
 
-func (c DBContext) Reprica() *gorm.DB {
+func (c context) Reprica() *gorm.DB {
 	numOfDB := big.NewInt(int64(len(c.repricas)))
 	n, err := rand.Int(rand.Reader, numOfDB)
 	if err != nil {
@@ -27,7 +33,7 @@ func (c DBContext) Reprica() *gorm.DB {
 	return c.repricas[n.Int64()]
 }
 
-func (c DBContext) Close() error {
+func (c context) Close() error {
 	err := close(c.master)
 	if err != nil {
 		return nil
@@ -75,7 +81,7 @@ func connenctToDB(conf config.DB) (*gorm.DB, error) {
 	return db, nil
 }
 
-func New(conf config.Configs) (*DBContext, error) {
+func New(conf config.Configs) (DBClient, error) {
 	master, err := connectToMaster(conf.MasterDB())
 	if err != nil {
 		return nil, err
@@ -84,7 +90,7 @@ func New(conf config.Configs) (*DBContext, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &DBContext{
+	return &context{
 		master:   master,
 		repricas: repricas,
 	}, nil
