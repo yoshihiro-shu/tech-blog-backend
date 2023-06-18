@@ -5,8 +5,8 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/auth"
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/cache"
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/model"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/cache"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/model"
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/pkg/logger"
 	"gorm.io/gorm"

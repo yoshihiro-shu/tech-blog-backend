@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/model"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/model"
 )
 
 // TODO 将来的にsqlmockを使ってDBのテストを自動化したい
