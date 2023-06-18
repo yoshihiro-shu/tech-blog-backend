@@ -45,7 +45,6 @@ func Apply(r router.Router, conf config.Configs, logger logger.Logger, db *model
 		)
 		latestArticles := r.Group("/new")
 		latestArticles.GET("/{page:[0-9]+}", lastestAriclesHandler.Get)
-
 	}
 	{
 		twitterHandler := registory.NewTwitterRegistory(ctx)

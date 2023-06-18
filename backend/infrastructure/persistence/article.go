@@ -35,35 +35,24 @@ func (ap *articlePersistence) FindByID(article *model.Article) error {
 }
 
 func (ap *articlePersistence) GetArticles(articles *[]model.Article, limit, offset int) error {
-	query := ap.Reprica().Model(articles).
-		Relation("Tags").
-		Relation("Category").
-		Relation("User").
+	return ap.Primary().
+		Joins("User").
+		Joins("Category").
+		Preload("Tags").
 		Order("created_at ASC").
 		Limit(limit).
-		Offset(offset)
-
-	err := query.Select()
-	if err != nil {
-		return err
-	}
-
-	if len(*articles) == 0 {
-		return pg.ErrNoRows
-	}
-
-	return nil
+		Offset(offset).
+		Find(articles).
+		Error
 }
 
 func (ap *articlePersistence) GetPager(article *model.Article) (int, error) {
-	query := ap.Reprica().Model(article)
-
-	count, err := query.Count()
+	var count int64
+	err := ap.Primary().Model(article).Count(&count).Error
 	if err != nil {
 		return 0, err
 	}
-
-	return count, nil
+	return int(count), nil
 }
 
 func (ap *articlePersistence) Update(article *model.Article) (*model.Article, error) {
