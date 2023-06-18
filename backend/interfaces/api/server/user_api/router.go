@@ -32,6 +32,7 @@ func Apply(r router.Router, conf config.Configs, logger logger.Logger, db *model
 			logger,
 			ctx.MasterDB,
 			ctx.RepricaDB,
+			ctx.DBPrimary,
 		)
 		r.GET("/top", topPageHandler.Get)
 	}
