@@ -3,7 +3,7 @@ package usecase
 import (
 	"github.com/yoshihiro-shu/draft-backend/backend/domain/model"
 	"github.com/yoshihiro-shu/draft-backend/backend/domain/repository"
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/pkg/pager"
+	"github.com/yoshihiro-shu/draft-backend/backend/internal/pager"
 )
 
 type ArticleUseCase interface {
