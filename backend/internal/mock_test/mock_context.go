@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"testing"
 
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/request"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/request"
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/logger"
 )

@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/request"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/request"
 )
 
 type indexHandler struct {

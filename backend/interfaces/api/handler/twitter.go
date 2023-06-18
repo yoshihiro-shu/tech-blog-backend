@@ -5,7 +5,7 @@ import (
 
 	"github.com/yoshihiro-shu/draft-backend/backend/application/usecase"
 	"github.com/yoshihiro-shu/draft-backend/backend/domain/model"
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/request"
+	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/request"
 )
 
 type TwitterHandler interface {
