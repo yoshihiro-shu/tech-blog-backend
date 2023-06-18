@@ -18,7 +18,11 @@ func main() {
 		logger.Fatal("failed at load config.", zap.Error(err))
 		return
 	}
-	db := model.New(conf)
+	db, err := model.New(conf)
+	if err != nil {
+		logger.Fatal("failed at connect Postgres DB.", zap.Error(err))
+		return
+	}
 	cache := cache.New(conf.CacheRedis)
 
 	defer db.Close()

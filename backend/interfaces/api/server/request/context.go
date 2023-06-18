@@ -3,13 +3,13 @@ package request
 import (
 	"context"
 
-	"github.com/go-pg/pg"
 	"github.com/go-playground/validator/v10"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/auth"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/cache"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/model"
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/pkg/logger"
+	"gorm.io/gorm"
 )
 
 type Context struct {
@@ -30,11 +30,11 @@ func NewContext(conf config.Configs, logger logger.Logger, db *model.DBContext, 
 	}
 }
 
-func (c Context) MasterDB() *pg.DB {
+func (c Context) MasterDB() *gorm.DB {
 	return c.db.Master()
 }
 
-func (c Context) RepricaDB() *pg.DB {
+func (c Context) RepricaDB() *gorm.DB {
 	return c.db.Reprica()
 }
 

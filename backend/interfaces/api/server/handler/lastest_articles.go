@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/go-pg/pg"
 	"github.com/gorilla/mux"
 	"github.com/yoshihiro-shu/draft-backend/backend/application/usecase"
 	"github.com/yoshihiro-shu/draft-backend/backend/domain/model"
@@ -12,6 +11,7 @@ import (
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/pkg/logger"
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/pkg/pager"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 type LatestArticlesHandler interface {
@@ -57,7 +57,7 @@ func (h latestArticlesHandler) Get(w http.ResponseWriter, r *http.Request) error
 
 	err = h.articleUseCase.GetArticles(&res.Articles, limit, offset)
 	if err != nil {
-		if err == pg.ErrNoRows {
+		if err == gorm.ErrRecordNotFound {
 			h.logger.Warn("err no articles at latest Articles Handler")
 			return h.JSON(w, http.StatusNotFound, err)
 		}

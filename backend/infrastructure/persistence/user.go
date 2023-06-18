@@ -1,64 +1,49 @@
 package persistence
 
 import (
-	"github.com/go-pg/pg"
 	"github.com/yoshihiro-shu/draft-backend/backend/domain/model"
 	"github.com/yoshihiro-shu/draft-backend/backend/domain/repository"
+	"gorm.io/gorm"
 )
 
 type userPersistence struct {
-	Conn *pg.DB
+	Master  func() *gorm.DB
+	Reprica func() *gorm.DB
 }
 
-func NewUserPersistence(conn *pg.DB) repository.UserRepository {
-	return &userPersistence{Conn: conn}
+func NewUserPersistence(master, reprica func() *gorm.DB) repository.UserRepository {
+	return &userPersistence{
+		Master:  master,
+		Reprica: reprica,
+	}
 }
 
 func (up *userPersistence) Create(user *model.User) error {
-	_, err := up.Conn.Model(user).Insert()
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return up.Master().Model(&model.User{}).Create(user).Error
 }
 
 func (up *userPersistence) FindByID(id int) (*model.User, error) {
 	user := &model.User{Id: id}
-	query := up.Conn.Model(user).WherePK()
-
-	err := query.Select()
+	err := up.Reprica().Model(&model.User{}).Find(user).Error
 	if err != nil {
 		return nil, err
 	}
-
 	return user, nil
 }
 
 func (up *userPersistence) FindByEmail(email string) (*model.User, error) {
 	user := &model.User{}
-
-	query := up.Conn.Model(user).Where("email = ?", email)
-	err := query.Select()
+	err := up.Reprica().Model(&model.User{}).Where("email = ?", email).Find(user).Error
 	if err != nil {
 		return nil, err
 	}
-
 	return user, nil
 }
 
 func (up *userPersistence) Update(user *model.User) error {
-	_, err := up.Conn.Model(user).WherePK().Update()
-	if err != nil {
-		return err
-	}
-	return nil
+	return up.Master().Model(&model.User{}).Where("id = ?", user.Id).Updates(user).Error
 }
 
 func (up *userPersistence) Delete(user *model.User) error {
-	_, err := up.Conn.Model(user).Delete()
-	if err != nil {
-		return nil
-	}
-	return nil
+	return up.Master().Model(&model.User{}).Where("id = ?", user.Id).Delete(user).Error
 }

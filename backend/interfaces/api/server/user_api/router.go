@@ -44,7 +44,6 @@ func Apply(r router.Router, conf config.Configs, logger logger.Logger, db *model
 		)
 		latestArticles := r.Group("/new")
 		latestArticles.GET("/{page:[0-9]+}", lastestAriclesHandler.Get)
-
 	}
 	{
 		twitterHandler := registory.NewTwitterRegistory(ctx)
@@ -71,7 +70,11 @@ func Apply(r router.Router, conf config.Configs, logger logger.Logger, db *model
 		auth.POST("/refresh_token", userHandler.RefreshToken)
 	}
 	{
-		articleHandler := registory.NewArticleRegistory(ctx, ctx.MasterDB, ctx.RepricaDB)
+		articleHandler := registory.NewArticleRegistory(
+			ctx,
+			ctx.MasterDB,
+			ctx.RepricaDB,
+		)
 		article := r.Group("/articles")
 		article.GET("/{id:[0-9]+}", articleHandler.Get)
 	}
