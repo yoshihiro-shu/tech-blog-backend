@@ -1,23 +1,20 @@
 package persistence
 
 import (
-	"github.com/go-pg/pg"
 	"github.com/yoshihiro-shu/draft-backend/backend/domain/model"
 	"github.com/yoshihiro-shu/draft-backend/backend/domain/repository"
 	"gorm.io/gorm"
 )
 
 type articlePersistence struct {
-	Master  func() *pg.DB
-	Reprica func() *pg.DB
-	Primary func() *gorm.DB
+	Master  func() *gorm.DB
+	Reprica func() *gorm.DB
 }
 
-func NewArticlePersistence(master, reprica func() *pg.DB, primary func() *gorm.DB) repository.ArticleRepository {
+func NewArticlePersistence(master, reprica func() *gorm.DB) repository.ArticleRepository {
 	return &articlePersistence{
 		Master:  master,
 		Reprica: reprica,
-		Primary: primary,
 	}
 }
 
@@ -26,7 +23,7 @@ func (ap *articlePersistence) Create(article *model.Article) (*model.Article, er
 }
 
 func (ap *articlePersistence) FindByID(article *model.Article) error {
-	return ap.Primary().
+	return ap.Reprica().
 		Joins("User").
 		Joins("Category").
 		Preload("Tags").
@@ -35,7 +32,7 @@ func (ap *articlePersistence) FindByID(article *model.Article) error {
 }
 
 func (ap *articlePersistence) GetArticles(articles *[]model.Article, limit, offset int) error {
-	return ap.Primary().
+	return ap.Reprica().
 		Joins("User").
 		Joins("Category").
 		Preload("Tags").
@@ -48,7 +45,7 @@ func (ap *articlePersistence) GetArticles(articles *[]model.Article, limit, offs
 
 func (ap *articlePersistence) GetPager(article *model.Article) (int, error) {
 	var count int64
-	err := ap.Primary().Model(article).Count(&count).Error
+	err := ap.Reprica().Model(article).Count(&count).Error
 	if err != nil {
 		return 0, err
 	}

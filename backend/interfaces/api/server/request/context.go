@@ -3,7 +3,6 @@ package request
 import (
 	"context"
 
-	"github.com/go-pg/pg"
 	"github.com/go-playground/validator/v10"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/auth"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server/cache"
@@ -31,16 +30,12 @@ func NewContext(conf config.Configs, logger logger.Logger, db *model.DBContext, 
 	}
 }
 
-func (c Context) MasterDB() *pg.DB {
+func (c Context) MasterDB() *gorm.DB {
 	return c.db.Master()
 }
 
-func (c Context) RepricaDB() *pg.DB {
+func (c Context) RepricaDB() *gorm.DB {
 	return c.db.Reprica()
-}
-
-func (c Context) DBPrimary() *gorm.DB {
-	return c.db.Primary()
 }
 
 func (c Context) Cache() cache.RedisClient {

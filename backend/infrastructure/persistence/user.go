@@ -7,11 +7,15 @@ import (
 )
 
 type userPersistence struct {
-	Master func() *gorm.DB
+	Master  func() *gorm.DB
+	Reprica func() *gorm.DB
 }
 
-func NewUserPersistence(master func() *gorm.DB) repository.UserRepository {
-	return &userPersistence{Master: master}
+func NewUserPersistence(master, reprica func() *gorm.DB) repository.UserRepository {
+	return &userPersistence{
+		Master:  master,
+		Reprica: reprica,
+	}
 }
 
 func (up *userPersistence) Create(user *model.User) error {
@@ -20,7 +24,7 @@ func (up *userPersistence) Create(user *model.User) error {
 
 func (up *userPersistence) FindByID(id int) (*model.User, error) {
 	user := &model.User{Id: id}
-	err := up.Master().Model(&model.User{}).Find(user).Error
+	err := up.Reprica().Model(&model.User{}).Find(user).Error
 	if err != nil {
 		return nil, err
 	}
@@ -29,7 +33,7 @@ func (up *userPersistence) FindByID(id int) (*model.User, error) {
 
 func (up *userPersistence) FindByEmail(email string) (*model.User, error) {
 	user := &model.User{}
-	err := up.Master().Model(&model.User{}).Where("email = ?", email).Find(user).Error
+	err := up.Reprica().Model(&model.User{}).Where("email = ?", email).Find(user).Error
 	if err != nil {
 		return nil, err
 	}

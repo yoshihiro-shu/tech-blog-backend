@@ -3,23 +3,20 @@ package persistence
 import (
 	"time"
 
-	"github.com/go-pg/pg"
 	"github.com/yoshihiro-shu/draft-backend/backend/domain/model"
 	"github.com/yoshihiro-shu/draft-backend/backend/domain/repository"
 	"gorm.io/gorm"
 )
 
 type refreshTokenPersistence struct {
-	Master  func() *pg.DB
-	Reprica func() *pg.DB
-	Primary func() *gorm.DB
+	Master  func() *gorm.DB
+	Reprica func() *gorm.DB
 }
 
-func NewRefreshTokenPersistence(master, reprica func() *pg.DB, primary func() *gorm.DB) repository.RefreshTokenRepository {
+func NewRefreshTokenPersistence(master, reprica func() *gorm.DB) repository.RefreshTokenRepository {
 	return &refreshTokenPersistence{
 		Master:  master,
 		Reprica: reprica,
-		Primary: primary,
 	}
 }
 
@@ -32,12 +29,12 @@ func (rp *refreshTokenPersistence) Create(userId int, jwtId string, expires time
 		CreatedAt: now,
 		UpdatedAt: now,
 	}
-	return rp.Primary().Model(&model.RefreshToken{}).Create(token).Error
+	return rp.Master().Model(&model.RefreshToken{}).Create(token).Error
 }
 
 func (rp *refreshTokenPersistence) GetByJwtId(jwtId string) (*model.RefreshToken, error) {
 	var rt model.RefreshToken
-	err := rp.Primary().Model(&model.RefreshToken{}).Where("jwt_id = ?", jwtId).First(&rt).Error
+	err := rp.Reprica().Model(&model.RefreshToken{}).Where("jwt_id = ?", jwtId).First(&rt).Error
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +42,7 @@ func (rp *refreshTokenPersistence) GetByJwtId(jwtId string) (*model.RefreshToken
 }
 
 func (rp *refreshTokenPersistence) Update(id int, jwtId string, expires time.Time) error {
-	return rp.Primary().Model(&model.RefreshToken{}).Where("id = ?", id).Updates(&model.RefreshToken{
+	return rp.Master().Model(&model.RefreshToken{}).Where("id = ?", id).Updates(&model.RefreshToken{
 		Id:        id,
 		JwtId:     jwtId,
 		ExpiredAt: expires,
