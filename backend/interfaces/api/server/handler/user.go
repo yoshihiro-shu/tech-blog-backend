@@ -27,25 +27,30 @@ func NewUserHandler(userUseCase usecase.UserUseCase, c *request.Context) *userHa
 	}
 }
 
-type requestUser struct {
+type signUpReq struct {
+	Name     string `json:"name" validate:"required"`
+	Email    string `json:"email" validate:"required"`
+	Password string `json:"password" validate:"required"`
 }
 
-type responseUser struct {
+type signUpRes struct {
 }
 
-func (uh *userHandler) SignUp(w http.ResponseWriter, r *http.Request) error {
-	name := r.FormValue("name")
-	email := r.FormValue("email")
-	password := r.FormValue("password")
-
-	hash, _ := auth.GenerateBcryptPassword(password)
-
-	err := uh.userUseCase.Create(name, hash, email)
+func (h *userHandler) SignUp(w http.ResponseWriter, r *http.Request) error {
+	var req signUpReq
+	err := h.MustBind(r, &req)
 	if err != nil {
-		return uh.JSON(w, http.StatusInternalServerError, err.Error())
+		// h.Logger.Error("error invalid request body.", zap.Error(err))zw
+		return h.Error(w, http.StatusBadRequest, err)
 	}
 
-	return uh.JSON(w, http.StatusOK, nil)
+	hash, _ := auth.GenerateBcryptPassword(req.Password)
+	err = h.userUseCase.Create(req.Name, hash, req.Email)
+	if err != nil {
+		return h.JSON(w, http.StatusInternalServerError, err.Error())
+	}
+
+	return h.JSON(w, http.StatusOK, &signUpRes{})
 }
 
 type loginReq struct {

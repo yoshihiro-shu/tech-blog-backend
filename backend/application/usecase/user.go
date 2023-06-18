@@ -47,16 +47,6 @@ func (uu *userUseCase) FindByID(id int) (*model.User, error) {
 	return user, nil
 }
 
-func (uu *userUseCase) FindByEmail(email string) (*model.User, error) {
-	user, err := uu.userRepo.FindByEmail(email)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return user, nil
-}
-
 func (u *userUseCase) Login(email, password string) (*auth.AuthToken, error) {
 	user, err := u.userRepo.FindByEmail(email)
 	if err != nil {
