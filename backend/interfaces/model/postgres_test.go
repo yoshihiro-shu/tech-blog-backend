@@ -15,7 +15,7 @@ func TestDBClient(t *testing.T) {
 		t.Error(err.Error())
 	}
 	defer sqlDB.Close()
-	db, err := mock_test.MockDB(sqlDB)
+	db, err := mock_test.MockDBClient(sqlDB)
 	if err != nil {
 		t.Error(err.Error())
 	}
