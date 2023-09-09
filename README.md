@@ -1,4 +1,10 @@
-# 環境構築
+# Draft-Backend
+
+## System Archtecture
+
+<img width="771" alt="image" src="https://github.com/yoshihiro-shu/draft-backend/assets/84740493/0e934811-b819-4319-8b4a-8ebe38a9666f">
+
+## 環境構築
 
 direnvのinstall
 
