@@ -59,11 +59,14 @@ docker-compose up -d
 curl localhost:80/healthcheck
 ```
 
+<!--
 ## Connect to psql
 
 ```
 psql -h localhost -p 5432 -U postgres -d postgres
 ```
+
+-->
 
 [gooooooooooooooooooooooose](https://github.com/yoshihiro-shu/draft-backend/tree/main/migrations)の使い方
 
