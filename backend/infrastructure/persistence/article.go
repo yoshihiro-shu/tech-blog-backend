@@ -18,8 +18,8 @@ func NewArticlePersistence(master, reprica func() *gorm.DB) repository.ArticleRe
 	}
 }
 
-func (ap *articlePersistence) Create(article *model.Article) (*model.Article, error) {
-	return &model.Article{}, nil
+func (ap *articlePersistence) Create(article *model.Article) error {
+	return ap.Master().Model(&model.Article{}).Create(article).Error
 }
 
 func (ap *articlePersistence) FindByID(article *model.Article) error {

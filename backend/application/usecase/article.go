@@ -7,7 +7,7 @@ import (
 )
 
 type ArticleUseCase interface {
-	Create(title, content string, userId, categoryId int) (*model.Article, error)
+	Create(title, content string, userId, categoryId int) error
 	FindByID(id int) (*model.Article, error)
 	GetArticles(articles *[]model.Article, limit, offset int) error
 	GetPager(currentPage, offset int) (*pager.Pager, error)
@@ -23,7 +23,7 @@ func NewArticleUseCase(articleRepo repository.ArticleRepository) ArticleUseCase 
 	return &articleUseCase{articleRepo: articleRepo}
 }
 
-func (au *articleUseCase) Create(title, content string, userId, categoryId int) (*model.Article, error) {
+func (au *articleUseCase) Create(title, content string, userId, categoryId int) error {
 	article := &model.Article{
 		Title:      title,
 		Content:    content,
@@ -31,12 +31,12 @@ func (au *articleUseCase) Create(title, content string, userId, categoryId int) 
 		CategoryId: categoryId,
 	}
 
-	createdArticle, err := au.articleRepo.Create(article)
+	err := au.articleRepo.Create(article)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return createdArticle, nil
+	return nil
 }
 
 func (au *articleUseCase) FindByID(id int) (*model.Article, error) {

@@ -10,7 +10,7 @@ import (
 )
 
 func NewContext(t *testing.T, sqlDB *sql.DB) (*request.Context, error) {
-	db, err := MockDB(sqlDB)
+	db, err := MockDBClient(sqlDB)
 	if err != nil {
 		return nil, err
 	}
