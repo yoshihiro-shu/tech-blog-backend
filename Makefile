@@ -3,3 +3,6 @@ start:
 
 stop:
 	sh ./scripts/docker-stop.sh
+
+init-doc:
+	swag init --dir backend/cmd
