@@ -6,7 +6,8 @@ SELECT 'up SQL query';
 CREATE TABLE tags (
   id SERIAL PRIMARY KEY,
   name varchar(255) NOT NULL,
-  description varchar(255) NOT NULL,
+  slug varchar(255) NOT NULL
+  description varchar(255),
   created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

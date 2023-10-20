@@ -3,9 +3,12 @@
 SELECT 'up SQL query';
 -- +goose StatementEnd
 
-INSERT INTO tags (name, description) VALUES ('tag-1', 'it is test tag-1');
-INSERT INTO tags (name, description) VALUES ('tag-2', 'it is test tag-2');
-INSERT INTO tags (name, description) VALUES ('tag-3', 'it is test tag-3');
+INSERT INTO tags (name, slug) VALUES ('Docker', 'docker');
+INSERT INTO tags (name, slug) VALUES ('Kubernetes', 'kubernetes');
+INSERT INTO tags (name, slug) VALUES ('Golang', 'golang');
+INSERT INTO tags (name, slug) VALUES ('Agile', 'agile');
+INSERT INTO tags (name, slug) VALUES ('Requirement definition', 'requirement-definition');
+INSERT INTO tags (name, slug) VALUES ('Nuxt', 'nuxt');
 
 INSERT INTO article_tags (article_id, tag_id) VALUES(1, 1);
 INSERT INTO article_tags (article_id, tag_id) VALUES(1, 2);
