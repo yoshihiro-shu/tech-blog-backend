@@ -58,10 +58,15 @@ async fn main() -> Result<(), Box<dyn Error>> {
         });
     };
 
-
     for r in res {
-        let a = db_client.query("INSERT INTO articles (user_id, thumbnail_url, title, content, status) VALUES ($1, $2, $3, $4, $5) RETURNING id", &[&1, &"",&r.title, &r.body, &2]).await?;
-        let a_id: i32 = a[0].get("id");
+        let check = db_client.query("SELECT * FROM articles WHERE title = $1", &[&r.title]).await?;
+        if check.len() != 0 {
+            println!("already exists!");
+            continue;
+        }
+
+        let inserted_data = db_client.query("INSERT INTO articles (user_id, thumbnail_url, title, content, status) VALUES ($1, $2, $3, $4, $5) RETURNING id", &[&1, &"",&r.title, &r.body, &2]).await?;
+        let inserted_id: i32 = inserted_data[0].get("id");
         for t in r.tags {
             for tt in &tags {
                 if t.name == tt.name {
