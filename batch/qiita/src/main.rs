@@ -1,4 +1,3 @@
-use chrono::{NaiveDateTime};
 use std::error::Error;
 use tokio; // tokioは非同期ランタイムです
 use tokio_postgres::{NoTls};
@@ -47,6 +46,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         }
     });
 
+    // Get Tags From DB
     let mut tags: Vec<Tag> = Vec::new();
     let rows = db_client.query("SELECT id, name FROM tags", &[]).await?;
     for row in rows {
@@ -58,6 +58,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         });
     };
 
+    // Insert articles from Qiita
     for r in res {
         let check = db_client.query("SELECT * FROM articles WHERE title = $1", &[&r.title]).await?;
         if check.len() != 0 {
@@ -68,6 +69,18 @@ async fn main() -> Result<(), Box<dyn Error>> {
         let inserted_data = db_client.query("INSERT INTO articles (user_id, thumbnail_url, title, content, status) VALUES ($1, $2, $3, $4, $5) RETURNING id", &[&1, &"",&r.title, &r.body, &2]).await?;
         let inserted_id: i32 = inserted_data[0].get("id");
         for t in r.tags {
+            // insert tag if not exists
+            let check = db_client.query("SELECT * FROM tags WHERE name = $1", &[&t.name]).await?;
+            if check.len() == 0 {
+               let inserted_tag = db_client.query("INSERT INTO tags (name, slug) VALUES ($1, $2) RETURNING id", &[&t.name, &t.name]).await?;
+               let tag_id: i32 = inserted_tag[0].get("id");
+               tags.push(Tag{
+                   id: tag_id,
+                   name: t.name.clone(),
+               })
+            }
+
+            // insert article_tags
             for tt in &tags {
                 if t.name == tt.name {
                     db_client.execute("INSERT INTO article_tags (article_id, tag_id) VALUES ($1, $2)", &[&inserted_id, &tt.id]).await?;
