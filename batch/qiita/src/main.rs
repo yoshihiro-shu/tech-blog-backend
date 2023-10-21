@@ -1,9 +1,9 @@
 use std::error::Error;
+use std::env;
 use tokio; // tokioは非同期ランタイムです
 use tokio_postgres::{NoTls};
 
 mod qiita_response;
-mod entity;
 
 #[derive(Debug)]
 struct Tag {
@@ -11,6 +11,29 @@ struct Tag {
     name: String,
 }
 
+fn construct_db_url() -> String {
+    // 環境変数から値を取得します。環境変数が設定されていない場合はデフォルト値を使用します。
+    let db_host = env::var("DB_HOST").unwrap_or_else(|_| "localhost".to_string());
+    let db_port = env::var("DB_PORT").unwrap_or_else(|_| "5432".to_string());
+    let db_user = env::var("DB_USER").unwrap_or_else(|_| "user".to_string());
+    let db_password = env::var("DB_PASSWORD").unwrap_or_else(|_| "password".to_string());
+    let db_name = env::var("DB_NAME").unwrap_or_else(|_| "database".to_string());
+    let db_ssl = env::var("DB_SSL").unwrap_or_else(|_| "disable".to_string());
+
+    // SSLの設定に基づいて、SSLモードを指定します。
+    let ssl_mode = match db_ssl.as_str() {
+        "disable" => "?sslmode=disable",
+        "require" => "?sslmode=require",
+        "prefer" => "?sslmode=prefer",
+        _ => "", // デフォルトのSSLモードを使用します（例：SSLモードが指定されていない場合や不明な値の場合）
+    };
+
+    // すべての情報を結合して、接続URLを形成します。
+    format!(
+        "postgresql://{}:{}@{}:{}/{}{}",
+        db_user, db_password, db_host, db_port, db_name, ssl_mode
+    )
+}
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
@@ -33,10 +56,10 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     let res: qiita_response::QiitaResponse = serde_json::from_str(&response_text).unwrap();
 
-    let db_endpoint = "postgresql://postgres:password@127.0.0.1:5432/postgres";
+    let db_endpoint = construct_db_url();
 
     // 非同期接続
-    let (db_client, db_connection) = tokio_postgres::connect(db_endpoint, NoTls).await?;
+    let (db_client, db_connection) = tokio_postgres::connect(&db_endpoint, NoTls).await?;
 
     // The connection object performs the actual communication with the database,
     // so spawn it off to run on its own.
