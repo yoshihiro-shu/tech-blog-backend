@@ -70,8 +70,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         for t in r.tags {
             for tt in &tags {
                 if t.name == tt.name {
-                    println!("tag = {:?}", tt.name);
-                    db_client.execute("INSERT INTO article_tags (article_id, tag_id) VALUES ($1, $2)", &[&a_id, &tt.id]).await?;
+                    db_client.execute("INSERT INTO article_tags (article_id, tag_id) VALUES ($1, $2)", &[&inserted_id, &tt.id]).await?;
                 }
             }
         }
