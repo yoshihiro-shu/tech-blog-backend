@@ -61,7 +61,7 @@ services:
       - draft-backend-network
 
   redis:
-    build: ./tmp/cache
+    image: redis:7.0.11
     restart: always
     ports:
       - 6379:6379
