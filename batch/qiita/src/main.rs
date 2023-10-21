@@ -15,19 +15,21 @@ async fn main() -> Result<(), Box<dyn Error>> {
     // リクエストを送り、レスポンスを待ちます
     let response = api_client.get(request_url).send().await?;
 
+    let mut response_text: String = Default::default();
     // 成功した場合、レスポンスのテキストを表示します
     if response.status().is_success() {
-        let response_text = response.text().await?;
-        let res: qiita_response::QiitaResponse = serde_json::from_str(&response_text).unwrap();
-        for r in res {
-            println!("title = {:?}", r.title);
-            for t in r.tags {
-                println!("tag = {:?}", t.name);
-            }
-            // println!("content = {:?}", r.rendered_body as String);
-        }
+        response_text = response.text().await?;
     } else {
         println!("Failed to get a successful response. Status: {}", response.status());
+    }
+
+    let res: qiita_response::QiitaResponse = serde_json::from_str(&response_text).unwrap();
+    for r in res {
+        println!("title = {:?}", r.title);
+        for t in r.tags {
+            println!("tag = {:?}", t.name);
+        }
+        // println!("content = {:?}", r.rendered_body as String);
     }
 
     let db_endpoint = "postgresql://postgres:password@127.0.0.1:5432/postgres";
