@@ -1,8 +1,17 @@
+use chrono::{NaiveDateTime};
 use std::error::Error;
 use tokio; // tokioは非同期ランタイムです
 use tokio_postgres::{NoTls};
 
 mod qiita_response;
+mod entity;
+
+#[derive(Debug)]
+struct Tag {
+    id: i32,
+    name: String,
+}
+
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
@@ -24,13 +33,6 @@ async fn main() -> Result<(), Box<dyn Error>> {
     }
 
     let res: qiita_response::QiitaResponse = serde_json::from_str(&response_text).unwrap();
-    for r in res {
-        println!("title = {:?}", r.title);
-        for t in r.tags {
-            println!("tag = {:?}", t.name);
-        }
-        // println!("content = {:?}", r.rendered_body as String);
-    }
 
     let db_endpoint = "postgresql://postgres:password@127.0.0.1:5432/postgres";
 
@@ -45,15 +47,30 @@ async fn main() -> Result<(), Box<dyn Error>> {
         }
     });
 
-    // Now we can execute a simple statement that just returns its parameter.
-    let rows = db_client
-        .query("SELECT $1::TEXT", &[&"hello world"])
-        .await?;
+    let mut tags: Vec<Tag> = Vec::new();
+    let rows = db_client.query("SELECT id, name FROM tags", &[]).await?;
+    for row in rows {
+        let id: i32 = row.get("id");
+        let name: String = row.get("name");
+        tags.push(Tag{
+            id: id,
+            name: name.clone(),
+        });
+    };
 
-    // And then check that we got back the same string we sent over.
-    let value: &str = rows[0].get(0);
-    assert_eq!(value, "hello world");
-    println!("value = {:?}", value);
+
+    for r in res {
+        let a = db_client.query("INSERT INTO articles (user_id, thumbnail_url, title, content, status) VALUES ($1, $2, $3, $4, $5) RETURNING id", &[&1, &"",&r.title, &r.body, &2]).await?;
+        let a_id: i32 = a[0].get("id");
+        for t in r.tags {
+            for tt in &tags {
+                if t.name == tt.name {
+                    println!("tag = {:?}", tt.name);
+                    db_client.execute("INSERT INTO article_tags (article_id, tag_id) VALUES ($1, $2)", &[&a_id, &tt.id]).await?;
+                }
+            }
+        }
+    }
 
     Ok(())
 }

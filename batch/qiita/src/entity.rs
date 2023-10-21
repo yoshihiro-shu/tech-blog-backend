@@ -1,31 +1,33 @@
+use chrono::NaiveDateTime;
 
+#[derive(Debug)]
 pub struct Tag {
-    Id: i64,
-    Name: String,
-    Slug: String,
-    Description: String,
-    CreatedAt: DateTime<Utc>,
+    pub id: i32,
+    pub name: String,
+    pub slug: String,
+    pub description: Option<String>,
+    pub created_at: Option<NaiveDateTime>,
 }
 
 pub struct Category {
-    Id: i64,
-    Name: String,
-    Slug: String,
-    Description: String,
-    CreatedAt: DateTime<Utc>,
+    pub id: i64,
+    pub name: String,
+    pub slug: String,
+    pub description: Option<String>,
+    pub created_at: Option<NaiveDateTime>,
 }
 
 pub struct Article {
-    Id : i64,
-    UserId: i64,
-    ThumbnailUrl: String,
-    Title: String,
-    Content: String,
-    Status: i64,
-    CreatedAt: DateTime<Utc>,
-    UpdatedAt: DateTime<Utc>,
-    CategoryId: i64,
-    Category: Category,
-    TagIds: Vec<i64>,
-    Tag: Vec<Tag>,
+    pub id : i64,
+    pub user_id: i64,
+    pub thumbnail_url: String,
+    pub title: String,
+    pub content: String,
+    pub status: i64,
+    pub created_at: NaiveDateTime,
+    pub updated_at: NaiveDateTime,
+    pub caategory_id: i64,
+    pub category: Category,
+    pub tag_ids: Vec<i64>,
+    pub tag: Vec<Tag>,
 }
