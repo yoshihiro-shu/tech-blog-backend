@@ -27,7 +27,7 @@ func (ap *articlePersistence) FindByID(article *model.Article) error {
 		Joins("User").
 		Joins("Category").
 		Preload("Tags").
-		Find(article).
+		First(article).
 		Error
 }
 

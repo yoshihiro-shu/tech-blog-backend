@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/yoshihiro-shu/draft-backend/backend/application/usecase"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/request"
+	"gorm.io/gorm"
 )
 
 type ArticleHandler interface {
@@ -41,8 +42,10 @@ func (ah *articleHandler) Get(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	article, err := ah.articleUseCase.FindByID(id)
-	// TODO not no rows error
 	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return ah.C.JSON(w, http.StatusNotFound, err.Error())
+		}
 		return ah.C.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 
