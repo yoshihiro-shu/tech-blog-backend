@@ -17,20 +17,19 @@ const (
 
 func SetterCsrfToken(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// フロント側のブラウザにクッキーがセットされるようにする
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
 		switch r.Method {
 		case http.MethodOptions:
-			w.Header().Set("Access-Control-Allow-Headers", headerName)
-			w.Header().Set("Access-Control-Allow-Credentials", "true")
+			// w.Header().Set("Access-Control-Allow-Headers", headerName)
+			w.Header().Set("Access-Control-Request-Headers", headerName)
 		case http.MethodGet:
 			// X-CSRF-Tokenをフロント側で受け取れるようにする
 			w.Header().Set("Access-Control-Expose-Headers", headerName)
-			// フロント側のブラウザにクッキーがセットされるようにする
-			w.Header().Set("Access-Control-Allow-Credentials", "true")
 			w.Header().Set(headerName, csrf.Token(r))
 		case http.MethodPost, http.MethodPut, http.MethodPatch, http.MethodDelete:
 			// X-CSRF-Tokenをフロント側で受け取れるようにする
 			w.Header().Set("Access-Control-Expose-Headers", headerName)
-			w.Header().Set("Access-Control-Allow-Credentials", "true")
 		}
 
 		next.ServeHTTP(w, r)
