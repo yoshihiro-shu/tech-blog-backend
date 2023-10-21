@@ -18,21 +18,27 @@ async fn main() -> Result<(), Error> {
     // 成功した場合、レスポンスのテキストを表示します
     if response.status().is_success() {
         let response_text = response.text().await?;
-        let deserialized: QiitaResponse = serde_json::from_str(&response_text).unwrap();
-        println!("deserialized = {:?}", deserialized);
+        let res: QiitaResponse = serde_json::from_str(&response_text).unwrap();
+        for r in res {
+            println!("title = {:?}", r.title as String);
+            for t in r.tags {
+                println!("tag = {:?}", t.name as String);
+            }
+            // println!("content = {:?}", r.rendered_body as String);
+        }
     } else {
         println!("Failed to get a successful response. Status: {}", response.status());
     }
 
     Ok(())
 }
-pub type QiitaResponse = Vec<Root2>;
+pub type QiitaResponse = Vec<Response>;
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct Root2 {
+pub struct Response {
     #[serde(rename = "rendered_body")]
-    pub rendered_body: String,
+    pub rendered_body: String, // article content?
     pub body: String,
     pub coediting: bool,
     #[serde(rename = "comments_count")]
