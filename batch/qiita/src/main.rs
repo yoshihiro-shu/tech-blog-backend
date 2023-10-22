@@ -4,6 +4,7 @@ use tokio; // tokioは非同期ランタイムです
 use tokio_postgres::{NoTls};
 
 mod qiita_response;
+mod tag_map;
 
 #[derive(Debug)]
 struct Tag {
@@ -80,6 +81,31 @@ async fn main() -> Result<(), Box<dyn Error>> {
             name: name.clone(),
         });
     };
+
+    // Insert New Tags
+    let tag_map = tag_map::create_map();
+    for r in &res {
+        for t in &r.tags {
+            // insert tag if not exists
+            let check = db_client.query("SELECT * FROM tags WHERE name = $1", &[&t.name]).await?;
+            if check.len() == 0 {
+                let slug = tag_map.get(&t.name.as_str());
+                let mut tag_id: i32 = 0;
+                if slug.is_none() {
+                    let inserted_tag = db_client.query("INSERT INTO tags (name, slug) VALUES ($1, $2) RETURNING id", &[&t.name, &t.name]).await?;
+                    tag_id = inserted_tag[0].get("id");
+                } else {
+                    let inserted_tag = db_client.query("INSERT INTO tags (name, slug) VALUES ($1, $2) RETURNING id", &[&t.name, &slug]).await?;
+                    tag_id = inserted_tag[0].get("id");
+                }
+                tags.push(Tag{
+                    id: tag_id,
+                    name: t.name.clone(),
+                });
+                println!("inserted tag: {}", t.name);
+            }
+        }
+    }
 
     // Insert articles from Qiita
     for r in res {
