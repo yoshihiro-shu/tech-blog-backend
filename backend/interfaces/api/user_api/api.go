@@ -51,18 +51,6 @@ func Apply(r router.Router, conf config.Configs, logger logger.Logger, db model.
 		twitter.GET("/timeline", twitterHandler.GetTimeLine)
 	}
 	{
-		// Grouping
-		t := r.Group("/test")
-		t.GET("", h.TestHandler)
-		t.POST("/redis", h.TestSetRedis)
-		t.GET("/redis/{key}", h.TestGetRedis)
-		t.GET("/v2", h.Index)
-	}
-	{
-		c := r.Group("/cmd")
-		c.GET("", h.Command)
-	}
-	{
 		auth := r.Group("/auth")
 		userHandler := registory.NewUserRegistory(ctx)
 		auth.POST("/login", userHandler.Login)
