@@ -70,41 +70,14 @@ func (ap *articlePersistence) GetArticlesByCategory(articles *[]model.Article, s
 // slug: the slug of the tag to filter the articles by.
 // error: an error indicating if there was any issue retrieving the articles.
 func (ap *articlePersistence) GetArticlesByTag(articles *[]model.Article, slug string) error {
-	query := `
-		SELECT
-			article.id,
-			article.title,
-			article.thumbnail_url,
-			article.created_at,
-			article.updated_at,
-			category.id AS category_id,
-			category.name AS category_name,
-			category.slug AS category_slug,
-			tag.id AS tag_id,
-			-- tag.name AS tag_name,
-			tag.slug AS tag_slug,
-			article_tag.article_id AS article_tag_article_id,
-			article_tag.tag_id AS article_tag_tag_id
-		FROM
-			articles AS article
-		LEFT JOIN
-			categories AS category
-		ON
-			category.id = article.category_id
-		LEFT JOIN
-			article_tags AS article_tag
-		ON
-			article_tag.article_id = article.id
-		LEFT JOIN
-			tags AS tag
-		ON
-			tag.id = article_tag.tag_id
-		WHERE
-			tag.slug = ?
-		AND
-			article.status = 2;
-	`
-	return ap.Reprica().Raw(query, slug).Scan(articles).Error
+	return ap.Reprica().
+		// Preload("User").
+		Preload("Category").
+		Preload("Tags").
+		Joins("JOIN article_tags ON articles.id = article_tags.article_id").
+		Joins("JOIN tags ON tags.id = article_tags.tag_id").
+		Where("tags.slug = ?", slug).
+		Find(&articles).Error
 }
 
 func (ap *articlePersistence) Update(article *model.Article) (*model.Article, error) {
