@@ -128,7 +128,6 @@ async fn main() -> Result<(), Box<dyn Error>> {
                    name: t.name.clone(),
                })
             }
-
             // insert article_tags
             for tt in &tags {
                 if t.name == tt.name {
@@ -136,6 +135,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
                 }
             }
         }
+        println!("inserted article: {}", r.title);
     }
 
     Ok(())
