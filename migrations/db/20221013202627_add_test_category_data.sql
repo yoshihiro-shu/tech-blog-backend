@@ -3,12 +3,12 @@
 SELECT 'up SQL query';
 -- +goose StatementEnd
 
-INSERT INTO categories (name, slug) VALUES ('Docker', 'docker');
-INSERT INTO categories (name, slug) VALUES ('Kubernetes', 'kubernetes');
-INSERT INTO categories (name, slug) VALUES ('Golang', 'golang');
 INSERT INTO categories (name, slug) VALUES ('Agile', 'agile');
-INSERT INTO categories (name, slug) VALUES ('Requirement definition', 'requirement-definition');
-INSERT INTO categories (name, slug) VALUES ('Nuxt', 'nuxt');
+INSERT INTO categories (name, slug) VALUES ('Bussiness', 'bussiness');
+INSERT INTO categories (name, slug) VALUES ('Backend', 'backend');
+INSERT INTO categories (name, slug) VALUES ('Frontend', 'frontend');
+INSERT INTO categories (name, slug) VALUES ('Infrastructure', 'infrastructure');
+INSERT INTO categories (name, slug) VALUES ('Marketing', 'marketing');
 
 UPDATE articles SET category_id = 1 WHERE id = 1;
 UPDATE articles SET category_id = 2 WHERE id = 2;
