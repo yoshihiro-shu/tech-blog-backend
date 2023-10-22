@@ -10,8 +10,6 @@ type ArticleUseCase interface {
 	Create(title, content string, userId, categoryId int) (*model.Article, error)
 	FindByID(id int) (*model.Article, error)
 	GetArticles(articles *[]model.Article, limit, offset int) error
-	GetArticlesByCategory(articles *[]model.Article, slug string) error
-	GetArticlesByTag(articles *[]model.Article, slug string) error
 	GetPager(currentPage, offset int) (*pager.Pager, error)
 	Update(id int, title, content string) (*model.Article, error)
 	Delete(id int) error
@@ -52,14 +50,6 @@ func (au *articleUseCase) FindByID(id int) (*model.Article, error) {
 
 func (au *articleUseCase) GetArticles(articles *[]model.Article, limit, offset int) error {
 	return au.articleRepo.GetArticles(articles, limit, offset)
-}
-
-func (au *articleUseCase) GetArticlesByCategory(articles *[]model.Article, slug string) error {
-	return au.articleRepo.GetArticlesByCategory(articles, slug)
-}
-
-func (au *articleUseCase) GetArticlesByTag(articles *[]model.Article, slug string) error {
-	return au.articleRepo.GetArticlesByTag(articles, slug)
 }
 
 func (au *articleUseCase) GetPager(currentPage, offset int) (*pager.Pager, error) {
