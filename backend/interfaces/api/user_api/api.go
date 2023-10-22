@@ -65,6 +65,8 @@ func Apply(r router.Router, conf config.Configs, logger logger.Logger, db model.
 		)
 		article := r.Group("/articles")
 		article.GET("/{id:[0-9]+}", articleHandler.Get)
+		article.GET("/category/{slug}", articleHandler.GetArticlesByCategory)
+		article.GET("/tag/{slug}", articleHandler.GetArticlesByTag)
 	}
 	// {
 	// 	a := r.Group("/auth")
