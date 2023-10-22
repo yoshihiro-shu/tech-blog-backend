@@ -3,7 +3,6 @@ package handler
 import (
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/yoshihiro-shu/draft-backend/backend/application/usecase"
@@ -22,16 +21,6 @@ type articleHandler struct {
 	articleUseCase  usecase.ArticleUseCase
 	articlesUseCase usecase.ArticlesUseCase
 	C               *request.Context
-}
-
-type ListAritcleBox struct {
-	Id           int       `json:"id"`
-	Title        string    `json:"title"`
-	ThumbnailUrl string    `json:"thumbnail_url"`
-	CreatedAt    time.Time `json:"created_at"`
-	UpdatedAt    time.Time `json:"updated_at"`
-	// CategoryName string    `json:"category_name"`
-	// CategorySlug string    `json:"category_slug"`
 }
 
 func (ah *articleHandler) Get(w http.ResponseWriter, r *http.Request) error {

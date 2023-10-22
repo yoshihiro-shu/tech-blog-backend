@@ -19,12 +19,7 @@ func NewArticlesUseCase(articleRepo repository.ArticleRepository) ArticlesUseCas
 }
 
 func (au *articlesUseCase) GetArticlesByCategory(articles *[]model.Article, slug string) error {
-	err := au.articleRepo.GetArticlesByCategory(articles, slug)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return au.articleRepo.GetArticlesByCategory(articles, slug)
 }
 
 func (au *articlesUseCase) GetArticlesByTag(articles *[]model.Article, slug string) error {

@@ -53,15 +53,12 @@ func (ap *articlePersistence) GetPager(article *model.Article) (int, error) {
 }
 
 func (ap *articlePersistence) GetArticlesByCategory(articles *[]model.Article, slug string) error {
-	// return ap.Reprica().
-	// 	Joins("User").
-	// 	Joins("Category").
-	// 	Preload("Tags").
-	// 	Order("created_at ASC").
-	// 	Where("category.slug = ?", slug).
-	// 	Find(articles).
-	// 	Error
-	return nil
+	return ap.Reprica().
+		// Preload("User").
+		Preload("Tags").
+		Preload("Category").
+		Where("category.slug = ?", slug).
+		Find(&articles).Error
 }
 
 // GetArticlesByTag retrieves articles based on a given tag slug.
