@@ -33,7 +33,7 @@ services:
       - draft-backend-network
 
   postgres:
-    image: postgres:16.0
+    image: postgres:16.0-alpine3.18
     restart: always
     # command:
       # - "postgres"
@@ -61,7 +61,7 @@ services:
       - draft-backend-network
 
   redis:
-    image: redis:7.2.2
+    image: redis:7.2.2-alpine3.18
     restart: always
     ports:
       - 6379:6379
