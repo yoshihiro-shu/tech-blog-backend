@@ -33,7 +33,7 @@ services:
       - draft-backend-network
 
   postgres:
-    image: postgres:14.8
+    image: postgres:16.0
     restart: always
     # command:
       # - "postgres"

@@ -8,8 +8,7 @@ CREATE TABLE categories (
   name varchar(255) NOT NULL,
   slug varchar(255) NOT NULL,
   description varchar(255),
-  created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (parent_id) REFERENCES categories(id)
+  created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 ALTER TABLE articles
