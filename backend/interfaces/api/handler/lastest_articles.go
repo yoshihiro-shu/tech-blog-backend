@@ -61,7 +61,7 @@ func (h latestArticlesHandler) Get(w http.ResponseWriter, r *http.Request) error
 			h.logger.Warn("err no articles at latest Articles Handler")
 			return h.JSON(w, http.StatusNotFound, err)
 		}
-		h.logger.Warn("failed at get articles at latest articles.", zap.Error(err))
+		h.logger.Error("failed at get articles at latest articles.", zap.Error(err))
 		return h.Error(w, http.StatusInternalServerError, err)
 	}
 

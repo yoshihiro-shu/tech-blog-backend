@@ -4,6 +4,8 @@ use tokio; // tokioは非同期ランタイムです
 use tokio_postgres::{NoTls};
 
 mod qiita_response;
+mod tag_map;
+mod tag_category_map;
 
 #[derive(Debug)]
 struct Tag {
@@ -81,7 +83,33 @@ async fn main() -> Result<(), Box<dyn Error>> {
         });
     };
 
+    // Insert New Tags
+    let tag_map = tag_map::create_map();
+    for r in &res {
+        for t in &r.tags {
+            // insert tag if not exists
+            let check = db_client.query("SELECT * FROM tags WHERE name = $1", &[&t.name]).await?;
+            if check.len() == 0 {
+                let slug = tag_map.get(&t.name.as_str());
+                let mut tag_id: i32 = 0;
+                if slug.is_none() {
+                    let inserted_tag = db_client.query("INSERT INTO tags (name, slug) VALUES ($1, $2) RETURNING id", &[&t.name, &t.name]).await?;
+                    tag_id = inserted_tag[0].get("id");
+                } else {
+                    let inserted_tag = db_client.query("INSERT INTO tags (name, slug) VALUES ($1, $2) RETURNING id", &[&t.name, &slug]).await?;
+                    tag_id = inserted_tag[0].get("id");
+                }
+                tags.push(Tag{
+                    id: tag_id,
+                    name: t.name.clone(),
+                });
+                println!("inserted tag: {}", t.name);
+            }
+        }
+    }
+
     // Insert articles from Qiita
+    let tag_category_map = tag_category_map::create_map();
     for r in res {
         let check = db_client.query("SELECT * FROM articles WHERE title = $1", &[&r.title]).await?;
         if check.len() != 0 {
@@ -89,7 +117,17 @@ async fn main() -> Result<(), Box<dyn Error>> {
             continue;
         }
 
-        let inserted_data = db_client.query("INSERT INTO articles (user_id, thumbnail_url, title, content, status) VALUES ($1, $2, $3, $4, $5) RETURNING id", &[&1, &"",&r.title, &r.body, &2]).await?;
+        let mut category_id : i32 = Default::default();
+        for t in &r.tags {
+            if !tag_category_map.get(&t.name.as_str()).is_none() {
+                println!("{}: {}", t.name, tag_category_map.get(&t.name.as_str()).unwrap());
+                let categpory_name = tag_category_map.get(&t.name.as_str()).unwrap().to_string();
+                let query_get_cagterogry = db_client.query("SELECT id FROM categories WHERE name = $1", &[&categpory_name]).await?;
+                category_id = query_get_cagterogry[0].get("id");
+            }
+        }
+
+        let inserted_data = db_client.query("INSERT INTO articles (user_id, thumbnail_url, title, content, status, category_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id", &[&1, &"",&r.title, &r.body, &2, &category_id]).await?;
         let inserted_id: i32 = inserted_data[0].get("id");
         for t in r.tags {
             // insert tag if not exists
@@ -102,7 +140,6 @@ async fn main() -> Result<(), Box<dyn Error>> {
                    name: t.name.clone(),
                })
             }
-
             // insert article_tags
             for tt in &tags {
                 if t.name == tt.name {
@@ -110,6 +147,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
                 }
             }
         }
+        println!("inserted article: {}", r.title);
     }
 
     Ok(())

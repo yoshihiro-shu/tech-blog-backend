@@ -3,12 +3,13 @@
 SELECT 'up SQL query';
 -- +goose StatementEnd
 
-INSERT INTO categories (name, slug) VALUES ('Docker', 'docker');
-INSERT INTO categories (name, slug) VALUES ('Kubernetes', 'kubernetes');
-INSERT INTO categories (name, slug) VALUES ('Golang', 'golang');
 INSERT INTO categories (name, slug) VALUES ('Agile', 'agile');
-INSERT INTO categories (name, slug) VALUES ('Requirement definition', 'requirement-definition');
-INSERT INTO categories (name, slug) VALUES ('Nuxt', 'nuxt');
+INSERT INTO categories (name, slug) VALUES ('Bussiness', 'bussiness');
+INSERT INTO categories (name, slug) VALUES ('Marketing', 'marketing');
+INSERT INTO categories (name, slug) VALUES ('Frontend', 'frontend');
+INSERT INTO categories (name, slug) VALUES ('Backend', 'backend');
+INSERT INTO categories (name, slug) VALUES ('Infrastructure', 'infrastructure');
+INSERT INTO categories (name, slug) VALUES ('System Design', 'system-design');
 
 UPDATE articles SET category_id = 1 WHERE id = 1;
 UPDATE articles SET category_id = 2 WHERE id = 2;
@@ -18,7 +19,11 @@ UPDATE articles SET category_id = 3 WHERE id = 3;
 -- +goose StatementBegin
 SELECT 'down SQL query';
 
-DELETE FROM categories WHERE 'name' = 'category-1';
-DELETE FROM categories WHERE 'name' = 'category-2';
-DELETE FROM categories WHERE 'name' = 'category-3';
+DELETE FROM categories WHERE 'name' = 'Agile';
+DELETE FROM categories WHERE 'name' = 'Bussiness';
+DELETE FROM categories WHERE 'name' = 'Backend';
+DELETE FROM categories WHERE 'name' = 'Frontend';
+DELETE FROM categories WHERE 'name' = 'Infrastructure';
+DELETE FROM categories WHERE 'name' = 'Marketing';
+DELETE FROM categories WHERE 'name' = 'System Design';
 -- +goose StatementEnd

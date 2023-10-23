@@ -6,31 +6,21 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/yoshihiro-shu/draft-backend/backend/application/usecase"
+	"github.com/yoshihiro-shu/draft-backend/backend/domain/model"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/request"
 	"gorm.io/gorm"
 )
 
 type ArticleHandler interface {
-	Post(w http.ResponseWriter, r *http.Request) error
 	Get(w http.ResponseWriter, r *http.Request) error
-	Put(w http.ResponseWriter, r *http.Request) error
-	Delete(w http.ResponseWriter, r *http.Request) error
+	GetArticlesByCategory(w http.ResponseWriter, r *http.Request) error
+	GetArticlesByTag(w http.ResponseWriter, r *http.Request) error
 }
 
 type articleHandler struct {
-	articleUseCase usecase.ArticleUseCase
-	C              *request.Context
-}
-
-func NewArticleHandler(articleUseCase usecase.ArticleUseCase, c *request.Context) ArticleHandler {
-	return &articleHandler{
-		articleUseCase: articleUseCase,
-		C:              c,
-	}
-}
-
-func (ah *articleHandler) Post(w http.ResponseWriter, r *http.Request) error {
-	return nil
+	articleUseCase  usecase.ArticleUseCase
+	articlesUseCase usecase.ArticlesUseCase
+	C               *request.Context
 }
 
 func (ah *articleHandler) Get(w http.ResponseWriter, r *http.Request) error {
@@ -52,10 +42,50 @@ func (ah *articleHandler) Get(w http.ResponseWriter, r *http.Request) error {
 	return ah.C.JSON(w, http.StatusOK, article)
 }
 
-func (ah *articleHandler) Put(w http.ResponseWriter, r *http.Request) error {
-	return nil
+type responseGetArticlesByCategory struct {
+	Articles []model.Article `json:"articles"`
 }
 
-func (ah *articleHandler) Delete(w http.ResponseWriter, r *http.Request) error {
-	return nil
+func (ah *articleHandler) GetArticlesByCategory(w http.ResponseWriter, r *http.Request) error {
+	var res responseGetArticlesByCategory
+	vars := mux.Vars(r)
+	slug := vars["slug"]
+
+	err := ah.articlesUseCase.GetArticlesByCategory(&res.Articles, slug)
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			ah.C.Logger.Warn("err no articles at latest Articles Handler")
+			return ah.C.JSON(w, http.StatusNotFound, err)
+		}
+	}
+
+	return ah.C.JSON(w, http.StatusOK, res)
+}
+
+type responseGetArticlesByTag struct {
+	Articles []model.Article `json:"articles"`
+}
+
+func (ah *articleHandler) GetArticlesByTag(w http.ResponseWriter, r *http.Request) error {
+	var res responseGetArticlesByTag
+	vars := mux.Vars(r)
+	slug := vars["slug"]
+
+	err := ah.articlesUseCase.GetArticlesByTag(&res.Articles, slug)
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			ah.C.Logger.Warn("err no articles at latest Articles Handler")
+			return ah.C.JSON(w, http.StatusNotFound, err)
+		}
+	}
+
+	return ah.C.JSON(w, http.StatusOK, res)
+}
+
+func NewArticleHandler(articleUseCase usecase.ArticleUseCase, articlesUseCase usecase.ArticlesUseCase, c *request.Context) ArticleHandler {
+	return &articleHandler{
+		articleUseCase:  articleUseCase,
+		articlesUseCase: articlesUseCase,
+		C:               c,
+	}
 }

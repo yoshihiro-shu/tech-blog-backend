@@ -5,18 +5,18 @@ import (
 )
 
 type Article struct {
-	Id           int       `gorm:"primaryKey;" json:"id"`
-	UserId       int       `json:"userId"`
-	ThumbnailUrl string    `json:"thumbnailUrl"`
-	Title        string    `json:"title"`
-	Content      string    `json:"content"`
-	Status       int       `json:"status"`
-	CreatedAt    time.Time `json:"createdAt"`
-	UpdatedAt    time.Time `json:"updatedAt"`
-	CategoryId   int       `json:"categoryId"`
-	User         *User     `gorm:"foreignKey:UserId;" json:"user"`
-	Category     *Category `gorm:"foreignKey:CategoryId;" json:"category"`
-	Tags         []Tag     `gorm:"many2many:article_tags;" json:"tags"`
+	Id           int       `gorm:"primaryKey;" json:"id,omitempty"`
+	UserId       int       `json:"userId,omitempty"`
+	ThumbnailUrl string    `json:"thumbnailUrl,omitempty"`
+	Title        string    `json:"title,omitempty"`
+	Content      string    `json:"content,omitempty"`
+	Status       int       `json:"status,omitempty"`
+	CreatedAt    time.Time `json:"createdAt,omitempty"`
+	UpdatedAt    time.Time `json:"updatedAt,omitempty"`
+	CategoryId   int       `json:"categoryId,omitempty"`
+	User         *User     `gorm:"foreignKey:UserId;" json:"user,omitempty"`
+	Category     *Category `gorm:"foreignKey:CategoryId;" json:"category,omitempty"`
+	Tags         []Tag     `gorm:"many2many:article_tags;" json:"tags,omitempty"`
 }
 
 func NewArticle(Id int) *Article {
