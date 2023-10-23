@@ -11,10 +11,6 @@ INSERT INTO categories (name, slug) VALUES ('Backend', 'backend');
 INSERT INTO categories (name, slug) VALUES ('Infrastructure', 'infrastructure');
 INSERT INTO categories (name, slug) VALUES ('System Design', 'system-design');
 
-UPDATE articles SET category_id = 1 WHERE id = 1;
-UPDATE articles SET category_id = 2 WHERE id = 2;
-UPDATE articles SET category_id = 3 WHERE id = 3;
-
 -- +goose Down
 -- +goose StatementBegin
 SELECT 'down SQL query';
