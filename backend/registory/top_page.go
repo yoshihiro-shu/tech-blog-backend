@@ -11,6 +11,6 @@ import (
 
 func NewTopPageRegistory(ctx *request.Context, l logger.Logger, master, reprica func() *gorm.DB) handler.TopPageHandler {
 	articleRepository := persistence.NewArticlePersistence(master, reprica)
-	articleUseCase := usecase.NewArticleUseCase(articleRepository)
+	articleUseCase := usecase.NewArticleUseCase(articleRepository, ctx.Cache())
 	return handler.NewTopPageHandler(articleUseCase, ctx, l)
 }

@@ -11,6 +11,6 @@ import (
 
 func NewLatestArticlesRegistory(ctx *request.Context, l logger.Logger, master, reprica func() *gorm.DB) handler.LatestArticlesHandler {
 	articleRepository := persistence.NewArticlePersistence(master, reprica)
-	articleUseCase := usecase.NewArticleUseCase(articleRepository)
+	articleUseCase := usecase.NewArticleUseCase(articleRepository, ctx.Cache())
 	return handler.NewLatestArticlesHandler(articleUseCase, ctx, l)
 }

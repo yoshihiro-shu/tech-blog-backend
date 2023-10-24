@@ -22,11 +22,12 @@ func (ap *articlePersistence) Create(article *model.Article) (*model.Article, er
 	return &model.Article{}, nil
 }
 
-func (ap *articlePersistence) FindByID(article *model.Article) error {
+func (ap *articlePersistence) FindByID(article *model.Article, id int) error {
 	return ap.Reprica().
 		Joins("User").
 		Joins("Category").
 		Preload("Tags").
+		Where("articles.id = ?", id).
 		First(article).
 		Error
 }

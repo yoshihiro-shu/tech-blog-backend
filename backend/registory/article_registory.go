@@ -10,7 +10,7 @@ import (
 
 func NewArticleRegistory(ctx *request.Context, master, reprica func() *gorm.DB) handler.ArticleHandler {
 	articleRepository := persistence.NewArticlePersistence(master, reprica)
-	articleUseCase := usecase.NewArticleUseCase(articleRepository)
+	articleUseCase := usecase.NewArticleUseCase(articleRepository, ctx.Cache())
 	articlesUseCase := usecase.NewArticlesUseCase(articleRepository)
 	return handler.NewArticleHandler(articleUseCase, articlesUseCase, ctx)
 }

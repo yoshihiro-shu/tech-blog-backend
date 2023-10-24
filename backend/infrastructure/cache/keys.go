@@ -9,6 +9,8 @@ const (
 
 	getArticlesByCategoryKey = "articles_by_category_%s"
 	getArticlesByTagKey      = "articles_by_tag_%s"
+
+	articleById = "article_id_%d"
 )
 
 func TopPageKey() string {
@@ -25,4 +27,8 @@ func GetArticlesByCategoryKey(slug string) string {
 
 func GetArticlesByTagKey(slug string) string {
 	return fmt.Sprintf(getArticlesByTagKey, slug)
+}
+
+func GetArticleByIdKey(id int) string {
+	return fmt.Sprintf(articleById, id)
 }
