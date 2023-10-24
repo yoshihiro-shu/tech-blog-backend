@@ -24,7 +24,7 @@ func (ap *articlePersistence) Create(article *model.Article) (*model.Article, er
 
 func (ap *articlePersistence) FindByID(article *model.Article, id int) error {
 	return ap.Reprica().
-		Joins("User").
+		// Joins("User").
 		Joins("Category").
 		Preload("Tags").
 		Where("articles.id = ?", id).
@@ -34,7 +34,7 @@ func (ap *articlePersistence) FindByID(article *model.Article, id int) error {
 
 func (ap *articlePersistence) GetArticles(articles *[]model.Article, limit, offset int) error {
 	return ap.Reprica().
-		Joins("User").
+		// Joins("User").
 		Joins("Category").
 		Preload("Tags").
 		Order("created_at ASC").
