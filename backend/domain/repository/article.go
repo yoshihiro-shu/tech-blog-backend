@@ -17,3 +17,12 @@ type ArticleCacheRepository interface {
 	GetArticleDetailById(article *model.Article, id int) error
 	SetArticleDetailById(article model.Article, id int) error
 }
+
+type ArticlesCacheRepository interface {
+	GetByCategory(articles *[]model.Article, slug string) error
+	SetByCategory(articles *[]model.Article, slug string) error
+	GetByTag(articles *[]model.Article, slug string) error
+	SetByTag(articles *[]model.Article, slug string) error
+	GetLastest(articles *[]model.Article, pageNumber int) error
+	SetLastest(articles *[]model.Article, pageNumber int) error
+}
