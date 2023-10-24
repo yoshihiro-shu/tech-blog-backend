@@ -8,7 +8,7 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/yoshihiro-shu/draft-backend/backend/infrastructure/cache"
+	"github.com/yoshihiro-shu/draft-backend/backend/infrastructure/persistence/cache"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/router"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/user_api"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/model"

@@ -1,7 +1,7 @@
 package user_api
 
 import (
-	"github.com/yoshihiro-shu/draft-backend/backend/infrastructure/cache"
+	"github.com/yoshihiro-shu/draft-backend/backend/infrastructure/persistence/cache"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/handler"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/middlewares"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/request"

@@ -2,7 +2,7 @@ package main
 
 import (
 	_ "github.com/lib/pq"
-	"github.com/yoshihiro-shu/draft-backend/backend/infrastructure/cache"
+	"github.com/yoshihiro-shu/draft-backend/backend/infrastructure/persistence/cache"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/server"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/model"
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/auth"

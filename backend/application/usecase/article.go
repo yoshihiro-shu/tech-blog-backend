@@ -3,7 +3,6 @@ package usecase
 import (
 	"github.com/yoshihiro-shu/draft-backend/backend/domain/model"
 	"github.com/yoshihiro-shu/draft-backend/backend/domain/repository"
-	"github.com/yoshihiro-shu/draft-backend/backend/infrastructure/cache"
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/pager"
 )
 
@@ -17,14 +16,15 @@ type ArticleUseCase interface {
 }
 
 type articleUseCase struct {
-	articleRepo repository.ArticleRepository
-	cacheRepo   cache.RedisClient
+	articleRepo      repository.ArticleRepository
+	cacheArticleRepo repository.ArticleCacheRepository
 }
 
-func NewArticleUseCase(articleRepo repository.ArticleRepository, cacheRepo cache.RedisClient) ArticleUseCase {
+func NewArticleUseCase(articleRepo repository.ArticleRepository, cacheArticleRepo repository.ArticleCacheRepository) ArticleUseCase {
 	return &articleUseCase{
-		articleRepo: articleRepo,
-		cacheRepo:   cacheRepo}
+		articleRepo:      articleRepo,
+		cacheArticleRepo: cacheArticleRepo,
+	}
 }
 
 func (au *articleUseCase) Create(title, content string, userId, categoryId int) (*model.Article, error) {
@@ -45,7 +45,7 @@ func (au *articleUseCase) Create(title, content string, userId, categoryId int) 
 
 func (au *articleUseCase) FindByID(id int) (*model.Article, error) {
 	var article model.Article
-	if err := au.cacheRepo.GET(cache.GetArticleByIdKey(id), &article); err == nil {
+	if err := au.cacheArticleRepo.GetArticleDetailById(&article, id); err == nil {
 		return &article, nil
 	}
 
@@ -54,7 +54,7 @@ func (au *articleUseCase) FindByID(id int) (*model.Article, error) {
 		return nil, err
 	}
 
-	if err := au.cacheRepo.SET(cache.GetArticleByIdKey(id), article); err != nil {
+	if err := au.cacheArticleRepo.SetArticleDetailById(article, id); err != nil {
 		// logのみを出力するエラーハンドリングに変えたい。
 		return nil, err
 	}

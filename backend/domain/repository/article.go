@@ -12,3 +12,8 @@ type ArticleRepository interface {
 	Update(article *model.Article) (*model.Article, error)
 	Delete(article *model.Article) error
 }
+
+type ArticleCacheRepository interface {
+	GetArticleDetailById(article *model.Article, id int) error
+	SetArticleDetailById(article model.Article, id int) error
+}
