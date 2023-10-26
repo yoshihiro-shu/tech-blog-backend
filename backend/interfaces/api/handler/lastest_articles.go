@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/yoshihiro-shu/draft-backend/backend/application/usecase"
 	"github.com/yoshihiro-shu/draft-backend/backend/domain/model"
+	"github.com/yoshihiro-shu/draft-backend/backend/infrastructure/persistence/cache"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/request"
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/logger"
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/pager"
@@ -55,6 +56,12 @@ func (h latestArticlesHandler) Get(w http.ResponseWriter, r *http.Request) error
 	limit := numberOfArticlePerPageAtLatestAritcles
 	offset := limit * (currentPage - 1)
 
+	cacheKey := cache.GetLatestArticleListKey(currentPage)
+	err = h.Cache().GET(cacheKey, &res)
+	if err == nil {
+		return h.JSON(w, http.StatusOK, res)
+	}
+
 	err = h.articleUseCase.GetArticles(&res.Articles, limit, offset)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
@@ -69,6 +76,11 @@ func (h latestArticlesHandler) Get(w http.ResponseWriter, r *http.Request) error
 	if err != nil {
 		h.logger.Warn("failed at get pager at top page.", zap.Error(err))
 		return h.Error(w, http.StatusInternalServerError, err)
+	}
+
+	err = h.Cache().SET(cacheKey, res)
+	if err != nil {
+		h.logger.Error("failed at set cache redis at top page.", zap.Error(err))
 	}
 
 	return h.JSON(w, http.StatusOK, res)

@@ -1,4 +1,4 @@
-package persistence
+package postgres
 
 import (
 	"github.com/yoshihiro-shu/draft-backend/backend/domain/model"
@@ -22,18 +22,19 @@ func (ap *articlePersistence) Create(article *model.Article) (*model.Article, er
 	return &model.Article{}, nil
 }
 
-func (ap *articlePersistence) FindByID(article *model.Article) error {
+func (ap *articlePersistence) FindByID(article *model.Article, id int) error {
 	return ap.Reprica().
-		Joins("User").
+		// Joins("User").
 		Joins("Category").
 		Preload("Tags").
+		Where("articles.id = ?", id).
 		First(article).
 		Error
 }
 
 func (ap *articlePersistence) GetArticles(articles *[]model.Article, limit, offset int) error {
 	return ap.Reprica().
-		Joins("User").
+		// Joins("User").
 		Joins("Category").
 		Preload("Tags").
 		Order("created_at ASC").
@@ -43,9 +44,9 @@ func (ap *articlePersistence) GetArticles(articles *[]model.Article, limit, offs
 		Error
 }
 
-func (ap *articlePersistence) GetPager(article *model.Article) (int, error) {
+func (ap *articlePersistence) GetPager() (int, error) {
 	var count int64
-	err := ap.Reprica().Model(article).Count(&count).Error
+	err := ap.Reprica().Model(&model.Article{}).Count(&count).Error
 	if err != nil {
 		return 0, err
 	}

@@ -1,4 +1,4 @@
-package persistence
+package postgres
 
 import (
 	"github.com/yoshihiro-shu/draft-backend/backend/domain/model"

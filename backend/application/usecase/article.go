@@ -16,11 +16,15 @@ type ArticleUseCase interface {
 }
 
 type articleUseCase struct {
-	articleRepo repository.ArticleRepository
+	articleRepo      repository.ArticleRepository
+	cacheArticleRepo repository.ArticleCacheRepository
 }
 
-func NewArticleUseCase(articleRepo repository.ArticleRepository) ArticleUseCase {
-	return &articleUseCase{articleRepo: articleRepo}
+func NewArticleUseCase(articleRepo repository.ArticleRepository, cacheArticleRepo repository.ArticleCacheRepository) ArticleUseCase {
+	return &articleUseCase{
+		articleRepo:      articleRepo,
+		cacheArticleRepo: cacheArticleRepo,
+	}
 }
 
 func (au *articleUseCase) Create(title, content string, userId, categoryId int) (*model.Article, error) {
@@ -40,12 +44,21 @@ func (au *articleUseCase) Create(title, content string, userId, categoryId int) 
 }
 
 func (au *articleUseCase) FindByID(id int) (*model.Article, error) {
-	article := &model.Article{Id: id}
-	err := au.articleRepo.FindByID(article)
+	var article model.Article
+	if err := au.cacheArticleRepo.GetArticleDetailById(&article, id); err == nil {
+		return &article, nil
+	}
+
+	err := au.articleRepo.FindByID(&article, id)
 	if err != nil {
 		return nil, err
 	}
-	return article, nil
+
+	if err := au.cacheArticleRepo.SetArticleDetailById(article, id); err != nil {
+		// logのみを出力するエラーハンドリングに変えたい。
+		return nil, err
+	}
+	return &article, nil
 }
 
 func (au *articleUseCase) GetArticles(articles *[]model.Article, limit, offset int) error {
@@ -53,9 +66,7 @@ func (au *articleUseCase) GetArticles(articles *[]model.Article, limit, offset i
 }
 
 func (au *articleUseCase) GetPager(currentPage, offset int) (*pager.Pager, error) {
-	var a model.Article
-
-	numOfArticles, err := au.articleRepo.GetPager(&a)
+	numOfArticles, err := au.articleRepo.GetPager()
 	if err != nil {
 		return nil, err
 	}

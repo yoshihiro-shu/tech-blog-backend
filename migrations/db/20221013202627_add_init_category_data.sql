@@ -9,7 +9,7 @@ INSERT INTO categories (name, slug) VALUES ('Marketing', 'marketing');
 INSERT INTO categories (name, slug) VALUES ('Frontend', 'frontend');
 INSERT INTO categories (name, slug) VALUES ('Backend', 'backend');
 INSERT INTO categories (name, slug) VALUES ('Infrastructure', 'infrastructure');
-INSERT INTO categories (name, slug) VALUES ('System Design', 'system-design');
+INSERT INTO categories (name, slug) VALUES ('Requirement Definition', 'requirement-definition');
 
 -- +goose Down
 -- +goose StatementBegin

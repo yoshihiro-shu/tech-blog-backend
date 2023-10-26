@@ -1,11 +1,11 @@
 package user_api
 
 import (
+	"github.com/yoshihiro-shu/draft-backend/backend/infrastructure/persistence/cache"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/handler"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/middlewares"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/request"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/router"
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/cache"
 	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/model"
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
 	"github.com/yoshihiro-shu/draft-backend/backend/internal/logger"
@@ -65,8 +65,12 @@ func Apply(r router.Router, conf config.Configs, logger logger.Logger, db model.
 		)
 		article := r.Group("/articles")
 		article.GET("/{id:[0-9]+}", articleHandler.Get)
+		// article.GET("/category/{slug}/{id:[0-9]+}", articleHandler.GetArticlesByCategory)
+		// article.GET("/tag/{slug}/{id:[0-9]+}", articleHandler.GetArticlesByTag)
 		article.GET("/category/{slug}", articleHandler.GetArticlesByCategory)
 		article.GET("/tag/{slug}", articleHandler.GetArticlesByTag)
+		// article.GET("/category/{slug}/{id:[0-9]+}", articleHandler.GetArticlesByCategory)
+		// article.GET("/tag/{slug}/{id:[0-9]+}", articleHandler.GetArticlesByTag)
 	}
 	// {
 	// 	a := r.Group("/auth")
