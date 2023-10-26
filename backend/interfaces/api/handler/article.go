@@ -51,7 +51,6 @@ func (ah *articleHandler) GetArticlesByCategory(w http.ResponseWriter, r *http.R
 	vars := mux.Vars(r)
 	slug := vars["slug"]
 
-	// cacheKey := cache.GetArticlesByCategoryKey(slug)
 	err := ah.articlesUseCase.GetArticlesByCategory(&res.Articles, slug)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
