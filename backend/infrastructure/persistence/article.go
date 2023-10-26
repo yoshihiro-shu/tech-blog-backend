@@ -44,9 +44,9 @@ func (ap *articlePersistence) GetArticles(articles *[]model.Article, limit, offs
 		Error
 }
 
-func (ap *articlePersistence) GetPager(article *model.Article) (int, error) {
+func (ap *articlePersistence) GetPager() (int, error) {
 	var count int64
-	err := ap.Reprica().Model(article).Count(&count).Error
+	err := ap.Reprica().Model(&model.Article{}).Count(&count).Error
 	if err != nil {
 		return 0, err
 	}

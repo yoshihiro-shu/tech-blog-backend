@@ -11,6 +11,8 @@ const (
 	articlesByTagKey      = "articles_by_tag_%s"
 
 	articleById = "article_id_%d"
+
+	totalPager = "total_pager"
 )
 
 func TopPageKey() string {
@@ -31,4 +33,8 @@ func GetArticlesByTagKey(slug string) string {
 
 func GetArticleByIdKey(id int) string {
 	return fmt.Sprintf(articleById, id)
+}
+
+func GetTotalPagerKey() string {
+	return totalPager
 }

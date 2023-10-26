@@ -66,9 +66,7 @@ func (au *articleUseCase) GetArticles(articles *[]model.Article, limit, offset i
 }
 
 func (au *articleUseCase) GetPager(currentPage, offset int) (*pager.Pager, error) {
-	var a model.Article
-
-	numOfArticles, err := au.articleRepo.GetPager(&a)
+	numOfArticles, err := au.articleRepo.GetPager()
 	if err != nil {
 		return nil, err
 	}

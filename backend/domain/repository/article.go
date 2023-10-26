@@ -8,7 +8,7 @@ type ArticleRepository interface {
 	GetArticles(articles *[]model.Article, limit, offset int) error
 	GetArticlesByCategory(articles *[]model.Article, slug string) error
 	GetArticlesByTag(articles *[]model.Article, slug string) error
-	GetPager(article *model.Article) (int, error)
+	GetPager() (int, error)
 	Update(article *model.Article) (*model.Article, error)
 	Delete(article *model.Article) error
 }
@@ -25,4 +25,6 @@ type ArticlesCacheRepository interface {
 	SetByTag(articles *[]model.Article, slug string) error
 	GetLastest(articles *[]model.Article, pageNumber int) error
 	SetLastest(articles *[]model.Article, pageNumber int) error
+	GetTotalPager(dest *int) error
+	SetTotalPagerr(totalPager int) error
 }

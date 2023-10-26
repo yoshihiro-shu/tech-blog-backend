@@ -38,3 +38,11 @@ func (c *articlesCacheAdaptor) GetLastest(articles *[]model.Article, pageNumber 
 func (c *articlesCacheAdaptor) SetLastest(articles *[]model.Article, pageNumber int) error {
 	return c.client.SET(GetLatestArticleListKey(pageNumber), articles)
 }
+
+func (c *articlesCacheAdaptor) GetTotalPager(dest *int) error {
+	return c.client.GET(GetTotalPagerKey(), dest)
+}
+
+func (c *articlesCacheAdaptor) SetTotalPagerr(totalPager int) error {
+	return c.client.SET(GetTotalPagerKey(), totalPager)
+}
