@@ -7,6 +7,7 @@ services:
       - "443:443"
     volumes:
       - ./nginx/conf.d/:/etc/nginx/
+      - ./nginx/images/:/var/www/html/images/
     depends_on:
       - backend
     networks:
