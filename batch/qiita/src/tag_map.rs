@@ -7,7 +7,7 @@ pub fn create_map() -> HashMap<&'static str, &'static str> {
     tag_map.insert("Kubernetes", "kubernetes");
     tag_map.insert("Golang", "golang");
     tag_map.insert("Agile", "agile");
-    tag_map.insert("Requirement definition", "requirement-definition");
+    tag_map.insert("Requirement Definition", "requirement-definition");
     tag_map.insert("Nuxt", "nuxt");
     tag_map.insert("Network", "network");
     tag_map.insert("dns", "dns");
@@ -17,7 +17,7 @@ pub fn create_map() -> HashMap<&'static str, &'static str> {
     tag_map.insert("プロジェクト管理", "project-management");
     tag_map.insert("チームビルディング", "team-building");
     tag_map.insert("ふりかえり", "reflection");
-    tag_map.insert("プロジェクトマネジメント", "project-management-advanced");
+    tag_map.insert("プロジェクトマネジメント", "project-management");
     tag_map.insert("AI", "ai");
     tag_map.insert("ビジネス", "business");
     tag_map.insert("生産性向上", "productivity-improvement");
@@ -32,14 +32,14 @@ pub fn create_map() -> HashMap<&'static str, &'static str> {
     tag_map.insert("ckad", "ckad");
     tag_map.insert("CKA", "cka");
     tag_map.insert("プレゼンテーション", "presentation");
-    tag_map.insert("ロジカルシンキング", "logical-thinking-advanced");
+    tag_map.insert("ロジカルシンキング", "logical-thinking");
     tag_map.insert("Go", "go");
     tag_map.insert("dockerfile", "dockerfile");
     tag_map.insert("DockerHub", "docker-hub");
     tag_map.insert("沼", "quagmire");
     tag_map.insert("個人開発", "personal-development");
     tag_map.insert("GitHubActions", "github-actions");
-    tag_map.insert("要件定義", "requirement-definition-advanced");
+    tag_map.insert("要件定義", "requirement-definition");
     tag_map.insert("ユースケース", "use-case");
     tag_map.insert("ワイヤーフレーム", "wireframe");
     tag_map.insert("デザイン設計", "design-planning");
