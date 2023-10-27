@@ -27,6 +27,19 @@ func Apply(r router.Router, conf config.Configs, logger logger.Logger, db model.
 		r.GET("/healthcheck", h.Index)
 	}
 	{
+		articleHandler := registory.NewArticleRegistory(
+			ctx,
+			ctx.MasterDB,
+			ctx.RepricaDB,
+		)
+		article := r.Group("/articles")
+		article.GET("/{id:[0-9]+}", articleHandler.Get)
+		article.GET("/category/{slug}", articleHandler.GetArticlesByCategory)
+		article.GET("/tag/{slug}", articleHandler.GetArticlesByTag)
+		// article.GET("/category/{slug}/{id:[0-9]+}", articleHandler.GetArticlesByCategory)
+		// article.GET("/tag/{slug}/{id:[0-9]+}", articleHandler.GetArticlesByTag)
+	}
+	{
 		topPageHandler := registory.NewTopPageRegistory(
 			ctx,
 			logger,
@@ -56,21 +69,6 @@ func Apply(r router.Router, conf config.Configs, logger logger.Logger, db model.
 		auth.POST("/login", userHandler.Login)
 		auth.POST("/signup", userHandler.SignUp)
 		auth.POST("/refresh_token", userHandler.RefreshToken)
-	}
-	{
-		articleHandler := registory.NewArticleRegistory(
-			ctx,
-			ctx.MasterDB,
-			ctx.RepricaDB,
-		)
-		article := r.Group("/articles")
-		article.GET("/{id:[0-9]+}", articleHandler.Get)
-		// article.GET("/category/{slug}/{id:[0-9]+}", articleHandler.GetArticlesByCategory)
-		// article.GET("/tag/{slug}/{id:[0-9]+}", articleHandler.GetArticlesByTag)
-		article.GET("/category/{slug}", articleHandler.GetArticlesByCategory)
-		article.GET("/tag/{slug}", articleHandler.GetArticlesByTag)
-		// article.GET("/category/{slug}/{id:[0-9]+}", articleHandler.GetArticlesByCategory)
-		// article.GET("/tag/{slug}/{id:[0-9]+}", articleHandler.GetArticlesByTag)
 	}
 	// {
 	// 	a := r.Group("/auth")

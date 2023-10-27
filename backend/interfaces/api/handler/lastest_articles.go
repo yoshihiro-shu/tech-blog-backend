@@ -26,8 +26,7 @@ type latestArticlesHandler struct {
 }
 
 const (
-	// TODO refactor
-	numberOfArticlePerPageAtLatestAritcles = 1
+	numberOfArticlePerPageAtLatestAritcles = 5
 )
 
 func NewLatestArticlesHandler(articleUseCase usecase.ArticleUseCase, c *request.Context, l logger.Logger) LatestArticlesHandler {
