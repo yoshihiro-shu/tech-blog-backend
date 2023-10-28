@@ -17,9 +17,9 @@ fn construct_db_url() -> String {
     // 環境変数から値を取得します。環境変数が設定されていない場合はデフォルト値を使用します。
     let db_host = env::var("DB_HOST").unwrap_or_else(|_| "localhost".to_string());
     let db_port = env::var("DB_PORT").unwrap_or_else(|_| "5432".to_string());
-    let db_user = env::var("DB_USER").unwrap_or_else(|_| "user".to_string());
+    let db_user = env::var("DB_USER").unwrap_or_else(|_| "postgres".to_string());
     let db_password = env::var("DB_PASSWORD").unwrap_or_else(|_| "password".to_string());
-    let db_name = env::var("DB_NAME").unwrap_or_else(|_| "database".to_string());
+    let db_name = env::var("DB_NAME").unwrap_or_else(|_| "postgres".to_string());
     let db_ssl = env::var("DB_SSL").unwrap_or_else(|_| "disable".to_string());
 
     // SSLの設定に基づいて、SSLモードを指定します。
