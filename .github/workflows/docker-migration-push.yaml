@@ -37,7 +37,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v4
         with:
-          context: .
+          context: ./migrations
           platforms: linux/amd64,linux/arm64
           file: ./migrations/Dockerfile
 
