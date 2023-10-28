@@ -14,14 +14,15 @@ const (
 )
 
 type Configs struct {
-	User         Server       `yaml:"user"`
-	Frontend     Frontend     `yaml:"frontend"`
-	RelationalDB RelationalDB `yaml:"relationalDB"`
-	CacheRedis   RedisCache   `yaml:"cacheRedis"`
-	Twitter      Twitter      `yaml:"twitter"`
-	AccessToken  AuthToken    `yaml:"access_token"`
-	RefreshToken AuthToken    `yaml:"refresh_token"`
-	CsrfToken    CsrfToken    `yaml:"csrf_token"`
+	User          Server          `yaml:"user"`
+	Frontend      Frontend        `yaml:"frontend"`
+	RelationalDB  RelationalDB    `yaml:"relationalDB"`
+	CacheRedis    RedisCache      `yaml:"cacheRedis"`
+	Elasticsearch []Elasticsearch `yaml:"elasticsearch"`
+	Twitter       Twitter         `yaml:"twitter"`
+	AccessToken   AuthToken       `yaml:"access_token"`
+	RefreshToken  AuthToken       `yaml:"refresh_token"`
+	CsrfToken     CsrfToken       `yaml:"csrf_token"`
 }
 
 func (c Configs) GetUserAddr() string {

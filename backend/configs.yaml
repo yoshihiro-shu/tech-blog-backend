@@ -47,6 +47,11 @@ cacheRedis:
   dbNumber: 0
   expires: 24h
 
+elasticsearch:
+  # host: http://elasticsearch01
+  - host: http://elasticsearch.draft.com
+    port: 9200
+
 twitter:
   api_key: XXXXXXXXXX
   api_key_secret: XXXXXXXXXX

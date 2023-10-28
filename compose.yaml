@@ -29,6 +29,8 @@ services:
         condition: service_started
       migration:
         condition: service_completed_successfully
+      # elasticsearch01:
+      #   condition: service_started
     networks:
       - draft-backend-network
 
@@ -69,6 +71,33 @@ services:
       - ./tmp/cache/data:/var/lib/redis/data
     networks:
       - draft-backend-network
+
+  # elasticsearch01:
+  #   build: ./elasticsearch
+  #   container_name: elasticsearch01
+  #   environment:
+  #     - xpack.security.enabled=false
+  #     - discovery.type=single-node
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #   ports:
+  #     - 9200:9200
+  #   networks:
+  #     - draft-backend-network
+
+  # kibana:
+  #   image: docker.elastic.co/kibana/kibana:8.8.1
+  #   container_name: kibana
+  #   ports:
+  #     - "5601:5601"
+  #   environment:
+  #     - ELASTICSEARCH_HOSTS=http://elasticsearch01:9200
+  #   depends_on:
+  #     - elasticsearch01
+  #   networks:
+  #     - draft-backend-network
 
   migration:
     build: ./migrations
