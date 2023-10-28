@@ -20,4 +20,4 @@ COPY --from=builder /usr/src/app/binary /usr/src/app/binary
 COPY ./backend/configs.yaml .
 
 EXPOSE 8080
-CMD ["./binary"]
+ENTRYPOINT ["./binary"]
