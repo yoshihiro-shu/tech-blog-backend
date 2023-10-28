@@ -3,7 +3,7 @@
 Build Docker Image
 
 ```
-docker build --platform amd64 -t ${username}/${imageName}:${tagName} .
+docker build --platform linux/amd64 -t ${username}/${imageName}:${tagName} .
 ```
 
 Push Docker Image to Dockerhub
