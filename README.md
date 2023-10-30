@@ -2,8 +2,8 @@
 
 ## System Archtecture
 
-![image](https://github.com/yoshihiro-shu/draft-backend/assets/84740493/47c6869a-5f93-435d-ab18-d35c1f7512ac)
-
+https://app.diagrams.net/#G1CuJWLpUqeXx_Qj7RZWCZc-ojCXzTaIJ_
+![image](https://github.com/yoshihiro-shu/draft-backend/assets/84740493/5a6467de-464d-4a8e-a87d-aedbe2d4057a)
 
 ## 環境構築
 
