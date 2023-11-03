@@ -12,7 +12,7 @@ require (
 	github.com/gorilla/csrf v1.7.1
 	github.com/gorilla/mux v1.8.0
 	github.com/lib/pq v1.10.9
-	github.com/redis/go-redis/v9 v9.2.1
+	github.com/redis/go-redis/v9 v9.3.0
 	go.uber.org/zap v1.26.0
 	golang.org/x/crypto v0.14.0
 	gopkg.in/yaml.v3 v3.0.1
