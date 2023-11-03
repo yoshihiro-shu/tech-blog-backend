@@ -3,6 +3,11 @@ use std::env;
 use tokio; // tokioは非同期ランタイムです
 use tokio_postgres::{NoTls};
 
+use serde::{Deserialize, Serialize};
+use std::fs::File;
+use std::io::Read;
+use serde_json;
+
 mod qiita_response;
 mod tag_map;
 mod tag_category_map;
@@ -39,24 +44,31 @@ fn construct_db_url() -> String {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    // 例として、httpbin.orgのGETエンドポイントを使います
-    let request_url = "https://qiita.com/api/v2/items?page=1&per_page=100&query=user:yoshihiro-shu";
+    // // 例として、httpbin.orgのGETエンドポイントを使います
+    // let request_url = "https://qiita.com/api/v2/items?page=1&per_page=100&query=user:yoshihiro-shu";
 
-    // クライアントのインスタンスを作成します
-    let api_client = reqwest::Client::new();
+    // // クライアントのインスタンスを作成します
+    // let api_client = reqwest::Client::new();
 
-    // リクエストを送り、レスポンスを待ちます
-    let response = api_client.get(request_url).send().await?;
+    // // リクエストを送り、レスポンスを待ちます
+    // let response = api_client.get(request_url).send().await?;
 
-    let mut response_text: String = Default::default();
-    // 成功した場合、レスポンスのテキストを表示します
-    if response.status().is_success() {
-        response_text = response.text().await?;
-    } else {
-        println!("Failed to get a successful response. Status: {}", response.status());
-    }
+    // let mut response_text: String = Default::default();
+    // // 成功した場合、レスポンスのテキストを表示します
+    // if response.status().is_success() {
+    //     response_text = response.text().await?;
+    // } else {
+    //     println!("Failed to get a successful response. Status: {}", response.status());
+    // }
 
-    let res: qiita_response::QiitaResponse = serde_json::from_str(&response_text).unwrap();
+    // JSONファイルを開く
+    let mut jsonFile = File::open("my-qiita-blog.json")?;
+
+    // ファイルの内容を読み込む
+    let mut contents = String::new();
+    jsonFile.read_to_string(&mut contents)?;
+
+    let res: qiita_response::QiitaResponse = serde_json::from_str(&contents).unwrap();
 
     let db_endpoint = construct_db_url();
 
