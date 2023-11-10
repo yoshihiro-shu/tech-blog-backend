@@ -1,4 +1,4 @@
-FROM golang:1.21 as dev
+FROM golang:1.21.4-alpine3.18 as dev
 # LABEL maintainer "draft-backend"
 
 ENV ROOT=/usr/src/app
