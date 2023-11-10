@@ -4,7 +4,7 @@ FROM golang:1.21.4-alpine3.18 as builder
 WORKDIR /usr/src/app
 
 # tzdata パッケージのインストール
-RUN apt-get update && apt-get install -y tzdata
+RUN apk add --no-cache tzdata
 
 COPY ./backend/go.mod ./backend/go.sum ./
 RUN go mod download && go mod verify
