@@ -2,7 +2,6 @@ apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: {{ include "tech-blog-backend.fullname" . }}-gateway
-  namespace: {{ include "tech-blog-backend.nameSpace" . }}
   labels:
     {{ include "tech-blog-backend..labels" . | nindent 4 }}
 spec:
