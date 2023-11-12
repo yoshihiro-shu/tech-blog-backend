@@ -34,6 +34,13 @@ spec:
       - name: {{ include "tech-blog-backend.fullname" . }}-migration
         image: {{ .Values.migration.image.repository }}:{{ .Values.migration.image.tag }}
         imagePullPolicy: {{ .Values.migration.image.imagePullPolicy }}
+        resources:
+          requests:
+            memory: "32Mi"
+            cpu: "100m"
+          limits:
+            memory: "32Mi"
+            cpu: "100m"
         envFrom:
         - secretRef:
             name: {{ .Values.migration.dotEnv.secretResourceName }}
