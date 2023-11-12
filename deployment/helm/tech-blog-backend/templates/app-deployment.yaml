@@ -14,18 +14,18 @@ spec:
       labels:
         {{ include "tech-blog-backend..appSelectorLabels" . | nindent 8 }}
     spec:
-      initContainers:
-        - name: db-wait
-          image: alpine:3.10
-          command:
-            - /bin/sh
-            - -c
-            - |
-              echo "Waiting for Postgres..."
-              while ! nc -z {{ .Values.config.relationalDB.master.host }} {{ .Values.config.relationalDB.master.port }}; do
-                sleep 1
-              done
-              echo "Postgres started!"
+      # initContainers:
+      #   - name: db-wait
+      #     image: alpine:3.10
+      #     command:
+      #       - /bin/sh
+      #       - -c
+      #       - |
+      #         echo "Waiting for Postgres..."
+      #         while ! nc -z {{ .Values.config.relationalDB.master.host }} {{ .Values.config.relationalDB.master.port }}; do
+      #           sleep 1
+      #         done
+      #         echo "Postgres started!"
       containers:
       - name: {{ include "tech-blog-backend.appContainerName" . }}
         image: {{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}
