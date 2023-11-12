@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "tech-blog-backend.fullname" . }}-nginx-app
+  labels:
+    {{ include "tech-blog-backend.labels" . | nindent 4 }}
+spec:
+  selector:
+    {{ include "tech-blog-backend.gatewaySelectorLabels" . | nindent 4 }}
+  ports:
+  - protocol: TCP
+    port: 80
+  type: ClusterIP

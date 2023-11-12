@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "tech-blog-backend.fullname" . }}-app
+  labels:
+    {{ include "tech-blog-backend.labels" . | nindent 4 }}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      {{ include "tech-blog-backend.appSelectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{ include "tech-blog-backend.appSelectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: {{ include "tech-blog-backend.fullname" . }}-app
+        image: {{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}
+        ports:
+        - containerPort: 8000
+        resources:
+        volumeMounts:
+          - mountPath: /usr/src/app/configs.yaml
+            name: configs-yaml
+            readOnly: true
+            subPath: configs.yaml
+      volumes:
+          - name: configs-yaml
+            secret:
+              secretName: {{ .Values.app.config.secretName }}

@@ -1,0 +1,16 @@
+domain: ""
+
+app:
+  image:
+    repository: ""
+    tag: ""
+  config:
+    secretName: ""
+
+migration:
+  image:
+    repository: ""
+    tag: ""
+    imagePullPolicy: IfNotPresent
+  dotEnv:
+    secretResourceName: ""

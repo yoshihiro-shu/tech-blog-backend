@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "tech-blog-backend.fullname" . }}-nginx-conf
+  labels:
+    {{ include "tech-blog-backend.labels" . | nindent 4 }}
+data:
+  default.conf: |
+    server {
+        listen       80;
+        listen  [::]:80;
+        server_name  {{ .Values.domain }};
+
+
+        location / {
+            root   /usr/share/nginx/html;
+            index  index.html index.htm;
+        }
+
+        location /api/ {
+          proxy_pass http://userapi;
+          proxy_set_header Host $http_host;
+        }
+    }
+  upstream.conf: |
+    upstream  userapi {
+      server  {{ include "tech-blog-backend.fullname" . }}-app:8000;
+    }

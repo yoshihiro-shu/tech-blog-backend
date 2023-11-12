@@ -1,0 +1,11 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "tech-blog-backend.fullname" . }}-gateway
+  labels:
+    {{ include "tech-blog-backend.labels" . | nindent 4 }}
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      {{ include "tech-blog-backend.gatewaySelectorLabels" . | nindent 6 }}
