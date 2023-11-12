@@ -20,6 +20,12 @@ spec:
         ports:
         - containerPort: 8000
         resources:
+          requests:
+            memory: "32Mi"
+            cpu: "100m"
+          limits:
+            memory: "32Mi"
+            cpu: "100m"
         volumeMounts:
           - mountPath: /usr/src/app/configs.yaml
             name: configs-yaml
