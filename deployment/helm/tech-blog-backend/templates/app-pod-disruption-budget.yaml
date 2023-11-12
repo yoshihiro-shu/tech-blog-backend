@@ -3,9 +3,9 @@ kind: PodDisruptionBudget
 metadata:
   name: {{ include "tech-blog-backend.fullname" . }}-app
   labels:
-    {{ include "tech-blog-backend..labels" . | nindent 4 }}
+    {{ include "tech-blog-backend.labels" . | nindent 4 }}
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
-      {{ include "tech-blog-backend..appSelectorLabels" . | nindent 6 }}
+      {{ include "tech-blog-backend.appSelectorLabels" . | nindent 6 }}

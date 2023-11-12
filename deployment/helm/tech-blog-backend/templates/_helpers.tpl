@@ -51,6 +51,22 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+APP Selector labels
+*/}}
+{{- define "tech-blog-backend.appSelectorLabels" -}}
+app.kubernetes.io/name: {{ include "tech-blog-backend.name" . }}-app
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
+Gateway Selector labels
+*/}}
+{{- define "tech-blog-backend.gatewaySelectorLabels" -}}
+app.kubernetes.io/name: {{ include "tech-blog-backend.name" . }}-gateway
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "tech-blog-backend.serviceAccountName" -}}

@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ include "tech-blog-backend.fullname" . }}-nginx-conf
   labels:
-    {{ include "tech-blog-backend..labels" . | nindent 4 }}
+    {{ include "tech-blog-backend.labels" . | nindent 4 }}
 data:
   default.conf: |
     server {

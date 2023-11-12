@@ -3,19 +3,19 @@ kind: Deployment
 metadata:
   name: {{ include "tech-blog-backend.fullname" . }}-gateway
   labels:
-    {{ include "tech-blog-backend..labels" . | nindent 4 }}
+    {{ include "tech-blog-backend.labels" . | nindent 4 }}
 spec:
   replicas: 2
   selector:
     matchLabels:
-      {{ include "tech-blog-backend..gatewaySelectorLabels" . | nindent 6 }}
+      {{ include "tech-blog-backend.gatewaySelectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{ include "tech-blog-backend..gatewaySelectorLabels" . | nindent 8 }}
+        {{ include "tech-blog-backend.gatewaySelectorLabels" . | nindent 8 }}
     spec:
       containers:
-      - name: {{ include "tech-blog-backend.gatewayContainerName" . }}
+      - name: {{ include "tech-blog-backend.fullname" . }}-gateway
         image: nginx:1.25.2-alpine
         ports:
         - containerPort: 80
