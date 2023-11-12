@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "tech-blog.fullname" . }}-nginx-app
-  namespace: {{ include "tech-blog.nameSpace" . }}
+  name: {{ include "tech-blog-backend.fullname" . }}-nginx-app
+  namespace: {{ include "tech-blog-backend.nameSpace" . }}
   labels:
-    {{- include "tech-blog.labels" . | nindent 4 }}
+    {{ include "tech-blog-backend..labels" . | nindent 4 }}
 spec:
   selector:
-    {{- include "tech-blog.gatewaySelectorLabels" . | nindent 4 }}
+    {{ include "tech-blog-backend..gatewaySelectorLabels" . | nindent 4 }}
   ports:
   - protocol: TCP
     port: 80

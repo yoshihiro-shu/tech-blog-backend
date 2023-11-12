@@ -1,19 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "tech-blog.fullname" . }}-app
-  namespace: {{ include "tech-blog.nameSpace" . }}
+  name: {{ include "tech-blog-backend.fullname" . }}-app
   labels:
-    {{- include "tech-blog.labels" . | nindent 4 }}
+    {{ include "tech-blog-backend..labels" . | nindent 4 }}
 spec:
   replicas: 2
   selector:
     matchLabels:
-      {{- include "tech-blog.appSelectorLabels" . | nindent 6 }}
+      {{ include "tech-blog-backend..appSelectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "tech-blog.appSelectorLabels" . | nindent 8 }}
+        {{ include "tech-blog-backend..appSelectorLabels" . | nindent 8 }}
     spec:
       initContainers:
         - name: db-wait
@@ -28,7 +27,7 @@ spec:
               done
               echo "Postgres started!"
       containers:
-      - name: {{ include "tech-blog.appContainerName" . }}
+      - name: {{ include "tech-blog-backend.appContainerName" . }}
         image: {{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}
         ports:
         - containerPort: 8000

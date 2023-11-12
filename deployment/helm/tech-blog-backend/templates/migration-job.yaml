@@ -1,10 +1,9 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "tech-blog.fullname" . }}-migration
-  namespace: {{ include "tech-blog.nameSpace" . }}
+  name: {{ include "tech-blog-backend.fullname" . }}-migration
   labels:
-    {{- include "tech-blog.labels" . | nindent 4 }}
+    {{ include "tech-blog-backend.-backend.labels" . | nindent 4 }}
 spec:
   template:
     spec:
@@ -32,7 +31,7 @@ spec:
       #     done
       #     echo "Postgres started!"
       containers:
-      - name: {{ include "tech-blog.migrationJobName" . }}
+      - name: {{ include "tech-blog-backend.migrationJobName" . }}
         image: {{ .Values.migration.image.repository }}:{{ .Values.migration.image.tag }}
         imagePullPolicy: {{ .Values.migration.image.imagePullPolicy }}
         envFrom:

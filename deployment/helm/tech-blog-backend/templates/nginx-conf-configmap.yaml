@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "tech-blog.fullname" . }}-nginx-conf
-  namespace: {{ include "tech-blog.nameSpace" . }}
+  name: {{ include "tech-blog-backend.fullname" . }}-nginx-conf
+  namespace: {{ include "tech-blog-backend.nameSpace" . }}
   labels:
-    {{- include "tech-blog.labels" . | nindent 4 }}
+    {{ include "tech-blog-backend..labels" . | nindent 4 }}
 data:
   default.conf: |
     server {
@@ -25,5 +25,5 @@ data:
     }
   upstream.conf: |
     upstream  userapi {
-      server  {{ include "tech-blog.fullname" . }}-app:8000;
+      server  {{ include "tech-blog-backend.fullname" . }}-app:8000;
     }
