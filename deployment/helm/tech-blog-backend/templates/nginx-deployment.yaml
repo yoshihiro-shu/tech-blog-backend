@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "tech-blog.fullname" . }}-gateway
+  namespace: {{ include "tech-blog.nameSpace" . }}
+  labels:
+    {{- include "tech-blog.labels" . | nindent 4 }}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      {{- include "tech-blog.gatewaySelectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "tech-blog.gatewaySelectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: {{ include "tech-blog.gatewayContainerName" . }}
+        image: nginx:1.25.2-alpine
+        ports:
+        - containerPort: 80
+        resources:
+          # requests:
+          #   memory: "64Mi"
+          #   cpu: "250m"
+          # limits:
+          #   memory: "128Mi"
+          #   cpu: "500m"
+        volumeMounts:
+          - mountPath: /etc/nginx/conf.d/default.conf
+            name: nginx-conf
+            readOnly: true
+            subPath: default.conf
+          - mountPath: /etc/nginx/conf.d/upstream.conf
+            name: nginx-conf
+            readOnly: true
+            subPath: upstream.conf
+      volumes:
+      - name: nginx-conf
+        configMap:
+          name: {{ include "tech-blog.fullname" . }}-nginx-conf

@@ -1,0 +1,59 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "tech-blog.fullname" . }}-migration
+  namespace: {{ include "tech-blog.nameSpace" . }}
+  labels:
+    {{- include "tech-blog.labels" . | nindent 4 }}
+spec:
+  template:
+    spec:
+      # initContainers:
+      # - name: db-wait
+      #   image: alpine:3.10
+      #   env:
+      #     - name: DB_HOST
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: {{ .Values.migration.dotEnv.secretResourceName }}
+      #           key: DB_HOST
+      #     - name: DB_PORT
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: {{ .Values.migration.dotEnv.secretResourceName }}
+      #           key: DB_PORT
+      #   command:
+      #   - /bin/sh
+      #   - -c
+      #   - |
+      #     echo "Waiting for Postgres..."
+      #     while ! nc -z ${DB_HOST} ${DB_PORT}; do
+      #       sleep 2
+      #     done
+      #     echo "Postgres started!"
+      containers:
+      - name: {{ include "tech-blog.migrationJobName" . }}
+        image: {{ .Values.migration.image.repository }}:{{ .Values.migration.image.tag }}
+        imagePullPolicy: {{ .Values.migration.image.imagePullPolicy }}
+        envFrom:
+        - secretRef:
+            name: {{ .Values.migration.dotEnv.secretResourceName }}
+      restartPolicy: Never
+  # retryする数
+  backoffLimit: 4
+# ---
+# apiVersion: batch/v1
+# kind: Job
+# metadata:
+#   name: batch-qiita
+# spec:
+#   template:
+#     spec:
+#       containers:
+#       - name: batch-qiita
+#         image: yoshi429/draft-batch-qiita:a3ac1feb074aab005a41164327d7d60bbdbf94c7
+#         envFrom:
+#         - secretRef:
+#             name: {{ .Values.migration.dotEnv.secretResourceName }}
+#       restartPolicy: Never
+#   backoffLimit: 4

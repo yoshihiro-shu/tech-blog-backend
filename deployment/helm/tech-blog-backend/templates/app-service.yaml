@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "tech-blog.fullname" . }}-app
+  namespace: {{ include "tech-blog.nameSpace" . }}
+  labels:
+    {{- include "tech-blog.labels" . | nindent 4 }}
+spec:
+  selector:
+    {{- include "tech-blog.appSelectorLabels" . | nindent 4 }}
+  ports:
+  - name: api-v1
+    port: 8000
+    protocol: TCP
+    targetPort: 8000
+  type: ClusterIP
