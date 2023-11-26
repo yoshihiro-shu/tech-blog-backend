@@ -10,6 +10,7 @@ type Router interface {
 	Group(path string) Router
 	Use(fn ...func(http.Handler) http.Handler)
 	ServeHTTP(rw http.ResponseWriter, req *http.Request)
+	Handle(path string, handler http.Handler)
 	GET(path string, fn func(http.ResponseWriter, *http.Request) error)
 	POST(path string, fn func(http.ResponseWriter, *http.Request) error)
 	PUT(path string, fn func(http.ResponseWriter, *http.Request) error)
@@ -26,6 +27,10 @@ func New() Router {
 	return &router{
 		Router: mux.NewRouter(),
 	}
+}
+
+func (r router) Handle(path string, handler http.Handler) {
+	r.Router.Handle(path, handler)
 }
 
 func (r router) Group(path string) Router {

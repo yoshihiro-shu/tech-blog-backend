@@ -1,6 +1,7 @@
 package user_api
 
 import (
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/yoshihiro-shu/tech-blog-backend/src/infrastructure/persistence/cache"
 	"github.com/yoshihiro-shu/tech-blog-backend/src/interfaces/api/handler"
 	"github.com/yoshihiro-shu/tech-blog-backend/src/interfaces/api/middlewares"
@@ -22,6 +23,8 @@ func Apply(r router.Router, conf config.Configs, logger logger.Logger, db model.
 
 	h := handler.NewIndexHandler(ctx)
 
+	r.Handle("/metrics", promhttp.Handler())
+
 	r = r.Group("/api")
 	{
 		r.GET("/healthcheck", h.Index)
@@ -36,8 +39,6 @@ func Apply(r router.Router, conf config.Configs, logger logger.Logger, db model.
 		article.GET("/{id:[0-9]+}", articleHandler.Get)
 		article.GET("/category/{slug}", articleHandler.GetArticlesByCategory)
 		article.GET("/tag/{slug}", articleHandler.GetArticlesByTag)
-		// article.GET("/category/{slug}/{id:[0-9]+}", articleHandler.GetArticlesByCategory)
-		// article.GET("/tag/{slug}/{id:[0-9]+}", articleHandler.GetArticlesByTag)
 	}
 	{
 		topPageHandler := registory.NewTopPageRegistory(
