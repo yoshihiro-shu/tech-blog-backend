@@ -14,11 +14,11 @@ services:
 
   backend:
     build:
-      context: ./backend
+      context: ./src
       dockerfile: ./Dockerfile
       target: dev
     volumes:
-      - ./backend:/usr/src/app
+      - ./src:/usr/src/app
     ports:
       - "8000:8000"
     tty: true
