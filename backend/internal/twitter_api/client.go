@@ -3,8 +3,8 @@ package twitter_api
 import (
 	"fmt"
 
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
-	tweet_timeline "github.com/yoshihiro-shu/draft-backend/backend/internal/twitter_api/tweet/timeline"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/internal/config"
+	tweet_timeline "github.com/yoshihiro-shu/tech-blog-backend/backend/internal/twitter_api/tweet/timeline"
 )
 
 type TwitterClient struct {

@@ -3,7 +3,7 @@ package repository
 import (
 	"time"
 
-	"github.com/yoshihiro-shu/draft-backend/backend/domain/model"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/domain/model"
 )
 
 type RefreshTokenRepository interface {

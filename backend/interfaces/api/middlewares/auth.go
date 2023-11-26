@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/auth"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/internal/auth"
 )
 
 func Auth(next http.Handler) http.Handler {

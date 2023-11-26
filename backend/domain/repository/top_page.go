@@ -1,6 +1,6 @@
 package repository
 
-import "github.com/yoshihiro-shu/draft-backend/backend/domain/model"
+import "github.com/yoshihiro-shu/tech-blog-backend/backend/domain/model"
 
 type TopPageRepository interface {
 	GetArticles(*[]model.Article, int, int) error

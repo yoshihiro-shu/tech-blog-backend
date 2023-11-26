@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/mock_test"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/internal/mock_test"
 )
 
 type requestBody map[string]interface{}

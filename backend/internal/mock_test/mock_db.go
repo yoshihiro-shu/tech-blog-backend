@@ -3,7 +3,7 @@ package mock_test
 import (
 	"database/sql"
 
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/model"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/interfaces/model"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

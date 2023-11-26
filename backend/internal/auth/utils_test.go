@@ -3,7 +3,7 @@ package auth_test
 import (
 	"testing"
 
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/auth"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/internal/auth"
 )
 
 func TestIsVerfyPassword(t *testing.T) {

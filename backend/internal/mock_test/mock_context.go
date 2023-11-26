@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"testing"
 
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/request"
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/logger"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/interfaces/api/request"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/internal/config"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/internal/logger"
 )
 
 func NewContext(t *testing.T, sqlDB *sql.DB) (*request.Context, error) {

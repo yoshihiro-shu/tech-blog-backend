@@ -5,9 +5,9 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/yoshihiro-shu/draft-backend/backend/application/usecase"
-	"github.com/yoshihiro-shu/draft-backend/backend/domain/model"
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/request"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/application/usecase"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/domain/model"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/interfaces/api/request"
 	"gorm.io/gorm"
 )
 

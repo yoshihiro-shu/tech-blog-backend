@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/mock_test"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/internal/mock_test"
 )
 
 type data struct {

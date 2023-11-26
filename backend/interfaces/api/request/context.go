@@ -4,11 +4,11 @@ import (
 	"context"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/yoshihiro-shu/draft-backend/backend/infrastructure/persistence/cache"
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/model"
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/auth"
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/logger"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/infrastructure/persistence/cache"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/interfaces/model"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/internal/auth"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/internal/config"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/internal/logger"
 	"gorm.io/gorm"
 )
 

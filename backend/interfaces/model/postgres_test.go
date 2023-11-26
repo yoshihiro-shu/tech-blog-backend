@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/mock_test"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/internal/mock_test"
 )
 
 const SelectOne = "SELECT 1;"

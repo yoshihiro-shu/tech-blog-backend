@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/request"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/interfaces/api/request"
 )
 
 type indexHandler struct {

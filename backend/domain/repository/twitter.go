@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"github.com/yoshihiro-shu/draft-backend/backend/domain/model"
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/domain/model"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/internal/config"
 )
 
 type TwitterRepository interface {

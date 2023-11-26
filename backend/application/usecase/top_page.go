@@ -1,9 +1,9 @@
 package usecase
 
 import (
-	"github.com/yoshihiro-shu/draft-backend/backend/domain/model"
-	"github.com/yoshihiro-shu/draft-backend/backend/domain/repository"
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/pager"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/domain/model"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/domain/repository"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/internal/pager"
 )
 
 type TopPageUseCase interface {

@@ -3,7 +3,7 @@ package middlewares
 import (
 	"net/http"
 
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/internal/config"
 )
 
 func Cors(c config.Frontend) func(http.Handler) http.Handler {

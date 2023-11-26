@@ -1,15 +1,15 @@
 package user_api
 
 import (
-	"github.com/yoshihiro-shu/draft-backend/backend/infrastructure/persistence/cache"
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/handler"
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/middlewares"
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/request"
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/router"
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/model"
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/config"
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/logger"
-	"github.com/yoshihiro-shu/draft-backend/backend/registory"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/infrastructure/persistence/cache"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/interfaces/api/handler"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/interfaces/api/middlewares"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/interfaces/api/request"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/interfaces/api/router"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/interfaces/model"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/internal/config"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/internal/logger"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/registory"
 )
 
 func Apply(r router.Router, conf config.Configs, logger logger.Logger, db model.DBClient, cache cache.RedisClient) {

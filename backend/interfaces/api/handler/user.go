@@ -3,9 +3,9 @@ package handler
 import (
 	"net/http"
 
-	"github.com/yoshihiro-shu/draft-backend/backend/application/usecase"
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/request"
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/auth"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/application/usecase"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/interfaces/api/request"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/internal/auth"
 	"go.uber.org/zap"
 )
 

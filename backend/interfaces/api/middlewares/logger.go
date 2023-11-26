@@ -3,7 +3,7 @@ package middlewares
 import (
 	"net/http"
 
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/logger"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/internal/logger"
 	"go.uber.org/zap"
 )
 

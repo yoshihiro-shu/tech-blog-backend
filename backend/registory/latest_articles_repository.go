@@ -1,12 +1,12 @@
 package registory
 
 import (
-	"github.com/yoshihiro-shu/draft-backend/backend/application/usecase"
-	"github.com/yoshihiro-shu/draft-backend/backend/infrastructure/persistence/cache"
-	"github.com/yoshihiro-shu/draft-backend/backend/infrastructure/persistence/postgres"
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/handler"
-	"github.com/yoshihiro-shu/draft-backend/backend/interfaces/api/request"
-	"github.com/yoshihiro-shu/draft-backend/backend/internal/logger"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/application/usecase"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/infrastructure/persistence/cache"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/infrastructure/persistence/postgres"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/interfaces/api/handler"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/interfaces/api/request"
+	"github.com/yoshihiro-shu/tech-blog-backend/backend/internal/logger"
 	"gorm.io/gorm"
 )
 
