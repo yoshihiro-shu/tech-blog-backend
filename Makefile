@@ -5,4 +5,4 @@ stop:
 	sh ./scripts/docker-stop.sh
 
 init-doc:
-	swag init --dir backend/cmd
+	swag init --dir src/cmd
