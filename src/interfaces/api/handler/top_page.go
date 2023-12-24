@@ -38,6 +38,15 @@ type responseTopPage struct {
 	Article []model.Article `json:"articles"`
 }
 
+// TopPageHandler godoc
+// @Summary top_page handlers
+// @Description get the top page articles
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} request.JSONResponce{data=responseTopPage}
+// @Failure 400 {object} request.JSONResponce{data=string}
+// @Failure 500 {object} request.JSONResponce{data=string}
+// @Router /api/top_page [get]
 func (h topPageHandler) Get(w http.ResponseWriter, r *http.Request) error {
 	currentPage := 1
 	var res responseTopPage
