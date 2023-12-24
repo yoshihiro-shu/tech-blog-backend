@@ -1,5 +1,28 @@
 basePath: /api/v1
 definitions:
+  handler.responseGetArticlesByCategory:
+    properties:
+      articles:
+        items:
+          $ref: '#/definitions/model.Article'
+        type: array
+    type: object
+  handler.responseGetArticlesByTag:
+    properties:
+      articles:
+        items:
+          $ref: '#/definitions/model.Article'
+        type: array
+    type: object
+  handler.responseLatestAritcles:
+    properties:
+      articles:
+        items:
+          $ref: '#/definitions/model.Article'
+        type: array
+      pager:
+        $ref: '#/definitions/pager.Pager'
+    type: object
   handler.responseTopPage:
     properties:
       articles:
@@ -75,6 +98,13 @@ definitions:
       password:
         type: string
     type: object
+  pager.Pager:
+    properties:
+      currentPage:
+        type: integer
+      lastPage:
+        type: integer
+    type: object
   request.JSONResponce:
     properties:
       data: {}
@@ -98,6 +128,150 @@ info:
   title: Swagger Example API
   version: "1.0"
 paths:
+  /api/articles//{slug}:
+    get:
+      consumes:
+      - application/json
+      description: get the article by tag
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/request.JSONResponce'
+            - properties:
+                data:
+                  $ref: '#/definitions/handler.responseGetArticlesByTag'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/request.JSONResponce'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/request.JSONResponce'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: article handlers
+  /api/articles/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get the article by id
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/request.JSONResponce'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Article'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/request.JSONResponce'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/request.JSONResponce'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: article handlers
+  /api/articles/category/{slug}:
+    get:
+      consumes:
+      - application/json
+      description: get the article by category
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/request.JSONResponce'
+            - properties:
+                data:
+                  $ref: '#/definitions/handler.responseGetArticlesByCategory'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/request.JSONResponce'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/request.JSONResponce'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: article handlers
+  /api/new/{page}:
+    get:
+      consumes:
+      - application/json
+      description: get the latest articles by page
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/request.JSONResponce'
+            - properties:
+                data:
+                  $ref: '#/definitions/handler.responseLatestAritcles'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/request.JSONResponce'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/request.JSONResponce'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: latest_articles handlers
   /api/top_page:
     get:
       consumes:

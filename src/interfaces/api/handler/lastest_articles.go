@@ -42,6 +42,15 @@ type responseLatestAritcles struct {
 	Pager    *pager.Pager    `json:"pager"`
 }
 
+// LatestArticlesHandler godoc
+// @Summary latest_articles handlers
+// @Description get the latest articles by page
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} request.JSONResponce{data=responseLatestAritcles}
+// @Failure 400 {object} request.JSONResponce{data=string}
+// @Failure 500 {object} request.JSONResponce{data=string}
+// @Router /api/new/{page} [get]
 func (h latestArticlesHandler) Get(w http.ResponseWriter, r *http.Request) error {
 	var res responseLatestAritcles
 	vars := mux.Vars(r)
