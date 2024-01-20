@@ -8,6 +8,7 @@ import (
 	"github.com/yoshihiro-shu/tech-blog-backend/src/application/usecase"
 	"github.com/yoshihiro-shu/tech-blog-backend/src/domain/model"
 	"github.com/yoshihiro-shu/tech-blog-backend/src/interfaces/api/request"
+	"github.com/yoshihiro-shu/tech-blog-backend/src/internal/logger"
 	"gorm.io/gorm"
 )
 
@@ -20,7 +21,7 @@ type ArticleHandler interface {
 type articleHandler struct {
 	articleUseCase  usecase.ArticleUseCase
 	articlesUseCase usecase.ArticlesUseCase
-	C               *request.Context
+	logger          logger.Logger
 }
 
 // ArticleHandler godoc
@@ -37,18 +38,18 @@ func (ah *articleHandler) Get(w http.ResponseWriter, r *http.Request) error {
 	strId := vars["id"]
 	id, err := strconv.Atoi(strId)
 	if err != nil {
-		return ah.C.JSON(w, http.StatusInternalServerError, err.Error())
+		return request.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 
 	article, err := ah.articleUseCase.FindByID(id)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return ah.C.JSON(w, http.StatusNotFound, err.Error())
+			return request.JSON(w, http.StatusNotFound, err.Error())
 		}
-		return ah.C.JSON(w, http.StatusInternalServerError, err.Error())
+		return request.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 
-	return ah.C.JSON(w, http.StatusOK, article)
+	return request.JSON(w, http.StatusOK, article)
 }
 
 type responseGetArticlesByCategory struct {
@@ -72,12 +73,12 @@ func (ah *articleHandler) GetArticlesByCategory(w http.ResponseWriter, r *http.R
 	err := ah.articlesUseCase.GetArticlesByCategory(&res.Articles, slug)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			ah.C.Logger.Warn("err no articles at latest Articles Handler")
-			return ah.C.JSON(w, http.StatusNotFound, err)
+			ah.logger.Warn("err no articles at latest Articles Handler")
+			return request.JSON(w, http.StatusNotFound, err)
 		}
 	}
 
-	return ah.C.JSON(w, http.StatusOK, res)
+	return request.JSON(w, http.StatusOK, res)
 }
 
 type responseGetArticlesByTag struct {
@@ -101,18 +102,18 @@ func (ah *articleHandler) GetArticlesByTag(w http.ResponseWriter, r *http.Reques
 	err := ah.articlesUseCase.GetArticlesByTag(&res.Articles, slug)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			ah.C.Logger.Warn("err no articles at latest Articles Handler")
-			return ah.C.JSON(w, http.StatusNotFound, err)
+			ah.logger.Warn("err no articles at latest Articles Handler")
+			return request.JSON(w, http.StatusNotFound, err)
 		}
 	}
 
-	return ah.C.JSON(w, http.StatusOK, res)
+	return request.JSON(w, http.StatusOK, res)
 }
 
-func NewArticleHandler(articleUseCase usecase.ArticleUseCase, articlesUseCase usecase.ArticlesUseCase, c *request.Context) ArticleHandler {
+func NewArticleHandler(articleUseCase usecase.ArticleUseCase, articlesUseCase usecase.ArticlesUseCase, logger logger.Logger) ArticleHandler {
 	return &articleHandler{
 		articleUseCase:  articleUseCase,
 		articlesUseCase: articlesUseCase,
-		C:               c,
+		logger:          logger,
 	}
 }

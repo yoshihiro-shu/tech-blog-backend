@@ -8,13 +8,13 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/gorilla/mux"
 	"github.com/yoshihiro-shu/tech-blog-backend/src/infrastructure/persistence/cache"
 	"github.com/yoshihiro-shu/tech-blog-backend/src/interfaces/api/router"
-	"github.com/yoshihiro-shu/tech-blog-backend/src/interfaces/api/user_api"
-	"github.com/yoshihiro-shu/tech-blog-backend/src/interfaces/model"
 	"github.com/yoshihiro-shu/tech-blog-backend/src/internal/config"
 	"github.com/yoshihiro-shu/tech-blog-backend/src/internal/logger"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 const (
@@ -29,36 +29,31 @@ ____________________________________O/_______
 
 type Server struct {
 	*http.Server
-	conf   config.Configs
-	logger logger.Logger
-	db     model.DBClient
-	cache  cache.RedisClient
+	conf      config.Configs
+	logger    logger.Logger
+	masterDB  func() *gorm.DB
+	repricaDB func() *gorm.DB
+	cache     cache.RedisClient
 }
 
-func New(conf config.Configs, logger logger.Logger, db model.DBClient, cache cache.RedisClient) *Server {
+func New(conf config.Configs, logger logger.Logger, masterDB func() *gorm.DB, repricaDB func() *gorm.DB, cache cache.RedisClient) *Server {
+	r := mux.NewRouter()
+	api := router.NewMainAPI(cache, masterDB, repricaDB, logger, conf)
+	api.SetRouters(r)
 	return &Server{
 		Server: &http.Server{
 			Addr:           conf.GetUserAddr(),
-			Handler:        router.New(),
+			Handler:        r,
 			ReadTimeout:    10 * time.Second,
 			WriteTimeout:   10 * time.Second,
 			MaxHeaderBytes: 1 << 20,
 		},
-		conf:   conf,
-		logger: logger,
-		db:     db,
-		cache:  cache,
+		conf:      conf,
+		logger:    logger,
+		masterDB:  masterDB,
+		repricaDB: repricaDB,
+		cache:     cache,
 	}
-}
-
-func (s Server) SetRouters() {
-	user_api.Apply(
-		s.Handler.(router.Router),
-		s.conf,
-		s.logger,
-		s.db,
-		s.cache,
-	)
 }
 
 func (s Server) Start() {

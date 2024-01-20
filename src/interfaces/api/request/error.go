@@ -34,3 +34,24 @@ func (c Context) Error(w http.ResponseWriter, status int, err error) error {
 	}
 	return nil
 }
+
+func Error(w http.ResponseWriter, status int, err error) error {
+	res := errorResponse{
+		Status: status,
+		Err:    err.Error(),
+	}
+
+	b, err := json.Marshal(res)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return nil
+	}
+
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(status)
+	_, err = w.Write(b)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+	return nil
+}

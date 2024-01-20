@@ -5,14 +5,14 @@ import (
 	"github.com/yoshihiro-shu/tech-blog-backend/src/infrastructure/persistence/cache"
 	"github.com/yoshihiro-shu/tech-blog-backend/src/infrastructure/persistence/postgres"
 	"github.com/yoshihiro-shu/tech-blog-backend/src/interfaces/api/handler"
-	"github.com/yoshihiro-shu/tech-blog-backend/src/interfaces/api/request"
 	"github.com/yoshihiro-shu/tech-blog-backend/src/internal/logger"
 	"gorm.io/gorm"
 )
 
-func NewTopPageRegistory(ctx *request.Context, l logger.Logger, master, reprica func() *gorm.DB) handler.TopPageHandler {
+func NewTopPageRegistory(redis cache.RedisClient, l logger.Logger, master, reprica func() *gorm.DB) handler.TopPageHandler {
 	articleRepository := postgres.NewArticlePersistence(master, reprica)
-	cacheArticleRepository := cache.NewArticleCacheAdaptor(ctx.Cache())
-	articleUseCase := usecase.NewArticleUseCase(articleRepository, cacheArticleRepository)
-	return handler.NewTopPageHandler(articleUseCase, ctx, l)
+	cacheArticleRepository := cache.NewArticleCacheAdaptor(redis)
+	cacheArticlesRepository := cache.NewArticlesCacheAdaptor(redis)
+	articleUseCase := usecase.NewArticleUseCase(articleRepository, cacheArticleRepository, cacheArticlesRepository)
+	return handler.NewTopPageHandler(articleUseCase, l)
 }
