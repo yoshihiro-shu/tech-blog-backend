@@ -8,9 +8,10 @@ import (
 )
 
 type ArticlesUseCase interface {
+	// Get(articles *[]model.Article, limit, offset, currentPage int) error
+	GetPager(currentPage, offset int) (*pager.Pager, error)
 	GetArticlesByCategory(articles *[]model.Article, slug string) error
 	GetArticlesByTag(articles *[]model.Article, slug string) error
-	GetPager(currentPage, offset int) (*pager.Pager, error)
 }
 
 type articlesUseCase struct {

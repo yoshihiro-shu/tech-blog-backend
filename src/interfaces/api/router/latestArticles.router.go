@@ -19,12 +19,13 @@ type latestArtilesRouter struct {
 
 func (r *latestArtilesRouter) SetRouters(router *mux.Router) {
 	latestArticlesHandler := registory.NewLatestArticlesRegistory(
-		nil,
+		r.redis,
 		r.logger,
 		r.masterdDB,
 		r.repricaDB,
 	)
 	latest := router.PathPrefix("/new").Subrouter()
 
-	latest.Handle("/{page:[0-9]+}", appHandler(latestArticlesHandler.Get)).Methods(http.MethodGet).Methods(http.MethodOptions)
+	latest.Handle("/{page:[0-9]+}", nil).Methods(http.MethodOptions)
+	latest.Handle("/{page:[0-9]+}", appHandler(latestArticlesHandler.Get)).Methods(http.MethodGet)
 }

@@ -11,10 +11,6 @@ import (
 )
 
 type MainRouter struct {
-	// metricsR        *metricsRouter
-	// articleR        *articleRouter
-	// topPageR        *topPageRouter
-	// latestArticlesR *latestArtilesRouter
 	redis     cache.RedisClient
 	masterdDB func() *gorm.DB
 	repricaDB func() *gorm.DB
@@ -40,11 +36,12 @@ func (m *MainRouter) SetRouters(router *mux.Router) {
 	metricsR := &metricsRouter{}
 	metricsR.SetRouters(router)
 
-	apiv1 := router.PathPrefix("/api/v1").Subrouter()
+	apiv1 := router.PathPrefix("/api").Subrouter()
 	articleR := &articleRouter{
 		redis:     m.redis,
 		masterdDB: m.masterdDB,
 		repricaDB: m.repricaDB,
+		logger:    m.logger,
 	}
 	articleR.SetRouters(apiv1)
 

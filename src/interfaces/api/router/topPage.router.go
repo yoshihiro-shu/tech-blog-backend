@@ -19,11 +19,12 @@ type topPageRouter struct {
 
 func (r *topPageRouter) SetRouters(router *mux.Router) {
 	topPageHandler := registory.NewTopPageRegistory(
-		nil,
+		r.redis,
 		r.logger,
 		r.masterdDB,
 		r.repricaDB,
 	)
 
-	router.Handle("/top", appHandler(topPageHandler.Get)).Methods(http.MethodGet).Methods(http.MethodOptions)
+	router.Handle("/top", nil).Methods(http.MethodOptions)
+	router.Handle("/top", appHandler(topPageHandler.Get)).Methods(http.MethodGet)
 }

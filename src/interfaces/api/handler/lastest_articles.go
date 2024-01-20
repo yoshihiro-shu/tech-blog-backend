@@ -7,7 +7,6 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/yoshihiro-shu/tech-blog-backend/src/application/usecase"
 	"github.com/yoshihiro-shu/tech-blog-backend/src/domain/model"
-	"github.com/yoshihiro-shu/tech-blog-backend/src/infrastructure/persistence/cache"
 	"github.com/yoshihiro-shu/tech-blog-backend/src/interfaces/api/request"
 	"github.com/yoshihiro-shu/tech-blog-backend/src/internal/logger"
 	"github.com/yoshihiro-shu/tech-blog-backend/src/internal/pager"
@@ -20,7 +19,6 @@ type LatestArticlesHandler interface {
 }
 
 type latestArticlesHandler struct {
-	*request.Context
 	logger         logger.Logger
 	articleUseCase usecase.ArticleUseCase
 }
@@ -29,9 +27,8 @@ const (
 	numberOfArticlePerPageAtLatestAritcles = 5
 )
 
-func NewLatestArticlesHandler(articleUseCase usecase.ArticleUseCase, c *request.Context, l logger.Logger) LatestArticlesHandler {
+func NewLatestArticlesHandler(articleUseCase usecase.ArticleUseCase, l logger.Logger) LatestArticlesHandler {
 	return &latestArticlesHandler{
-		Context:        c,
 		logger:         l,
 		articleUseCase: articleUseCase,
 	}
@@ -63,34 +60,22 @@ func (h latestArticlesHandler) Get(w http.ResponseWriter, r *http.Request) error
 
 	limit := numberOfArticlePerPageAtLatestAritcles
 	offset := limit * (currentPage - 1)
-
-	cacheKey := cache.GetLatestArticleListKey(currentPage)
-	err = h.Cache().GET(cacheKey, &res)
-	if err == nil {
-		return h.JSON(w, http.StatusOK, res)
-	}
-
-	err = h.articleUseCase.GetArticles(&res.Articles, limit, offset)
+	err = h.articleUseCase.GetArticles(&res.Articles, limit, offset, currentPage)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			h.logger.Warn("err no articles at latest Articles Handler")
-			return h.JSON(w, http.StatusNotFound, err)
+			return request.JSON(w, http.StatusNotFound, err)
 		}
 		h.logger.Error("failed at get articles at latest articles.", zap.Error(err))
-		return h.Error(w, http.StatusInternalServerError, err)
+		return request.Error(w, http.StatusInternalServerError, err)
 	}
 
 	res.Pager, err = h.articleUseCase.GetPager(currentPage, limit)
 	if err != nil {
 		h.logger.Warn("failed at get pager at top page.", zap.Error(err))
-		return h.Error(w, http.StatusInternalServerError, err)
+		return request.Error(w, http.StatusInternalServerError, err)
 	}
 
-	err = h.Cache().SET(cacheKey, res)
-	if err != nil {
-		h.logger.Error("failed at set cache redis at top page.", zap.Error(err))
-	}
-
-	return h.JSON(w, http.StatusOK, res)
+	return request.JSON(w, http.StatusOK, res)
 
 }

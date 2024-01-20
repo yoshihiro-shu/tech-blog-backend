@@ -9,21 +9,23 @@ import (
 type ArticleUseCase interface {
 	Create(title, content string, userId, categoryId int) (*model.Article, error)
 	FindByID(id int) (*model.Article, error)
-	GetArticles(articles *[]model.Article, limit, offset int) error
+	GetArticles(articles *[]model.Article, limit, offset, currentPage int) error
 	GetPager(currentPage, offset int) (*pager.Pager, error)
 	Update(id int, title, content string) (*model.Article, error)
 	Delete(id int) error
 }
 
 type articleUseCase struct {
-	articleRepo      repository.ArticleRepository
-	cacheArticleRepo repository.ArticleCacheRepository
+	articleRepo       repository.ArticleRepository
+	cacheArticleRepo  repository.ArticleCacheRepository
+	cacheArticlesRepo repository.ArticlesCacheRepository
 }
 
-func NewArticleUseCase(articleRepo repository.ArticleRepository, cacheArticleRepo repository.ArticleCacheRepository) ArticleUseCase {
+func NewArticleUseCase(articleRepo repository.ArticleRepository, cacheArticleRepo repository.ArticleCacheRepository, cacheArticlesRepo repository.ArticlesCacheRepository) ArticleUseCase {
 	return &articleUseCase{
-		articleRepo:      articleRepo,
-		cacheArticleRepo: cacheArticleRepo,
+		articleRepo:       articleRepo,
+		cacheArticleRepo:  cacheArticleRepo,
+		cacheArticlesRepo: cacheArticlesRepo,
 	}
 }
 
@@ -61,8 +63,20 @@ func (au *articleUseCase) FindByID(id int) (*model.Article, error) {
 	return &article, nil
 }
 
-func (au *articleUseCase) GetArticles(articles *[]model.Article, limit, offset int) error {
-	return au.articleRepo.GetArticles(articles, limit, offset)
+func (au *articleUseCase) GetArticles(articles *[]model.Article, limit, offset, currentPage int) error {
+	if err := au.cacheArticlesRepo.GetLastest(articles, currentPage); err == nil {
+		return nil
+	}
+	err := au.articleRepo.GetArticles(articles, limit, offset)
+	if err != nil {
+		return err
+	}
+
+	if err := au.cacheArticlesRepo.SetLastest(articles, currentPage); err != nil {
+		// logのみを出力するエラーハンドリングに変えたい。
+		return err
+	}
+	return nil
 }
 
 func (au *articleUseCase) GetPager(currentPage, offset int) (*pager.Pager, error) {

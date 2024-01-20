@@ -33,3 +33,25 @@ func (c Context) JSON(w http.ResponseWriter, status int, data interface{}) error
 
 	return nil
 }
+
+func JSON(w http.ResponseWriter, status int, data interface{}) error {
+	res := JSONResponce{
+		Status: status,
+		Data:   data,
+	}
+
+	b, err := json.Marshal(res)
+	if err != nil {
+		// c.Logger.Error("failed at convert response to json.", zap.Error(err))
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return nil
+	}
+
+	w.WriteHeader(status)
+	_, _ = w.Write(b)
+	// if err != nil {
+	// c.Logger.Error("failed at write response.", zap.Error(err))
+	// }
+
+	return nil
+}
