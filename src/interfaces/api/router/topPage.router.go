@@ -25,5 +25,5 @@ func (r *topPageRouter) SetRouters(router *mux.Router) {
 		r.repricaDB,
 	)
 
-	router.Handle("/top", appHandler(topPageHandler.Get)).Methods(http.MethodGet)
+	router.Handle("/top", appHandler(topPageHandler.Get)).Methods(http.MethodGet).Methods(http.MethodOptions)
 }

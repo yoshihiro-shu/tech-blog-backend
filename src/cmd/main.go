@@ -47,9 +47,6 @@ func main() {
 	defer db.Close()
 
 	auth.Init(conf.AccessToken, conf.RefreshToken)
-	s := server.New(conf, logger, db, cache)
-
-	s.SetRouters()
-
+	s := server.New(conf, logger, db.Master, db.Reprica, cache)
 	s.Start()
 }

@@ -26,5 +26,5 @@ func (r *latestArtilesRouter) SetRouters(router *mux.Router) {
 	)
 	latest := router.PathPrefix("/new").Subrouter()
 
-	latest.Handle("/{page:[0-9]+}", appHandler(latestArticlesHandler.Get)).Methods(http.MethodGet)
+	latest.Handle("/{page:[0-9]+}", appHandler(latestArticlesHandler.Get)).Methods(http.MethodGet).Methods(http.MethodOptions)
 }

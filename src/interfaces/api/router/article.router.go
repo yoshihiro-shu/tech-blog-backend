@@ -22,7 +22,7 @@ func (a *articleRouter) SetRouters(router *mux.Router) {
 		a.repricaDB,
 	)
 	article := router.PathPrefix("/articles").Subrouter()
-	article.Handle("/{id:[0-9]+}", appHandler(h.Get)).Methods(http.MethodGet)
-	article.Handle("/category/{slug}", appHandler(h.GetArticlesByCategory)).Methods(http.MethodGet)
-	article.Handle("/tag/{slug}", appHandler(h.GetArticlesByTag)).Methods(http.MethodGet)
+	article.Handle("/{id:[0-9]+}", appHandler(h.Get)).Methods(http.MethodGet).Methods(http.MethodOptions)
+	article.Handle("/category/{slug}", appHandler(h.GetArticlesByCategory)).Methods(http.MethodGet).Methods(http.MethodOptions)
+	article.Handle("/tag/{slug}", appHandler(h.GetArticlesByTag)).Methods(http.MethodGet).Methods(http.MethodOptions)
 }
