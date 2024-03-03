@@ -1,8 +1,6 @@
 package router
 
 import (
-	"fmt"
-
 	"github.com/gorilla/mux"
 	"github.com/yoshihiro-shu/tech-blog-backend/src/infrastructure/persistence/cache"
 	"github.com/yoshihiro-shu/tech-blog-backend/src/interfaces/api/middlewares"
@@ -63,8 +61,6 @@ func (m *MainRouter) SetRouters(router *mux.Router) {
 		logger:    m.logger,
 	}
 	latestArticlesR.SetRouters(apiv1)
-	fmt.Println("config: ", m.conf)
-	fmt.Println("token: ", m.conf.Github.PersonalToken)
 	profileR := &profileRouter{
 		token:  m.conf.Github.PersonalToken,
 		redis:  m.redis,

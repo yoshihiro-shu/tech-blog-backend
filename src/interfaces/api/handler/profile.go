@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/yoshihiro-shu/tech-blog-backend/src/application/usecase"
@@ -26,7 +25,7 @@ func NewProfileHandler(profileUseCase usecase.ProfileUseCase, logger logger.Logg
 }
 
 type responseGetResume struct {
-	HTMLContent []byte `json:"htmlContent"`
+	HTMLContent string `json:"htmlContent"`
 }
 
 func (h profileHandler) GetResume(w http.ResponseWriter, r *http.Request) error {
@@ -34,6 +33,5 @@ func (h profileHandler) GetResume(w http.ResponseWriter, r *http.Request) error 
 	if err != nil {
 		return request.JSON(w, http.StatusInternalServerError, err.Error())
 	}
-	fmt.Println(string(res))
-	return request.JSON(w, http.StatusOK, responseGetResume{res})
+	return request.JSON(w, http.StatusOK, responseGetResume{string(res)})
 }

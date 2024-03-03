@@ -22,7 +22,7 @@ func NewProfileUseCase(token string, cacheProfileRepo repository.ProfileCacheRep
 
 func (u *profileUseCase) GetResume() ([]byte, error) {
 	var res []byte
-	if err := u.cacheProfileRepo.GetResume(res); err == nil {
+	if res, err := u.cacheProfileRepo.GetResume(); err == nil {
 		return res, nil
 	}
 

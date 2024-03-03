@@ -12,8 +12,13 @@ func NewProfileCacheAdaptor(c RedisClient) repository.ProfileCacheRepository {
 	}
 }
 
-func (c *profileCacheAdaptor) GetResume(resume []byte) error {
-	return c.client.GET(ResumeKey(), &resume)
+func (c *profileCacheAdaptor) GetResume() ([]byte, error) {
+	var res []byte
+	err := c.client.GET(ResumeKey(), &res)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
 }
 
 func (c *profileCacheAdaptor) SetResume(resume []byte) error {
