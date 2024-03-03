@@ -26,7 +26,7 @@ func NewProfileHandler(profileUseCase usecase.ProfileUseCase, logger logger.Logg
 }
 
 type responseGetResume struct {
-	Resume []byte `json:"resume"`
+	HTMLContent []byte `json:"htmlContent"`
 }
 
 func (h profileHandler) GetResume(w http.ResponseWriter, r *http.Request) error {
