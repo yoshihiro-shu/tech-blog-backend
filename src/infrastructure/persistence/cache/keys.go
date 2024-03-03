@@ -13,6 +13,8 @@ const (
 	articleById = "article_id_%d"
 
 	totalPager = "total_pager"
+
+	resume = "resume"
 )
 
 func TopPageKey() string {
@@ -37,4 +39,8 @@ func GetArticleByIdKey(id int) string {
 
 func GetTotalPagerKey() string {
 	return totalPager
+}
+
+func ResumeKey() string {
+	return resume
 }

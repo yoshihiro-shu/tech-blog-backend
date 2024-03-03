@@ -63,3 +63,6 @@ refresh_token:
 
 csrf_token:
   key: 32-byte-long-auth-key
+
+github:
+  personal_token: XXXXXXXX
