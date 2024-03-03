@@ -3,18 +3,18 @@ package cache
 import "fmt"
 
 const (
-	topPageKey = "top_page"
+	topPageKey = "topPage"
 
-	latestArticleListKey = "latest_article_list_page_%d"
+	latestArticleListKey = "latestArticleList:page:%d"
 
-	articlesByCategoryKey = "articles_by_category_%s"
-	articlesByTagKey      = "articles_by_tag_%s"
+	articlesByCategoryKey = "articles:category:%s"
+	articlesByTagKey      = "articles:tag:%s"
 
-	articleById = "article_id_%d"
+	articleById = "article:id:%d"
 
-	totalPager = "total_pager"
+	totalPager = "total:Pager"
 
-	resume = "resume"
+	profileResume = "profile:resume"
 )
 
 func TopPageKey() string {
@@ -42,5 +42,5 @@ func GetTotalPagerKey() string {
 }
 
 func ResumeKey() string {
-	return resume
+	return profileResume
 }
