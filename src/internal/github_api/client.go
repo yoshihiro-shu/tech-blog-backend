@@ -20,6 +20,7 @@ func NewClient(owner, repo, token string) *client {
 	}
 }
 
+// GetRepositoryContent is get github repository content by path
 func (c *client) GetRepositoryContent(path string) ([]byte, error) {
 	url := fmt.Sprintf("https://api.github.com/repos/%s/%s/contents/%s", c.owner, c.repo, path)
 
@@ -27,6 +28,7 @@ func (c *client) GetRepositoryContent(path string) ([]byte, error) {
 	client := &http.Client{}
 
 	// http.NewRequestでGETリクエストを作成
+	// curl -H "Authorization: Bearer ${Github Personal Token}" -H "Accept: application/vnd.github.html+json" https://api.github.com/repos/yoshihiro-shu/Resume/contents/README.md
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
