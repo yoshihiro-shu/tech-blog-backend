@@ -31,10 +31,10 @@ type responseGetResume struct {
 
 func (h profileHandler) GetResume(w http.ResponseWriter, r *http.Request) error {
 	res, err := h.profileUsecase.GetResume()
+	h.logger.Info("Get Resume String", zap.String("htmlContent", string(res)))
+	h.logger.Info("Get Resume Any", zap.Any("res", res))
 	if err != nil {
 		return request.JSON(w, http.StatusInternalServerError, err.Error())
 	}
-	h.logger.Info("Get Resume String", zap.String("htmlContent", string(res)))
-	h.logger.Info("Get Resume Any", zap.Any("res", res))
 	return request.JSON(w, http.StatusOK, responseGetResume{string(res)})
 }
