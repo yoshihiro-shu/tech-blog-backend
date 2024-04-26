@@ -13,6 +13,8 @@ pub fn create_map() -> HashMap<&'static str, &'static str> {
     tag_category.insert("ワイヤーフレーム", "Requirement Definition");
     tag_category.insert("googlecloud", "Infrastructure");
     tag_category.insert("Nuxt", "Frontend");
+    tag_category.insert("API", "Backend");
+    tag_category.insert("Go", "Backend");
 
     tag_category
 }
