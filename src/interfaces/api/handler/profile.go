@@ -6,6 +6,7 @@ import (
 	"github.com/yoshihiro-shu/tech-blog-backend/src/application/usecase"
 	"github.com/yoshihiro-shu/tech-blog-backend/src/interfaces/api/request"
 	"github.com/yoshihiro-shu/tech-blog-backend/src/internal/logger"
+	"go.uber.org/zap"
 )
 
 type ProfileHandler interface {
@@ -33,5 +34,7 @@ func (h profileHandler) GetResume(w http.ResponseWriter, r *http.Request) error 
 	if err != nil {
 		return request.JSON(w, http.StatusInternalServerError, err.Error())
 	}
+	h.logger.Info("Get Resume String", zap.String("htmlContent", string(res)))
+	h.logger.Info("Get Resume Any", zap.Any("res", res))
 	return request.JSON(w, http.StatusOK, responseGetResume{string(res)})
 }
