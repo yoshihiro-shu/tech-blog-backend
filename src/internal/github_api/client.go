@@ -39,7 +39,8 @@ func (c *client) GetRepositoryContent(path string) ([]byte, error) {
 	bearerToken := fmt.Sprintf("Bearer %s", c.token)
 	req.Header.Add("Authorization", bearerToken)
 
-	req.Header.Add("Accept", "application/vnd.github.html+json")
+	// https://docs.github.com/ja/rest/repos/contents?apiVersion=2022-11-28#get-repository-content
+	req.Header.Add("Accept", "application/vnd.github.raw+json")
 
 	// リクエストの送信
 	resp, err := client.Do(req)
