@@ -38,6 +38,7 @@ func (c *client) GetRepositoryContent(path string) ([]byte, error) {
 	// YOUR_TOKENには実際のアクセストークンを設定してください
 	bearerToken := fmt.Sprintf("Bearer %s", c.token)
 	req.Header.Add("Authorization", bearerToken)
+	fmt.Println("Authorization: ", bearerToken)
 
 	// https://docs.github.com/ja/rest/repos/contents?apiVersion=2022-11-28#get-repository-content
 	req.Header.Add("Accept", "application/vnd.github.raw+json")
