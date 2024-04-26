@@ -34,6 +34,7 @@ func (h profileHandler) GetResume(w http.ResponseWriter, r *http.Request) error 
 	h.logger.Info("Get Resume String", zap.String("htmlContent", string(res)))
 	h.logger.Info("Get Resume Any", zap.Any("res", res))
 	if err != nil {
+		h.logger.Error("failed at get resume.", zap.Error(err))
 		return request.JSON(w, http.StatusInternalServerError, err.Error())
 	}
 	return request.JSON(w, http.StatusOK, responseGetResume{string(res)})
