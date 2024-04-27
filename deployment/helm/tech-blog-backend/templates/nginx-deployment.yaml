@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: {{ include "tech-blog-backend.fullname" . }}-gateway
-        image: nginx:1.25.2-alpine
+        image: nginx:1.26.0-alpine
         ports:
         - containerPort: 80
         resources:
