@@ -47,8 +47,7 @@ func (c *client) GetRepositoryContent(path string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("Status: ", resp.Status)
-	fmt.Println("Body: ", resp.Body)
+
 	defer resp.Body.Close()
 	return io.ReadAll(resp.Body)
 }
