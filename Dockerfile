@@ -3,10 +3,8 @@ FROM golang:1.22-alpine3.18 as builder
 
 WORKDIR /usr/src/app
 
-# tzdata パッケージのインストール
-RUN apk add --no-cache tzdata
-RUN apk add --no-cache ca-certificates openssl
-# RUN apt-get install -y ca-certificates openssl
+# tzdata および ca-certificates パッケージのインストール
+RUN apk add --no-cache tzdata ca-certificates
 
 COPY ./src/go.mod ./src/go.sum ./
 RUN go mod download && go mod verify
@@ -20,6 +18,9 @@ WORKDIR /usr/src/app
 
 # scratch doesn't have timezone.
 COPY --from=builder /usr/share/zoneinfo/Asia/Tokyo /usr/share/zoneinfo/Asia/Tokyo
+
+# COPY ca-certificates
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 COPY --from=builder /usr/src/app/binary /usr/src/app/binary
 COPY ./src/configs.yaml .
