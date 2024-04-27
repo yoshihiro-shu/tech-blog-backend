@@ -5,6 +5,8 @@ WORKDIR /usr/src/app
 
 # tzdata パッケージのインストール
 RUN apk add --no-cache tzdata
+RUN apk add --no-cache ca-certificates openssl
+# RUN apt-get install -y ca-certificates openssl
 
 COPY ./src/go.mod ./src/go.sum ./
 RUN go mod download && go mod verify
