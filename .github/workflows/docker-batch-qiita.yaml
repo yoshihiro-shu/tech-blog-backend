@@ -6,8 +6,8 @@ on:
       - 'main'
     paths:
       - "batch/qiita/**"
-  # release:
-  #   types: [published]
+  release:
+    types: [published]
 
 jobs:
   docker:
