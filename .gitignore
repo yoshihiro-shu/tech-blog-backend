@@ -1,3 +1,6 @@
+# docker volume
 tmp/cache/data
-
 tmp/db/data
+
+# golang air
+src/tmp
