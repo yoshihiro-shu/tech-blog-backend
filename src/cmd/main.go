@@ -33,7 +33,6 @@ import (
 func main() {
 	logger := logger.New()
 	conf, err := config.New()
-	logger.Info("config", zap.Any("config", conf))
 	if err != nil {
 		logger.Fatal("failed at load config.", zap.Error(err))
 		return
