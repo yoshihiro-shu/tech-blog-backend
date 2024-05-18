@@ -14,3 +14,6 @@ migration:
     imagePullPolicy: IfNotPresent
   dotEnv:
     secretResourceName: ""
+
+prometheus:
+  enabled: false
