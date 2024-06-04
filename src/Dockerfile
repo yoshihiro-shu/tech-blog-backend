@@ -1,4 +1,4 @@
-FROM golang:1.22.2-alpine3.18 as dev
+FROM golang:1.22.3-alpine3.18 as dev
 
 ENV ROOT=/usr/src/app
 WORKDIR ${ROOT}
